@@ -1,0 +1,406 @@
+table T_Activite_M365
+	lineageTag: 7a6a0477-faec-44c9-9541-1f40b548133b
+
+	column DateRapport
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: dae47b1b-5939-43ec-b1df-d9c8500e1b66
+		summarizeBy: none
+		sourceColumn: DateRapport
+
+		variation Variation
+			isDefault
+			relationship: f38d0856-81c1-4303-99a7-2e61dab3f1d2
+			defaultHierarchy: LocalDateTable_557a5972-c167-4905-a487-f6d1e941b794.'Hiérarchie de dates'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column UserPrincipalName
+		dataType: string
+		lineageTag: ab01a755-f875-4092-b1c2-8e3342979f64
+		summarizeBy: none
+		sourceColumn: UserPrincipalName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateDerniereActivation
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 55960031-1339-4eaf-bdf4-37cd3be5682c
+		summarizeBy: none
+		sourceColumn: DateDerniereActivation
+
+		variation Variation
+			isDefault
+			relationship: 3eebbf3c-321d-4f96-ad95-d8fd0663f57e
+			defaultHierarchy: LocalDateTable_2770b7dd-627a-4d40-9779-d46fe27054a3.'Hiérarchie de dates'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DateDerniereActivite
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 60a13c27-a6be-4fb2-8bc3-013f69cba3b2
+		summarizeBy: none
+		sourceColumn: DateDerniereActivite
+
+		variation Variation
+			isDefault
+			relationship: f94638f2-e30e-47dd-a081-90a7092bac74
+			defaultHierarchy: LocalDateTable_88c3acd8-a41a-41de-8394-4b43fdd26287.'Hiérarchie de dates'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PeriodeRapport
+		dataType: int64
+		formatString: 0
+		lineageTag: 1c249520-0dc7-4231-b79a-546179d07187
+		summarizeBy: sum
+		sourceColumn: PeriodeRapport
+
+		annotation SummarizationSetBy = Automatic
+
+	column Utilise_Windows
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 54fb95c3-e06e-4662-b500-3546d1a01963
+		summarizeBy: none
+		sourceColumn: Utilise_Windows
+
+		annotation SummarizationSetBy = Automatic
+
+	column Utilise_Mac
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f9b5280f-c6d8-4e6b-b412-7ad14aacbafb
+		summarizeBy: none
+		sourceColumn: Utilise_Mac
+
+		annotation SummarizationSetBy = Automatic
+
+	column Utilise_Mobile
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3d29dafb-f8c4-4d44-99f0-3ad1d1672d38
+		summarizeBy: none
+		sourceColumn: Utilise_Mobile
+
+		annotation SummarizationSetBy = Automatic
+
+	column Utilise_Web
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0978eb05-0d10-4ad0-a3e3-bd3c0d3e6c9b
+		summarizeBy: none
+		sourceColumn: Utilise_Web
+
+		annotation SummarizationSetBy = Automatic
+
+	column App_Outlook
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3cf5b7df-05ec-4c98-b4e1-f8648fb2a8f3
+		summarizeBy: none
+		sourceColumn: App_Outlook
+
+		annotation SummarizationSetBy = Automatic
+
+	column App_Word
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c96b250f-6245-4e07-8517-4ff2c0b51dd6
+		summarizeBy: none
+		sourceColumn: App_Word
+
+		annotation SummarizationSetBy = Automatic
+
+	column App_Excel
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ab9b2ca9-999b-40e4-8021-769dad6eca2a
+		summarizeBy: none
+		sourceColumn: App_Excel
+
+		annotation SummarizationSetBy = Automatic
+
+	column App_PowerPoint
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e874590f-31a0-426e-85ef-bdf996f6f7e4
+		summarizeBy: none
+		sourceColumn: App_PowerPoint
+
+		annotation SummarizationSetBy = Automatic
+
+	column App_OneNote
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: cd7dd243-5370-4cc3-84be-2c9006aa22d5
+		summarizeBy: none
+		sourceColumn: App_OneNote
+
+		annotation SummarizationSetBy = Automatic
+
+	column App_Teams
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 12db58d4-e291-4f44-ae41-e3902a2d4ac1
+		summarizeBy: none
+		sourceColumn: App_Teams
+
+		annotation SummarizationSetBy = Automatic
+
+	column JoursInactivite
+		dataType: int64
+		formatString: 0
+		lineageTag: 5286517b-1984-4669-80e2-88b887f05158
+		summarizeBy: sum
+		sourceColumn: JoursInactivite
+
+		annotation SummarizationSetBy = Automatic
+
+	column NbPlateformes
+		dataType: int64
+		formatString: 0
+		lineageTag: 9e90468c-cc96-408c-a717-f8e09c10f9dc
+		summarizeBy: sum
+		sourceColumn: NbPlateformes
+
+		annotation SummarizationSetBy = Automatic
+
+	column NbAppsUtilisees
+		dataType: int64
+		formatString: 0
+		lineageTag: 3aab65d0-1213-4678-9161-e164920ec179
+		summarizeBy: sum
+		sourceColumn: NbAppsUtilisees
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScoreUtilisation
+		dataType: int64
+		formatString: 0
+		lineageTag: 3d199e47-038c-449b-b037-ca86d81591c3
+		summarizeBy: sum
+		sourceColumn: ScoreUtilisation
+
+		annotation SummarizationSetBy = Automatic
+
+	column NiveauUtilisation
+		dataType: string
+		lineageTag: 6a106359-5835-4613-b161-fbc61629665f
+		summarizeBy: none
+		sourceColumn: NiveauUtilisation
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategorieActivite
+		dataType: string
+		lineageTag: e9025346-0d13-4021-a783-785b32be6702
+		summarizeBy: none
+		sourceColumn: CategorieActivite
+
+		annotation SummarizationSetBy = Automatic
+
+	partition T_Activite_M365 = m
+		mode: import
+		source = ```
+				let
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 1. PARAMÈTRES
+				    // ═══════════════════════════════════════════════════════════════════
+				    TenantId = Text.From(#"Param_TenantId"),
+				    ClientId = Text.From(#"Param_ClientId"),
+				    ClientSecret = Text.From(#"Param_Secret"),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 2. AUTHENTIFICATION
+				    // ═══════════════════════════════════════════════════════════════════
+				    GetAccessToken = () =>
+				        let
+				            Url = "https://login.microsoftonline.com/" & TenantId & "/oauth2/v2.0/token",
+				            Body = "client_id=" & ClientId 
+				                   & "&scope=https://graph.microsoft.com/.default" 
+				                   & "&client_secret=" & Uri.EscapeDataString(ClientSecret) 
+				                   & "&grant_type=client_credentials",
+				            Response = Json.Document(
+				                Web.Contents(Url, [
+				                    Headers = [#"Content-Type" = "application/x-www-form-urlencoded"], 
+				                    Content = Text.ToBinary(Body)
+				                ])
+				            ),
+				            Token = "Bearer " & Response[access_token]
+				        in
+				            Token,
+				
+				    AuthToken = GetAccessToken(),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 3. APPEL DU RAPPORT (180 jours)
+				    // ═══════════════════════════════════════════════════════════════════
+				    ReportUrl = "https://graph.microsoft.com/v1.0/reports/getM365AppUserDetail(period='D180')",
+				    
+				    RawResponse = Web.Contents(ReportUrl, [
+				        Headers = [Authorization = AuthToken],
+				        ManualStatusHandling = {400, 401, 403, 404, 500}
+				    ]),
+				    
+				    ResponseMetadata = Value.Metadata(RawResponse),
+				    ResponseStatus = ResponseMetadata[Response.Status],
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 4. TRAITEMENT DE LA RÉPONSE
+				    // ═══════════════════════════════════════════════════════════════════
+				    Resultat = if ResponseStatus = 200 then
+				        let
+				            CsvContent = Csv.Document(RawResponse, [
+				                Delimiter = ",", 
+				                Encoding = TextEncoding.Utf8, 
+				                QuoteStyle = QuoteStyle.Csv
+				            ]),
+				            Source = Table.PromoteHeaders(CsvContent, [PromoteAllScalars = true]),
+				
+				            // ═══════════════════════════════════════════════════════════
+				            // 5. RENOMMAGE DES COLONNES
+				            // ═══════════════════════════════════════════════════════════
+				            ColonnesRenommees = Table.RenameColumns(Source, {
+				                {"Report Refresh Date", "DateRapport"},
+				                {"User Principal Name", "UserPrincipalName"},
+				                {"Last Activation Date", "DateDerniereActivation"},
+				                {"Last Activity Date", "DateDerniereActivite"},
+				                {"Report Period", "PeriodeRapport"},
+				                {"Windows", "Utilise_Windows"},
+				                {"Mac", "Utilise_Mac"},
+				                {"Mobile", "Utilise_Mobile"},
+				                {"Web", "Utilise_Web"},
+				                {"Outlook", "App_Outlook"},
+				                {"Word", "App_Word"},
+				                {"Excel", "App_Excel"},
+				                {"PowerPoint", "App_PowerPoint"},
+				                {"OneNote", "App_OneNote"},
+				                {"Teams", "App_Teams"}
+				            }),
+				
+				            // ═══════════════════════════════════════════════════════════
+				            // 6. SÉLECTION DES COLONNES
+				            // ═══════════════════════════════════════════════════════════
+				            ColonnesDisponibles = Table.ColumnNames(ColonnesRenommees),
+				            ColonnesVoulues = {
+				                "DateRapport", "UserPrincipalName", "DateDerniereActivation", 
+				                "DateDerniereActivite", "PeriodeRapport", "Utilise_Windows", 
+				                "Utilise_Mac", "Utilise_Mobile", "Utilise_Web", "App_Outlook", 
+				                "App_Word", "App_Excel", "App_PowerPoint", "App_OneNote", "App_Teams"
+				            },
+				            ColonnesFinales = List.Intersect({ColonnesDisponibles, ColonnesVoulues}),
+				            ColonnesSelectionnees = Table.SelectColumns(ColonnesRenommees, ColonnesFinales),
+				
+				            // ═══════════════════════════════════════════════════════════
+				            // 7. TYPAGE DES COLONNES
+				            // ═══════════════════════════════════════════════════════════
+				            TransformBool = (x) => if x = "True" or x = "true" or x = true then true else false,
+				            
+				            TypeModifie = Table.TransformColumnTypes(ColonnesSelectionnees, {
+				                {"DateRapport", type date},
+				                {"UserPrincipalName", type text},
+				                {"DateDerniereActivation", type date},
+				                {"DateDerniereActivite", type date},
+				                {"PeriodeRapport", Int64.Type}
+				            }),
+				            
+				            ColsBooleennes = List.Select(ColonnesFinales, each Text.StartsWith(_, "Utilise_") or Text.StartsWith(_, "App_")),
+				            TransformationFinale = Table.TransformColumns(TypeModifie, List.Transform(ColsBooleennes, each {_, TransformBool, type logical})),
+				
+				            // ═══════════════════════════════════════════════════════════
+				            // 8. COLONNES CALCULÉES
+				            // ═══════════════════════════════════════════════════════════
+				            
+				            // Jours depuis dernière activité
+				            JoursInactivite = Table.AddColumn(
+				                TransformationFinale, 
+				                "JoursInactivite", 
+				                each 
+				                    if [DateDerniereActivite] = null then null
+				                    else Duration.Days(Date.From(DateTime.LocalNow()) - [DateDerniereActivite]), 
+				                Int64.Type
+				            ),
+				
+				            // Nombre de plateformes utilisées (Max: 4)
+				            NbPlateformes = Table.AddColumn(
+				                JoursInactivite, 
+				                "NbPlateformes", 
+				                each 
+				                    (if [Utilise_Windows] = true then 1 else 0) + 
+				                    (if [Utilise_Mac] = true then 1 else 0) +
+				                    (if [Utilise_Mobile] = true then 1 else 0) + 
+				                    (if [Utilise_Web] = true then 1 else 0), 
+				                Int64.Type
+				            ),
+				
+				            // Nombre d'applications utilisées (Max: 6)
+				            NbApps = Table.AddColumn(
+				                NbPlateformes, 
+				                "NbAppsUtilisees", 
+				                each 
+				                    (if [App_Outlook] = true then 1 else 0) + 
+				                    (if [App_Word] = true then 1 else 0) +
+				                    (if [App_Excel] = true then 1 else 0) + 
+				                    (if [App_PowerPoint] = true then 1 else 0) +
+				                    (if [App_OneNote] = true then 1 else 0) + 
+				                    (if [App_Teams] = true then 1 else 0), 
+				                Int64.Type
+				            ),
+				
+				            // Score d'utilisation (Max: 10)
+				            ScoreUtilisation = Table.AddColumn(
+				                NbApps, 
+				                "ScoreUtilisation", 
+				                each [NbPlateformes] + [NbAppsUtilisees], 
+				                Int64.Type
+				            ),
+				
+				            // ═══════════════════════════════════════════════════════════
+				            // 9. CLASSIFICATION (SEUIL 90 JOURS)
+				            // ═══════════════════════════════════════════════════════════
+				            Classification = Table.AddColumn(
+				                ScoreUtilisation, 
+				                "NiveauUtilisation", 
+				                each 
+				                    if [JoursInactivite] = null then "Jamais Connecté"
+				                    else if [JoursInactivite] > 90 then "Inactif (>90j)"
+				                    else if [ScoreUtilisation] >= 7 then "Power User"
+				                    else if [ScoreUtilisation] >= 4 then "Utilisateur Standard"
+				                    else if [ScoreUtilisation] >= 1 then "Utilisateur Minimal"
+				                    else "Non Utilisateur", 
+				                type text
+				            ),
+				
+				            // ═══════════════════════════════════════════════════════════
+				            // 10. CATÉGORIE SIMPLIFIÉE
+				            // ═══════════════════════════════════════════════════════════
+				            CategorieSimple = Table.AddColumn(
+				                Classification,
+				                "CategorieActivite",
+				                each
+				                    if [NiveauUtilisation] = "Jamais Connecté" then "Jamais Connecté"
+				                    else if [NiveauUtilisation] = "Inactif (>90j)" then "Inactif (>90j)"
+				                    else "Actif",
+				                type text
+				            )
+				        in
+				            CategorieSimple
+				    else
+				        error "Erreur API (" & Text.From(ResponseStatus) & ")"
+				in
+				    Resultat
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

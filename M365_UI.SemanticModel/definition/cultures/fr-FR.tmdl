@@ -1,0 +1,279 @@
+cultureInfo fr-FR
+
+	linguisticMetadata =
+			{
+			  "Version": "1.0.0",
+			  "Language": "fr-FR",
+			  "DynamicImprovement": "HighConfidence",
+			  "Entities": {
+			    "T_Utilisateurs_Dim": {
+			      "Synonyms": [
+			        "utilisateurs",
+			        "utilisateur",
+			        "comptes",
+			        "users",
+			        "user",
+			        "collaborateurs"
+			      ],
+			      "Roles": {
+			        "Subject": {}
+			      },
+			      "Attributes": {
+			        "DisplayName": {
+			          "Synonyms": [
+			            "nom",
+			            "prénom",
+			            "identité",
+			            "nom complet"
+			          ]
+			        },
+			        "UserPrincipalName": {
+			          "Synonyms": [
+			            "email",
+			            "adresse mail",
+			            "upn",
+			            "login",
+			            "identifiant"
+			          ]
+			        },
+			        "Department": {
+			          "Synonyms": [
+			            "département",
+			            "service",
+			            "direction",
+			            "equipe",
+			            "entité"
+			          ]
+			        },
+			        "CountryOrRegion": {
+			          "Synonyms": [
+			            "pays",
+			            "région",
+			            "localisation",
+			            "pays region"
+			          ]
+			        },
+			        "TypeCompte": {
+			          "Synonyms": [
+			            "type de compte",
+			            "type",
+			            "catégorie",
+			            "nature du compte"
+			          ]
+			        },
+			        "EtatActivite": {
+			          "Synonyms": [
+			            "état",
+			            "activité",
+			            "statut activité",
+			            "état activité"
+			          ]
+			        },
+			        "Statut AD": {
+			          "Synonyms": [
+			            "statut",
+			            "statut active directory",
+			            "statut AD",
+			            "actif",
+			            "activé",
+			            "désactivé"
+			          ]
+			        },
+			        "IsCible": {
+			          "Synonyms": [
+			            "cible",
+			            "cibles nettoyage",
+			            "à nettoyer",
+			            "à supprimer"
+			          ]
+			        }
+			      }
+			    },
+			    "T_Produits_Dim": {
+			      "Synonyms": [
+			        "produits",
+			        "produit",
+			        "licences",
+			        "abonnements",
+			        "produits microsoft"
+			      ],
+			      "Attributes": {
+			        "NomProduit": {
+			          "Synonyms": [
+			            "nom du produit",
+			            "nom licence",
+			            "produit microsoft",
+			            "abonnement"
+			          ]
+			        },
+			        "LicencesAchetees": {
+			          "Synonyms": [
+			            "licences achetées",
+			            "stock",
+			            "total licences",
+			            "quota"
+			          ]
+			        }
+			      }
+			    },
+			    "T_Affectations_Fact": {
+			      "Synonyms": [
+			        "affectations",
+			        "attribution",
+			        "assignation"
+			      ],
+			      "Attributes": {
+			        "TypeLicence": {
+			          "Synonyms": [
+			            "type de licence",
+			            "plan",
+			            "niveau licence"
+			          ]
+			        }
+			      }
+			    },
+			    "_Mesures": {
+			      "Synonyms": [
+			        "mesures",
+			        "kpi",
+			        "indicateurs"
+			      ],
+			      "Attributes": {
+			        "TotalUtilisateurs": {
+			          "Synonyms": [
+			            "total utilisateurs",
+			            "nombre total",
+			            "tous les utilisateurs",
+			            "combien d utilisateurs"
+			          ]
+			        },
+			        "StockLicences": {
+			          "Synonyms": [
+			            "stock de licences",
+			            "licences disponibles totales",
+			            "nombre de licences achetées"
+			          ]
+			        },
+			        "LicencesAffectees": {
+			          "Synonyms": [
+			            "licences affectées",
+			            "licences assignées",
+			            "licences utilisées"
+			          ]
+			        },
+			        "LicencesDisponibles": {
+			          "Synonyms": [
+			            "licences disponibles",
+			            "licences restantes",
+			            "licences libres",
+			            "places disponibles"
+			          ]
+			        },
+			        "LicencesActives": {
+			          "Synonyms": [
+			            "licences actives",
+			            "licences utilisées activement"
+			          ]
+			        },
+			        "LicencesInactives": {
+			          "Synonyms": [
+			            "licences inactives",
+			            "licences gaspillées",
+			            "licences dormantes"
+			          ]
+			        },
+			        "TauxUtilisation": {
+			          "Synonyms": [
+			            "taux d utilisation",
+			            "taux utilisation",
+			            "pourcentage utilisation",
+			            "utilisation"
+			          ]
+			        },
+			        "TauxGaspillage": {
+			          "Synonyms": [
+			            "taux de gaspillage",
+			            "gaspillage",
+			            "pourcentage inactif"
+			          ]
+			        },
+			        "NbHumainsTotal": {
+			          "Synonyms": [
+			            "nombre humains",
+			            "utilisateurs humains",
+			            "comptes humains"
+			          ]
+			        },
+			        "NbHumainsActifs": {
+			          "Synonyms": [
+			            "utilisateurs actifs",
+			            "comptes actifs",
+			            "actifs"
+			          ]
+			        },
+			        "NbHumainsInactifs": {
+			          "Synonyms": [
+			            "utilisateurs inactifs",
+			            "inactifs",
+			            "dormants",
+			            "inactifs 90 jours"
+			          ]
+			        },
+			        "NbHumainsJamaisConnectes": {
+			          "Synonyms": [
+			            "jamais connectés",
+			            "fantômes",
+			            "comptes fantômes",
+			            "jamais utilisé"
+			          ]
+			        },
+			        "NbHumainsDesactives": {
+			          "Synonyms": [
+			            "désactivés",
+			            "comptes désactivés",
+			            "comptes ad désactivés"
+			          ]
+			        },
+			        "CiblesNettoyage": {
+			          "Synonyms": [
+			            "cibles nettoyage",
+			            "à nettoyer",
+			            "comptes à supprimer",
+			            "nettoyage"
+			          ]
+			        },
+			        "NbBoitesTotal": {
+			          "Synonyms": [
+			            "boites techniques",
+			            "comptes techniques",
+			            "total boites",
+			            "boites"
+			          ]
+			        },
+			        "NbPowerUsers": {
+			          "Synonyms": [
+			            "power users",
+			            "utilisateurs intensifs",
+			            "gros utilisateurs"
+			          ]
+			        },
+			        "TauxAdoptionTeams": {
+			          "Synonyms": [
+			            "adoption teams",
+			            "taux teams",
+			            "utilisation teams"
+			          ]
+			        },
+			        "TauxAdoptionOutlook": {
+			          "Synonyms": [
+			            "adoption outlook",
+			            "taux outlook",
+			            "utilisation outlook"
+			          ]
+			        }
+			      }
+			    }
+			  }
+			}
+		contentType: json
+

@@ -1,0 +1,21 @@
+expression Param_TenantId = "REPLACE_WITH_TENANT_ID" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 7c66efc6-4b59-4873-8d8f-0788f3a0fdd4
+
+	annotation PBI_ResultType = Text
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression Param_ClientId = "REPLACE_WITH_CLIENT_ID" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 6c016636-915a-41de-bded-9c77ca1311fd
+
+	annotation PBI_ResultType = Text
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression Param_Secret = "REPLACE_WITH_CLIENT_SECRET" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 671daa94-659b-4798-aed2-4d7a59b710c8
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

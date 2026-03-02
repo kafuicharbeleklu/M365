@@ -1,0 +1,320 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "3c4cbe0b2835dc22b7e2",
+  "displayName": "Analyse Utilisateur",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "c152380581cc02b60416",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Produits_Dim"
+              }
+            },
+            "Property": "NomProduit"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "8f8517e2aa56d003ba31",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "LastSignIn"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "dde0e38db38ba2c7222d",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "EtatActivite"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "ce1bb6fa7e36522ca6b1",
+        "ordinal": 3,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "Statut AD"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "af86b702c8710a50d058",
+        "ordinal": 4,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "CountryOrRegion"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "2ce1a2aeb57c1b90bc50",
+        "ordinal": 5,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "UserPrincipalName"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "1e1df694051e5b01c7e9",
+        "ordinal": 6,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "DisplayName"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "9b31e1a008ea2595e648",
+        "ordinal": 7,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "TypeCompte"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "6451762be041c7030cb6",
+        "ordinal": 8,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "Statut AD"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "331a55ef4d0300c67d45",
+        "ordinal": 9,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "EtatActivite"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "5bbb815db2695ada8b0d",
+        "ordinal": 10,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "AccountEnabled"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  },
+  "pageBinding": {
+    "name": "2c3547617e4a080a0e46",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "c3993f8367c84b053070",
+        "boundFilter": "1e1df694051e5b01c7e9",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "DisplayName"
+          }
+        }
+      },
+      {
+        "name": "218cef54e45c78090927",
+        "boundFilter": "2ce1a2aeb57c1b90bc50",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "UserPrincipalName"
+          }
+        }
+      },
+      {
+        "name": "ddca39feb790b551e368",
+        "boundFilter": "af86b702c8710a50d058",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "CountryOrRegion"
+          }
+        }
+      },
+      {
+        "name": "aaa11776828b8d7d11a0",
+        "boundFilter": "ce1bb6fa7e36522ca6b1",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "Statut AD"
+          }
+        }
+      },
+      {
+        "name": "320812e40bc23ca0e803",
+        "boundFilter": "dde0e38db38ba2c7222d",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "EtatActivite"
+          }
+        }
+      },
+      {
+        "name": "d710a275d110464224cb",
+        "boundFilter": "8f8517e2aa56d003ba31",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "LastSignIn"
+          }
+        }
+      },
+      {
+        "name": "7adbb19a55d97742ba7c",
+        "boundFilter": "c152380581cc02b60416",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Produits_Dim"
+              }
+            },
+            "Property": "NomProduit"
+          }
+        }
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "ThemeDataColor": {
+                    "ColorId": 0,
+                    "Percent": -0.1
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

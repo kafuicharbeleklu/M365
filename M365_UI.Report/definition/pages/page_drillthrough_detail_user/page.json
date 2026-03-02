@@ -1,0 +1,107 @@
+{
+    "$schema":  "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+    "name":  "page_drillthrough_detail_user",
+    "displayName":  "Detail Utilisateur",
+    "displayOption":  "FitToPage",
+    "filterConfig":  {
+                         "filters":  [
+                                         {
+                                             "name":  "dtf_user_upn",
+                                             "ordinal":  0,
+                                             "field":  {
+                                                           "Column":  {
+                                                                          "Expression":  {
+                                                                                             "SourceRef":  {
+                                                                                                               "Entity":  "T_Utilisateurs_Dim"
+                                                                                                           }
+                                                                                         },
+                                                                          "Property":  "UserPrincipalName"
+                                                                      }
+                                                       },
+                                             "type":  "Categorical",
+                                             "howCreated":  "Drillthrough"
+                                         },
+                                         {
+                                             "name":  "dtf_user_display",
+                                             "ordinal":  1,
+                                             "field":  {
+                                                           "Column":  {
+                                                                          "Expression":  {
+                                                                                             "SourceRef":  {
+                                                                                                               "Entity":  "T_Utilisateurs_Dim"
+                                                                                                           }
+                                                                                         },
+                                                                          "Property":  "DisplayName"
+                                                                      }
+                                                       },
+                                             "type":  "Categorical",
+                                             "howCreated":  "Drillthrough"
+                                         }
+                                     ],
+                         "filterSortOrder":  "Custom"
+                     },
+    "pageBinding":  {
+                        "name":  "detail_user_drillthrough_binding",
+                        "type":  "Drillthrough",
+                        "parameters":  [
+                                           {
+                                               "name":  "detail_user_upn_param",
+                                               "boundFilter":  "dtf_user_upn",
+                                               "fieldExpr":  {
+                                                                 "Column":  {
+                                                                                "Expression":  {
+                                                                                                   "SourceRef":  {
+                                                                                                                     "Entity":  "T_Utilisateurs_Dim"
+                                                                                                                 }
+                                                                                               },
+                                                                                "Property":  "UserPrincipalName"
+                                                                            }
+                                                             }
+                                           },
+                                           {
+                                               "name":  "detail_user_display_param",
+                                               "boundFilter":  "dtf_user_display",
+                                               "fieldExpr":  {
+                                                                 "Column":  {
+                                                                                "Expression":  {
+                                                                                                   "SourceRef":  {
+                                                                                                                     "Entity":  "T_Utilisateurs_Dim"
+                                                                                                                 }
+                                                                                               },
+                                                                                "Property":  "DisplayName"
+                                                                            }
+                                                             }
+                                           }
+                                       ],
+                        "acceptsFilterContext":  "None"
+                    },
+    "objects":  {
+                    "background":  [
+                                       {
+                                           "properties":  {
+                                                              "color":  {
+                                                                            "solid":  {
+                                                                                          "color":  {
+                                                                                                        "expr":  {
+                                                                                                                     "ThemeDataColor":  {
+                                                                                                                                            "ColorId":  0,
+                                                                                                                                            "Percent":  -0.1
+                                                                                                                                        }
+                                                                                                                 }
+                                                                                                    }
+                                                                                      }
+                                                                        },
+                                                              "transparency":  {
+                                                                                   "expr":  {
+                                                                                                "Literal":  {
+                                                                                                                "Value":  "0D"
+                                                                                                            }
+                                                                                            }
+                                                                               }
+                                                          }
+                                       }
+                                   ]
+                },
+    "width":  1920,
+    "height":  1080
+}

@@ -1,0 +1,37 @@
+relationship c5623bfd-5f5a-4678-aaa1-daf6844f8ec0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: T_Utilisateurs_Dim.WhenCreated
+	toColumn: LocalDateTable_ef38b729-9347-4e14-94fc-7178c7b21d1d.Date
+
+relationship 71c26b22-d2eb-4145-a044-e3e8279a5884
+	joinOnDateBehavior: datePartOnly
+	fromColumn: T_Utilisateurs_Dim.LastSignIn
+	toColumn: LocalDateTable_9c07b0b3-055f-453b-8431-e89adeffbe9c.Date
+
+relationship AutoDetected_1907d63d-9fb3-412e-8c64-720bb16c18db
+	fromColumn: T_Affectations_Fact.UserPrincipalName
+	toColumn: T_Utilisateurs_Dim.UserPrincipalName
+
+relationship AutoDetected_09ac2643-1b98-4e0c-9049-69174dddf425
+	fromColumn: T_Affectations_Fact.CodeSKU
+	toColumn: T_Produits_Dim.CodeSKU
+
+relationship f38d0856-81c1-4303-99a7-2e61dab3f1d2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: T_Activite_M365.DateRapport
+	toColumn: LocalDateTable_557a5972-c167-4905-a487-f6d1e941b794.Date
+
+relationship 3eebbf3c-321d-4f96-ad95-d8fd0663f57e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: T_Activite_M365.DateDerniereActivation
+	toColumn: LocalDateTable_2770b7dd-627a-4d40-9779-d46fe27054a3.Date
+
+relationship f94638f2-e30e-47dd-a081-90a7092bac74
+	joinOnDateBehavior: datePartOnly
+	fromColumn: T_Activite_M365.DateDerniereActivite
+	toColumn: LocalDateTable_88c3acd8-a41a-41de-8394-4b43fdd26287.Date
+
+relationship a2056897-7a2b-181b-94e6-4c6d2c84f20b
+	fromColumn: T_Utilisateurs_Dim.UserPrincipalName
+	toColumn: T_Activite_M365.UserPrincipalName
+
