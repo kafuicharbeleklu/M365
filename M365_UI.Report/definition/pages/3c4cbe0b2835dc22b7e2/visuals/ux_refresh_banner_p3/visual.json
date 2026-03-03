@@ -2,11 +2,11 @@
     "$schema":  "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
     "name":  "ux_refresh_banner_p3",
     "position":  {
-                     "x":  1670,
-                     "y":  84,
+                     "x":  1460,
+                     "y":  52,
                      "z":  26001,
-                     "height":  28,
-                     "width":  230,
+                     "height":  20,
+                     "width":  200,
                      "tabOrder":  26001
                  },
     "visual":  {
@@ -55,7 +55,7 @@
                                                                                                      "color":  {
                                                                                                                    "expr":  {
                                                                                                                                 "Literal":  {
-                                                                                                                                                "Value":  "\u0027#475569\u0027"
+                                                                                                                                                "Value":  "\u0027#64748B\u0027"
                                                                                                                                             }
                                                                                                                             }
                                                                                                                }
@@ -113,7 +113,7 @@
                                                                                             "show":  {
                                                                                                          "expr":  {
                                                                                                                       "Literal":  {
-                                                                                                                                      "Value":  "true"
+                                                                                                                                      "Value":  "false"
                                                                                                                                   }
                                                                                                                   }
                                                                                                      },
@@ -144,7 +144,7 @@
                                                                                         "show":  {
                                                                                                      "expr":  {
                                                                                                                   "Literal":  {
-                                                                                                                                  "Value":  "true"
+                                                                                                                                  "Value":  "false"
                                                                                                                               }
                                                                                                               }
                                                                                                  },
@@ -183,7 +183,7 @@
                                                                                             "show":  {
                                                                                                          "expr":  {
                                                                                                                       "Literal":  {
-                                                                                                                                      "Value":  "true"
+                                                                                                                                      "Value":  "false"
                                                                                                                                   }
                                                                                                                   }
                                                                                                      },

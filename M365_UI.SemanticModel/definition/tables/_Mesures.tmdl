@@ -633,11 +633,15 @@ table _Mesures
 			VAR _etat = SELECTEDVALUE(T_Utilisateurs_Dim[EtatActivite], "Tous")
 			VAR _pays = SELECTEDVALUE(T_Utilisateurs_Dim[CountryOrRegion], "Tous")
 			VAR _departement = SELECTEDVALUE(T_Utilisateurs_Dim[Department], "Tous")
+			VAR _p = IF(LEN(_produit) > 24, LEFT(_produit, 24) & "...", _produit)
+			VAR _e = IF(LEN(_etat) > 18, LEFT(_etat, 18) & "...", _etat)
+			VAR _pa = IF(LEN(_pays) > 16, LEFT(_pays, 16) & "...", _pays)
+			VAR _d = IF(LEN(_departement) > 16, LEFT(_departement, 16) & "...", _departement)
 			RETURN
-			"Filtres | Prod: " & _produit
-			& " | Etat: " & _etat
-			& " | Pays: " & _pays
-			& " | Dept: " & _departement
+			"Filtres | Prod: " & _p
+			& " | Etat: " & _e
+			& " | Pays: " & _pa
+			& " | Dept: " & _d
 		displayFolder: UX
 		lineageTag: ux-contexte-filtres-001
 
@@ -779,9 +783,7 @@ table _Mesures
 					),
 					T_Activite_M365[DateDerniereActivation]
 				)
-			VAR _dateAuthentification = MAX(T_Utilisateurs_Dim[LastSignIn])
-			VAR _dateFinale =
-				COALESCE(_dateActiviteReelle, _dateActivation, _dateAuthentification)
+			VAR _dateFinale = COALESCE(_dateActiviteReelle, _dateActivation)
 			RETURN
 			IF(ISBLANK(_dateFinale), "-", FORMAT(_dateFinale, "yyyy-MM-dd"))
 		displayFolder: Detail Utilisateur
