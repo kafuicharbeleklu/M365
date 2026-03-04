@@ -1,144 +1,144 @@
 {
-    "$schema":  "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
-    "name":  "dt_back_btn_001",
-    "position":  {
-                     "x":  300,
-                     "y":  18,
-                     "z":  10000,
-                     "height":  40,
-                     "width":  165
-                 },
-    "visual":  {
-                   "visualType":  "actionButton",
-                   "objects":  {
-                                   "icon":  [
-                                                {
-                                                    "properties":  {
-                                                                       "shapeType":  {
-                                                                                         "expr":  {
-                                                                                                      "Literal":  {
-                                                                                                                      "Value":  "\u0027leftArrow\u0027"
-                                                                                                                  }
-                                                                                                  }
-                                                                                     }
-                                                                   },
-                                                    "selector":  {
-                                                                     "id":  "default"
-                                                                 }
-                                                }
-                                            ],
-                                   "text":  [
-                                                {
-                                                    "properties":  {
-                                                                       "show":  {
-                                                                                    "expr":  {
-                                                                                                 "Literal":  {
-                                                                                                                 "Value":  "true"
-                                                                                                             }
-                                                                                             }
-                                                                                }
-                                                                   }
-                                                },
-                                                {
-                                                    "properties":  {
-                                                                       "text":  {
-                                                                                    "expr":  {
-                                                                                                 "Literal":  {
-                                                                                                                 "Value":  "\u0027Retour\u0027"
-                                                                                                             }
-                                                                                             }
-                                                                                },
-                                                                       "fontSize":  {
-                                                                                        "expr":  {
-                                                                                                     "Literal":  {
-                                                                                                                     "Value":  "\u002710pt\u0027"
-                                                                                                                 }
-                                                                                                 }
-                                                                                    },
-                                                                       "bold":  {
-                                                                                    "expr":  {
-                                                                                                 "Literal":  {
-                                                                                                                 "Value":  "true"
-                                                                                                             }
-                                                                                             }
-                                                                                }
-                                                                   },
-                                                    "selector":  {
-                                                                     "id":  "default"
-                                                                 }
-                                                }
-                                            ],
-                                   "fill":  [
-                                                {
-                                                    "properties":  {
-                                                                       "show":  {
-                                                                                    "expr":  {
-                                                                                                 "Literal":  {
-                                                                                                                 "Value":  "true"
-                                                                                                             }
-                                                                                             }
-                                                                                }
-                                                                   }
-                                                },
-                                                {
-                                                    "properties":  {
-                                                                       "fillColor":  {
-                                                                                         "solid":  {
-                                                                                                       "color":  {
-                                                                                                                     "expr":  {
-                                                                                                                                  "Literal":  {
-                                                                                                                                                  "Value":  "\u0027#F8D648\u0027"
-                                                                                                                                              }
-                                                                                                                              }
-                                                                                                                 }
-                                                                                                   }
-                                                                                     }
-                                                                   },
-                                                    "selector":  {
-                                                                     "id":  "default"
-                                                                 }
-                                                },
-                                                {
-                                                    "properties":  {
-                                                                       "fillColor":  {
-                                                                                         "solid":  {
-                                                                                                       "color":  {
-                                                                                                                     "expr":  {
-                                                                                                                                  "Literal":  {
-                                                                                                                                                  "Value":  "\u0027#F2C94C\u0027"
-                                                                                                                                              }
-                                                                                                                              }
-                                                                                                                 }
-                                                                                                   }
-                                                                                     }
-                                                                   },
-                                                    "selector":  {
-                                                                     "id":  "hover"
-                                                                 }
-                                                }
-                                            ]
-                               },
-                   "visualContainerObjects":  {
-                                                  "visualLink":  [
-                                                                     {
-                                                                         "properties":  {
-                                                                                            "show":  {
-                                                                                                         "expr":  {
-                                                                                                                      "Literal":  {
-                                                                                                                                      "Value":  "true"
-                                                                                                                                  }
-                                                                                                                  }
-                                                                                                     },
-                                                                                            "type":  {
-                                                                                                         "expr":  {
-                                                                                                                      "Literal":  {
-                                                                                                                                      "Value":  "\u0027Back\u0027"
-                                                                                                                                  }
-                                                                                                                  }
-                                                                                                     }
-                                                                                        }
-                                                                     }
-                                                                 ]
-                                              }
-               }
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "dt_back_btn_001",
+  "position": {
+    "x": 120,
+    "y": 20,
+    "z": 10000,
+    "height": 36,
+    "width": 160
+  },
+  "visual": {
+    "visualType": "actionButton",
+    "objects": {
+      "icon": [
+        {
+          "properties": {
+            "shapeType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'leftArrow'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "text": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Retour'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "'12pt'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "fill": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F8D648'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F2C94C'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "hover"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "visualLink": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Back'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
 }

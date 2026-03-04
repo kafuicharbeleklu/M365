@@ -21,7 +21,22 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "Drillthrough"
+        "howCreated": "Drillthrough",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "requireSingleSelect": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
       },
       {
         "name": "8f8517e2aa56d003ba31",
@@ -37,7 +52,22 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "Drillthrough"
+        "howCreated": "Drillthrough",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "requireSingleSelect": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
       },
       {
         "name": "dde0e38db38ba2c7222d",
@@ -53,7 +83,22 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "Drillthrough"
+        "howCreated": "Drillthrough",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "requireSingleSelect": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
       },
       {
         "name": "ce1bb6fa7e36522ca6b1",
@@ -69,7 +114,22 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "Drillthrough"
+        "howCreated": "Drillthrough",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "requireSingleSelect": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
       },
       {
         "name": "af86b702c8710a50d058",
@@ -85,7 +145,22 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "Drillthrough"
+        "howCreated": "Drillthrough",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "requireSingleSelect": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
       },
       {
         "name": "2ce1a2aeb57c1b90bc50",
@@ -101,7 +176,22 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "Drillthrough"
+        "howCreated": "Drillthrough",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "requireSingleSelect": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
       },
       {
         "name": "1e1df694051e5b01c7e9",
@@ -117,7 +207,22 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "Drillthrough"
+        "howCreated": "Drillthrough",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "requireSingleSelect": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
       },
       {
         "name": "9b31e1a008ea2595e648",
@@ -188,107 +293,8 @@
   },
   "pageBinding": {
     "name": "2c3547617e4a080a0e46",
-    "type": "Drillthrough",
-    "parameters": [
-      {
-        "name": "c3993f8367c84b053070",
-        "boundFilter": "1e1df694051e5b01c7e9",
-        "fieldExpr": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "T_Utilisateurs_Dim"
-              }
-            },
-            "Property": "DisplayName"
-          }
-        }
-      },
-      {
-        "name": "218cef54e45c78090927",
-        "boundFilter": "2ce1a2aeb57c1b90bc50",
-        "fieldExpr": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "T_Utilisateurs_Dim"
-              }
-            },
-            "Property": "UserPrincipalName"
-          }
-        }
-      },
-      {
-        "name": "ddca39feb790b551e368",
-        "boundFilter": "af86b702c8710a50d058",
-        "fieldExpr": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "T_Utilisateurs_Dim"
-              }
-            },
-            "Property": "CountryOrRegion"
-          }
-        }
-      },
-      {
-        "name": "aaa11776828b8d7d11a0",
-        "boundFilter": "ce1bb6fa7e36522ca6b1",
-        "fieldExpr": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "T_Utilisateurs_Dim"
-              }
-            },
-            "Property": "Statut AD"
-          }
-        }
-      },
-      {
-        "name": "320812e40bc23ca0e803",
-        "boundFilter": "dde0e38db38ba2c7222d",
-        "fieldExpr": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "T_Utilisateurs_Dim"
-              }
-            },
-            "Property": "EtatActivite"
-          }
-        }
-      },
-      {
-        "name": "d710a275d110464224cb",
-        "boundFilter": "8f8517e2aa56d003ba31",
-        "fieldExpr": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "T_Utilisateurs_Dim"
-              }
-            },
-            "Property": "LastSignIn"
-          }
-        }
-      },
-      {
-        "name": "7adbb19a55d97742ba7c",
-        "boundFilter": "c152380581cc02b60416",
-        "fieldExpr": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "T_Produits_Dim"
-              }
-            },
-            "Property": "NomProduit"
-          }
-        }
-      }
-    ]
+    "type": "Default",
+    "parameters": []
   },
   "objects": {
     "background": [

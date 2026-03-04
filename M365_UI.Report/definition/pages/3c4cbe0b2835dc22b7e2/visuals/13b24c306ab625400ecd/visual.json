@@ -1,216 +1,216 @@
 {
-    "$schema":  "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
-    "name":  "13b24c306ab625400ecd",
-    "position":  {
-                     "x":  300,
-                     "y":  546,
-                     "z":  16000,
-                     "height":  112,
-                     "width":  215,
-                     "tabOrder":  16000
-                 },
-    "visual":  {
-                   "visualType":  "slicer",
-                   "query":  {
-                                 "queryState":  {
-                                                    "Values":  {
-                                                                   "projections":  [
-                                                                                       {
-                                                                                           "field":  {
-                                                                                                         "Column":  {
-                                                                                                                        "Expression":  {
-                                                                                                                                           "SourceRef":  {
-                                                                                                                                                             "Entity":  "T_Utilisateurs_Dim"
-                                                                                                                                                         }
-                                                                                                                                       },
-                                                                                                                        "Property":  "TypeCompte"
-                                                                                                                    }
-                                                                                                     },
-                                                                                           "queryRef":  "T_Utilisateurs_Dim.TypeCompte",
-                                                                                           "nativeQueryRef":  "TypeCompte",
-                                                                                           "active":  true
-                                                                                       }
-                                                                                   ]
-                                                               }
-                                                }
-                             },
-                   "objects":  {
-                                   "header":  [
-                                                  {
-                                                      "properties":  {
-                                                                         "show":  {
-                                                                                      "expr":  {
-                                                                                                   "Literal":  {
-                                                                                                                   "Value":  "true"
-                                                                                                               }
-                                                                                               }
-                                                                                  },
-                                                                         "textSize":  {
-                                                                                          "expr":  {
-                                                                                                       "Literal":  {
-                                                                                                                       "Value":  "11D"
-                                                                                                                   }
-                                                                                                   }
-                                                                                      }
-                                                                     }
-                                                  }
-                                              ],
-                                   "items":  [
-                                                 {
-                                                     "properties":  {
-                                                                        "textSize":  {
-                                                                                         "expr":  {
-                                                                                                      "Literal":  {
-                                                                                                                      "Value":  "11D"
-                                                                                                                  }
-                                                                                                  }
-                                                                                     }
-                                                                    }
-                                                 }
-                                             ],
-                                   "data":  [
-                                                {
-                                                    "properties":  {
-                                                                       "mode":  {
-                                                                                    "expr":  {
-                                                                                                 "Literal":  {
-                                                                                                                 "Value":  "\u0027Basic\u0027"
-                                                                                                             }
-                                                                                             }
-                                                                                }
-                                                                   }
-                                                }
-                                            ],
-                                   "general":  [
-                                                   {
-                                                       "properties":  {
-                                                                          "orientation":  {
-                                                                                              "expr":  {
-                                                                                                           "Literal":  {
-                                                                                                                           "Value":  "0D"
-                                                                                                                       }
-                                                                                                       }
-                                                                                          }
-                                                                      }
-                                                   }
-                                               ]
-                               },
-                   "visualContainerObjects":  {
-                                                  "title":  [
-                                                                {
-                                                                    "properties":  {
-                                                                                       "titleWrap":  {
-                                                                                                         "expr":  {
-                                                                                                                      "Literal":  {
-                                                                                                                                      "Value":  "true"
-                                                                                                                                  }
-                                                                                                                  }
-                                                                                                     }
-                                                                                   }
-                                                                }
-                                                            ],
-                                                  "background":  [
-                                                                     {
-                                                                         "properties":  {
-                                                                                            "show":  {
-                                                                                                         "expr":  {
-                                                                                                                      "Literal":  {
-                                                                                                                                      "Value":  "true"
-                                                                                                                                  }
-                                                                                                                  }
-                                                                                                     },
-                                                                                            "color":  {
-                                                                                                          "solid":  {
-                                                                                                                        "color":  {
-                                                                                                                                      "expr":  {
-                                                                                                                                                   "ThemeDataColor":  {
-                                                                                                                                                                          "ColorId":  0,
-                                                                                                                                                                          "Percent":  0
-                                                                                                                                                                      }
-                                                                                                                                               }
-                                                                                                                                  }
-                                                                                                                    }
-                                                                                                      },
-                                                                                            "transparency":  {
-                                                                                                                 "expr":  {
-                                                                                                                              "Literal":  {
-                                                                                                                                              "Value":  "0D"
-                                                                                                                                          }
-                                                                                                                          }
-                                                                                                             }
-                                                                                        }
-                                                                     }
-                                                                 ],
-                                                  "border":  [
-                                                                 {
-                                                                     "properties":  {
-                                                                                        "show":  {
-                                                                                                     "expr":  {
-                                                                                                                  "Literal":  {
-                                                                                                                                  "Value":  "true"
-                                                                                                                              }
-                                                                                                              }
-                                                                                                 },
-                                                                                        "color":  {
-                                                                                                      "solid":  {
-                                                                                                                    "color":  {
-                                                                                                                                  "expr":  {
-                                                                                                                                               "ThemeDataColor":  {
-                                                                                                                                                                      "ColorId":  0,
-                                                                                                                                                                      "Percent":  -0.1
-                                                                                                                                                                  }
-                                                                                                                                           }
-                                                                                                                              }
-                                                                                                                }
-                                                                                                  },
-                                                                                        "radius":  {
-                                                                                                       "expr":  {
-                                                                                                                    "Literal":  {
-                                                                                                                                    "Value":  "10D"
-                                                                                                                                }
-                                                                                                                }
-                                                                                                   },
-                                                                                        "width":  {
-                                                                                                      "expr":  {
-                                                                                                                   "Literal":  {
-                                                                                                                                   "Value":  "1D"
-                                                                                                                               }
-                                                                                                               }
-                                                                                                  }
-                                                                                    }
-                                                                 }
-                                                             ],
-                                                  "dropShadow":  [
-                                                                     {
-                                                                         "properties":  {
-                                                                                            "show":  {
-                                                                                                         "expr":  {
-                                                                                                                      "Literal":  {
-                                                                                                                                      "Value":  "true"
-                                                                                                                                  }
-                                                                                                                  }
-                                                                                                     },
-                                                                                            "color":  {
-                                                                                                          "solid":  {
-                                                                                                                        "color":  {
-                                                                                                                                      "expr":  {
-                                                                                                                                                   "ThemeDataColor":  {
-                                                                                                                                                                          "ColorId":  0,
-                                                                                                                                                                          "Percent":  -0.2
-                                                                                                                                                                      }
-                                                                                                                                               }
-                                                                                                                                  }
-                                                                                                                    }
-                                                                                                      }
-                                                                                        }
-                                                                     }
-                                                                 ]
-                                              },
-                   "syncGroup":  {
-                                     "groupName":  "TypeCompte",
-                                     "fieldChanges":  true,
-                                     "filterChanges":  true
-                                 },
-                   "drillFilterOtherVisuals":  true
-               }
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "13b24c306ab625400ecd",
+  "position": {
+    "x": 300,
+    "y": 524,
+    "z": 15000,
+    "height": 96,
+    "width": 220,
+    "tabOrder": 15000
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Utilisateurs_Dim"
+                    }
+                  },
+                  "Property": "TypeCompte"
+                }
+              },
+              "queryRef": "T_Utilisateurs_Dim.TypeCompte",
+              "nativeQueryRef": "TypeCompte",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "items": [
+        {
+          "properties": {
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Basic'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "orientation": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "syncGroup": {
+      "groupName": "TypeCompte",
+      "fieldChanges": true,
+      "filterChanges": true
+    },
+    "drillFilterOtherVisuals": true
+  }
 }

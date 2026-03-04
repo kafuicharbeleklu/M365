@@ -88,9 +88,12 @@ table T_Utilisateurs_Dim
 
 	column TypeCompte = ```
 			
-			VAR Nom = LOWER([DisplayName])
-			VAR Email = LOWER([UserPrincipalName])
+			// Protection contre les valeurs nulles pour eviter les (Blank)
+			VAR Nom = LOWER(COALESCE([DisplayName], ""))
+			VAR Email = LOWER(COALESCE([UserPrincipalName], ""))
+			VAR _estVide = ISBLANK([DisplayName]) && ISBLANK([UserPrincipalName])
 			RETURN
+			IF(_estVide, "Non defini",
 			SWITCH(
 			    TRUE(),
 			
@@ -284,7 +287,7 @@ table T_Utilisateurs_Dim
 			    // PAR DÉFAUT : UTILISATEUR HUMAIN
 			    // ═══════════════════════════════════════════════════════════════════
 			    "Utilisateur"
-			)
+			))
 			```
 		lineageTag: 4d34890f-8b49-437f-83f2-a2540bc09908
 		summarizeBy: none
@@ -311,7 +314,7 @@ table T_Utilisateurs_Dim
 			RETURN
 			IF(
 			    EstTechnique || EstDesactive,
-			    BLANK(),
+			    "Exclu",	// Remplace BLANK() par une valeur explicite pour eviter les (Blank) dans les filtres
 			    IF(
 			        NOT(ISBLANK(CategorieM365)),
 			        // Nuance : si M365 dit 'Jamais Connecté' mais Azure AD a une connexion
@@ -334,7 +337,14 @@ table T_Utilisateurs_Dim
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Statut AD' = IF('T_Utilisateurs_Dim'[AccountEnabled] = TRUE(), "Activé", "Désactivé")
+	column 'Statut AD' =
+			// Gestion explicite des 3 cas possibles : TRUE, FALSE, et NULL
+			SWITCH(
+			    TRUE(),
+			    'T_Utilisateurs_Dim'[AccountEnabled] = TRUE(), "Activé",
+			    'T_Utilisateurs_Dim'[AccountEnabled] = FALSE(), "Désactivé",
+			    "Non synchronisé"	// AccountEnabled est NULL dans Azure AD
+			)
 		lineageTag: b8478b27-741a-46e9-851c-080c3498dfef
 		summarizeBy: none
 
@@ -383,6 +393,21 @@ table T_Utilisateurs_Dim
 			||
 			T_Utilisateurs_Dim[Statut AD] = "Désactivé"
 		lineageTag: iscible-calc-col-0001-neemba
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisplayNameAffiche =
+			
+			VAR _nom = TRIM(COALESCE('T_Utilisateurs_Dim'[DisplayName], ""))
+			VAR _upn = TRIM(COALESCE('T_Utilisateurs_Dim'[UserPrincipalName], ""))
+			RETURN
+			    IF(
+			        _nom <> "",
+			        _nom,
+			        IF(_upn <> "", _upn, "(Sans nom)")
+			    )
+		lineageTag: a2be7a12-77bf-4582-bdb2-32a6e6b68334
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
@@ -555,5 +580,5 @@ table T_Utilisateurs_Dim
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
 

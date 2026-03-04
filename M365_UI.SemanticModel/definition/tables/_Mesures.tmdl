@@ -21,51 +21,16 @@ table _Mesures
 		formatString: 0
 		lineageTag: c93ab035-a7e9-4aa5-a9ef-73a571e4f218
 
-	measure DepassementCapacite =
-			VAR _stock = COALESCE([StockLicences], 0)
-			VAR _affectees = COALESCE([LicencesAffectees], 0)
-			RETURN
-			MAX(0, _affectees - _stock)
-		formatString: 0
-		lineageTag: 8f2559f8-3e06-4887-9bc7-f8013669d5c4
-
-	measure DepassementCapaciteFlag = IF([LicencesDisponibles] < 0, 1, 0)
-		formatString: 0
-		lineageTag: 6ec4004a-9dfa-4adf-9ff6-c5bb0212f94f
-
-	measure NiveauAlerteDisponibilite =
-			VAR _scopeProduit = ISINSCOPE(T_Produits_Dim[NomProduit])
-			VAR _stock = COALESCE([StockLicences], 0)
-			VAR _dispo = COALESCE([LicencesDisponibles], 0)
-			VAR _affectees = COALESCE([LicencesAffectees], 0)
-			VAR _ratioDispo = DIVIDE(_dispo, _stock, 0)
-			RETURN
-			IF(
-				NOT(_scopeProduit),
-				0,
-				SWITCH(
-					TRUE(),
-					(_stock = 0 && _affectees > 0) || _dispo < 0, 4,
-					_ratioDispo <= 0.10, 3,
-					_ratioDispo <= 0.25, 2,
-					_ratioDispo <= 0.50, 1,
-					0
-				)
-			)
-		formatString: 0
-		lineageTag: 86209fa6-45f3-4b7b-887a-c645422f8cc9
-
 	measure NombreProduits = DISTINCTCOUNT(T_Produits_Dim[NomProduit])
 		formatString: 0
 		lineageTag: 050a0ed5-8639-4d4c-aaf7-17ffff7cd409
 
-	measure TauxUtilisation = ```
-			DIVIDE([LicencesAffectees], [StockLicences], 0)
-			
-			```
+	measure TauxUtilisation = DIVIDE([LicencesAffectees], [StockLicences], 0)
 		formatString: 0.00\ %;-0.00\ %;0.00\ %
 		lineageTag: 92b91ee1-e415-469f-affd-1fb7438e230e
 
+	/// Total comptes humains (TypeCompte = "Utilisateur"), toutes catégories.
+	/// Exclut les comptes techniques (EtatActivite = BLANK pour ceux-ci).
 	measure NbHumainsTotal =
 			COALESCE(
 				[NbHumainsActifs]
@@ -231,50 +196,56 @@ table _Mesures
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure NbPowerUsers =
-			CALCULATE(
-			    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
-			    T_Activite_M365[NiveauUtilisation] = "Power User"
+			COALESCE(
+				CALCULATE(
+				    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+				    T_Activite_M365[NiveauUtilisation] = "Power User"
+				),
+				0
 			)
 		formatString: 0
 		lineageTag: 02885d39-fb82-4eba-95ed-4cc37fc1a865
 
 	measure NbUtilisateursStandards =
-			CALCULATE(
-			    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
-			    T_Activite_M365[NiveauUtilisation] = "Utilisateur Standard"
+			COALESCE(
+				CALCULATE(
+				    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+				    T_Activite_M365[NiveauUtilisation] = "Utilisateur Standard"
+				),
+				0
 			)
 		formatString: 0
 		lineageTag: a21d4898-984c-4e2d-b784-4d6b93f0c5de
 
 	measure NbUtilisateursMinimaux =
-			CALCULATE(
-			    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
-			    T_Activite_M365[NiveauUtilisation] = "Utilisateur Minimal"
+			COALESCE(
+				CALCULATE(
+				    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+				    T_Activite_M365[NiveauUtilisation] = "Utilisateur Minimal"
+				),
+				0
 			)
 		formatString: 0
 		lineageTag: ae69a1bf-fcd2-401d-8f2d-edb2d20c4e8d
 
 	measure NbNonUtilisateurs =
-			CALCULATE(
-			    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
-			    T_Activite_M365[NiveauUtilisation] = "Non Utilisateur"
+			COALESCE(
+				CALCULATE(
+				    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+				    T_Activite_M365[NiveauUtilisation] = "Non Utilisateur"
+				),
+				0
 			)
 		formatString: 0
 		lineageTag: d64022fe-c2fe-4c45-a27e-88083d7f3f21
 
-	/// Score moyen d'utilisation par utilisateur distinct
+	/// Score moyen d'utilisation par utilisateur distinct (dernier rapport)
 	measure ScoreMoyenUtilisation =
 			VAR DerniereDate = MAX(T_Activite_M365[DateRapport])
 			RETURN
-			AVERAGEX(
-			    CALCULATETABLE(
-			        VALUES(T_Activite_M365[UserPrincipalName]),
-			        T_Activite_M365[DateRapport] = DerniereDate
-			    ),
-			    CALCULATE(
-			        AVERAGE(T_Activite_M365[ScoreUtilisation]),
-			        T_Activite_M365[DateRapport] = DerniereDate
-			    )
+			CALCULATE(
+			    AVERAGE(T_Activite_M365[ScoreUtilisation]),
+			    T_Activite_M365[DateRapport] = DerniereDate
 			)
 		formatString: 0.00
 		lineageTag: 130df3ab-7397-4e21-8f74-58940cbb6f92
@@ -558,6 +529,40 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
+	measure DepassementCapacite =
+			VAR _stock = COALESCE([StockLicences], 0)
+			VAR _affectees = COALESCE([LicencesAffectees], 0)
+			RETURN
+			MAX(0, _affectees - _stock)
+		formatString: 0
+		lineageTag: 8f2559f8-3e06-4887-9bc7-f8013669d5c4
+
+	measure DepassementCapaciteFlag = IF([LicencesDisponibles] < 0, 1, 0)
+		formatString: 0
+		lineageTag: 6ec4004a-9dfa-4adf-9ff6-c5bb0212f94f
+
+	measure NiveauAlerteDisponibilite =
+			VAR _scopeProduit = ISINSCOPE(T_Produits_Dim[NomProduit])
+			VAR _stock = COALESCE([StockLicences], 0)
+			VAR _dispo = COALESCE([LicencesDisponibles], 0)
+			VAR _affectees = COALESCE([LicencesAffectees], 0)
+			VAR _ratioDispo = DIVIDE(_dispo, _stock, 0)
+			RETURN
+			IF(
+				NOT(_scopeProduit),
+				0,
+				SWITCH(
+					TRUE(),
+					(_stock = 0 && _affectees > 0) || _dispo < 0, 4,
+					_ratioDispo <= 0.10, 3,
+					_ratioDispo <= 0.25, 2,
+					_ratioDispo <= 0.50, 1,
+					0
+				)
+			)
+		formatString: 0
+		lineageTag: 86209fa6-45f3-4b7b-887a-c645422f8cc9
+
 	measure TT_ContexteKPI =
 			VAR _upn = SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName])
 			VAR _nomProduit = SELECTEDVALUE(T_Produits_Dim[NomProduit])
@@ -742,31 +747,56 @@ table _Mesures
 		annotation SummarizationSetBy = Automatic
 
 	measure DT_NiveauUtilisation =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _activiteUser =
+				FILTER(
+					ALL(T_Activite_M365),
+					LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+				)
+			VAR _dateRef =
+				MAXX(
+					FILTER(_activiteUser, NOT ISBLANK(T_Activite_M365[DateRapport])),
+					T_Activite_M365[DateRapport]
+				)
 			VAR _ligneRecente =
 				TOPN(
 					1,
-					T_Activite_M365,
-					T_Activite_M365[DateRapport], DESC,
-					T_Activite_M365[DateDerniereActivite], DESC
+					FILTER(_activiteUser, T_Activite_M365[DateRapport] = _dateRef),
+					T_Activite_M365[ScoreUtilisation], DESC,
+					T_Activite_M365[NbAppsUtilisees], DESC
 				)
+			VAR _score = COALESCE(MAXX(_ligneRecente, T_Activite_M365[ScoreUtilisation]), 0)
+			VAR _joursInactivite = MAXX(_ligneRecente, T_Activite_M365[JoursInactivite])
 			RETURN
-			COALESCE(MAXX(_ligneRecente, T_Activite_M365[NiveauUtilisation]), "-")
+				IF(
+					ISBLANK(_upnNorm),
+					"-",
+					SWITCH(
+						TRUE(),
+						ISBLANK(_dateRef), "Aucune donnee usage",
+						NOT ISBLANK(_joursInactivite) && _joursInactivite > 90, "Inactif >90j",
+						_score >= 7, "Intensif (7-10)",
+						_score >= 4, "Standard (4-6)",
+						_score >= 1, "Minimal (1-3)",
+						"Aucun usage (0)"
+					)
+				)
 		displayFolder: Detail Utilisateur
 		lineageTag: dt-niveau-utilisation-001
 
 		annotation SummarizationSetBy = Automatic
 
 	measure DT_DateDerniereActivite =
-			VAR _activiteSansProduit =
-				CALCULATETABLE(
-					T_Activite_M365,
-					REMOVEFILTERS(T_Produits_Dim),
-					REMOVEFILTERS(T_Affectations_Fact)
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _activiteUser =
+				FILTER(
+					ALL(T_Activite_M365),
+					LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
 				)
-			VAR _dateActiviteReelle =
+			VAR _dateActiviteApp =
 				MAXX(
 					FILTER(
-						_activiteSansProduit,
+						_activiteUser,
 						NOT ISBLANK(T_Activite_M365[DateDerniereActivite])
 							&& (
 								COALESCE(T_Activite_M365[NbAppsUtilisees], 0) > 0
@@ -775,32 +805,39 @@ table _Mesures
 					),
 					T_Activite_M365[DateDerniereActivite]
 				)
-			VAR _dateActivation =
-				MAXX(
-					FILTER(
-						_activiteSansProduit,
-						NOT ISBLANK(T_Activite_M365[DateDerniereActivation])
-					),
-					T_Activite_M365[DateDerniereActivation]
-				)
-			VAR _dateFinale = COALESCE(_dateActiviteReelle, _dateActivation)
 			RETURN
-			IF(ISBLANK(_dateFinale), "-", FORMAT(_dateFinale, "yyyy-MM-dd"))
+				IF(
+					ISBLANK(_upnNorm) || ISBLANK(_dateActiviteApp),
+					"-",
+					FORMAT(_dateActiviteApp, "yyyy-MM-dd")
+				)
 		displayFolder: Detail Utilisateur
 		lineageTag: dt-date-derniere-activite-001
 
 		annotation SummarizationSetBy = Automatic
 
 	measure DT_ScoreUtilisation =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _activiteUser =
+				FILTER(
+					ALL(T_Activite_M365),
+					LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+				)
+			VAR _dateRef =
+				MAXX(
+					FILTER(_activiteUser, NOT ISBLANK(T_Activite_M365[DateRapport])),
+					T_Activite_M365[DateRapport]
+				)
 			VAR _ligneRecente =
 				TOPN(
 					1,
-					T_Activite_M365,
-					T_Activite_M365[DateRapport], DESC,
-					T_Activite_M365[ScoreUtilisation], DESC
+					FILTER(_activiteUser, T_Activite_M365[DateRapport] = _dateRef),
+					T_Activite_M365[ScoreUtilisation], DESC,
+					T_Activite_M365[NbAppsUtilisees], DESC
 				)
+			VAR _score = MAXX(_ligneRecente, T_Activite_M365[ScoreUtilisation])
 			RETURN
-			COALESCE(MAXX(_ligneRecente, T_Activite_M365[ScoreUtilisation]), 0)
+				IF(ISBLANK(_upnNorm), 0, COALESCE(_score, 0))
 		formatString: 0
 		displayFolder: Detail Utilisateur
 		lineageTag: dt-score-utilisation-001
@@ -808,20 +845,99 @@ table _Mesures
 		annotation SummarizationSetBy = Automatic
 
 	measure DT_NbAppsUtilisees =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _activiteUser =
+				FILTER(
+					ALL(T_Activite_M365),
+					LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+				)
+			VAR _dateRef =
+				MAXX(
+					FILTER(_activiteUser, NOT ISBLANK(T_Activite_M365[DateRapport])),
+					T_Activite_M365[DateRapport]
+				)
 			VAR _ligneRecente =
 				TOPN(
 					1,
-					T_Activite_M365,
-					T_Activite_M365[DateRapport], DESC,
-					T_Activite_M365[NbAppsUtilisees], DESC
+					FILTER(_activiteUser, T_Activite_M365[DateRapport] = _dateRef),
+					T_Activite_M365[NbAppsUtilisees], DESC,
+					T_Activite_M365[ScoreUtilisation], DESC
 				)
+			VAR _nbApps = MAXX(_ligneRecente, T_Activite_M365[NbAppsUtilisees])
 			RETURN
-			COALESCE(MAXX(_ligneRecente, T_Activite_M365[NbAppsUtilisees]), 0)
+				IF(ISBLANK(_upnNorm), 0, COALESCE(_nbApps, 0))
 		formatString: 0
 		displayFolder: Detail Utilisateur
 		lineageTag: dt-nb-apps-utilisees-001
 
 		annotation SummarizationSetBy = Automatic
+
+	measure DT_UPN_Courant =
+			VAR _upnFromUser = SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName])
+			VAR _displayName = SELECTEDVALUE(T_Utilisateurs_Dim[DisplayName])
+			VAR _upnFromDisplay =
+				IF(
+					NOT ISBLANK(_displayName),
+					CALCULATE(
+						MIN(T_Utilisateurs_Dim[UserPrincipalName]),
+						FILTER(
+							ALL(T_Utilisateurs_Dim),
+							T_Utilisateurs_Dim[DisplayName] = _displayName
+						)
+					)
+				)
+			VAR _upnFromAffectation = SELECTEDVALUE(T_Affectations_Fact[UserPrincipalName])
+			VAR _upnFromActivite = SELECTEDVALUE(T_Activite_M365[UserPrincipalName])
+			VAR _upnFinal = COALESCE(_upnFromUser, _upnFromDisplay, _upnFromAffectation, _upnFromActivite)
+			RETURN
+				IF(ISBLANK(_upnFinal), BLANK(), LOWER(TRIM(_upnFinal)))
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-upn-courant-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_DateDerniereAuthentification =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _dateAuth =
+				MAXX(
+					FILTER(
+						ALL(T_Utilisateurs_Dim),
+						LOWER(TRIM(T_Utilisateurs_Dim[UserPrincipalName])) = _upnNorm
+					),
+					T_Utilisateurs_Dim[LastSignIn]
+				)
+			RETURN
+				IF(
+					ISBLANK(_upnNorm) || ISBLANK(_dateAuth),
+					"-",
+					FORMAT(_dateAuth, "yyyy-MM-dd HH:mm")
+				)
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-date-derniere-auth-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure NomUtilisateurAffiche =
+			VAR _nom = SELECTEDVALUE(T_Utilisateurs_Dim[DisplayNameAffiche])
+			VAR _upnDim = SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName])
+			VAR _upnFact = SELECTEDVALUE(T_Affectations_Fact[UserPrincipalName])
+			RETURN
+			COALESCE(_nom, _upnDim, _upnFact, "(Utilisateur non mappe)")
+		lineageTag: 00cd6ceb-8ead-4938-a716-3cc5ee00baf5
+
+	measure FlagLigneCompteDesactive =
+			VAR _upn =
+				COALESCE(
+					SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName]),
+					SELECTEDVALUE(T_Affectations_Fact[UserPrincipalName])
+				)
+			VAR _isDisabled =
+				COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[AccountEnabled]), TRUE()) = FALSE()
+			VAR _hasLicence = [LicencesAffectees] > 0
+			RETURN
+			IF(NOT ISBLANK(_upn) && _isDisabled && _hasLicence, 1, 0)
+		formatString: 0
+		lineageTag: 81b1022e-6396-4ac2-bdab-c6da8fc6e0d9
 
 	column 'Colonne 1'
 		dataType: string

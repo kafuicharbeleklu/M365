@@ -303,7 +303,11 @@ table T_Activite_M365
 				            // ═══════════════════════════════════════════════════════════
 				            // 7. TYPAGE DES COLONNES
 				            // ═══════════════════════════════════════════════════════════
-				            TransformBool = (x) => if x = "True" or x = "true" or x = true then true else false,
+				            TransformBool = (x) =>
+				                let
+				                    txt = Text.Upper(Text.Trim(Text.From(x)))
+				                in
+				                    if x = true or txt = "TRUE" or txt = "1" or txt = "YES" then true else false,
 				            
 				            TypeModifie = Table.TransformColumnTypes(ColonnesSelectionnees, {
 				                {"DateRapport", type date},

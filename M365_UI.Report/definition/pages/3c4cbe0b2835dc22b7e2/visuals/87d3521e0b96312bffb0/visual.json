@@ -1,537 +1,499 @@
 {
-    "$schema":  "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
-    "name":  "87d3521e0b96312bffb0",
-    "position":  {
-                     "x":  770,
-                     "y":  338,
-                     "z":  3000,
-                     "height":  662,
-                     "width":  1130,
-                     "tabOrder":  3000
-                 },
-    "visual":  {
-                   "visualType":  "tableEx",
-                   "query":  {
-                                 "queryState":  {
-                                                    "Values":  {
-                                                                   "projections":  [
-                                                                                       {
-                                                                                           "field":  {
-                                                                                                         "Column":  {
-                                                                                                                        "Expression":  {
-                                                                                                                                           "SourceRef":  {
-                                                                                                                                                             "Entity":  "T_Utilisateurs_Dim"
-                                                                                                                                                         }
-                                                                                                                                       },
-                                                                                                                        "Property":  "DisplayName"
-                                                                                                                    }
-                                                                                                     },
-                                                                                           "queryRef":  "T_Utilisateurs_Dim.DisplayName",
-                                                                                           "nativeQueryRef":  "DisplayName"
-                                                                                       },
-                                                                                       {
-                                                                                           "field":  {
-                                                                                                         "Column":  {
-                                                                                                                        "Expression":  {
-                                                                                                                                           "SourceRef":  {
-                                                                                                                                                             "Entity":  "T_Utilisateurs_Dim"
-                                                                                                                                                         }
-                                                                                                                                       },
-                                                                                                                        "Property":  "UserPrincipalName"
-                                                                                                                    }
-                                                                                                     },
-                                                                                           "queryRef":  "T_Utilisateurs_Dim.UserPrincipalName",
-                                                                                           "nativeQueryRef":  "UserPrincipalName"
-                                                                                       },
-                                                                                       {
-                                                                                           "field":  {
-                                                                                                         "Column":  {
-                                                                                                                        "Expression":  {
-                                                                                                                                           "SourceRef":  {
-                                                                                                                                                             "Entity":  "T_Utilisateurs_Dim"
-                                                                                                                                                         }
-                                                                                                                                       },
-                                                                                                                        "Property":  "CountryOrRegion"
-                                                                                                                    }
-                                                                                                     },
-                                                                                           "queryRef":  "T_Utilisateurs_Dim.CountryOrRegion",
-                                                                                           "nativeQueryRef":  "CountryOrRegion"
-                                                                                       },
-                                                                                       {
-                                                                                           "field":  {
-                                                                                                         "Column":  {
-                                                                                                                        "Expression":  {
-                                                                                                                                           "SourceRef":  {
-                                                                                                                                                             "Entity":  "T_Utilisateurs_Dim"
-                                                                                                                                                         }
-                                                                                                                                       },
-                                                                                                                        "Property":  "Statut AD"
-                                                                                                                    }
-                                                                                                     },
-                                                                                           "queryRef":  "T_Utilisateurs_Dim.Statut AD",
-                                                                                           "nativeQueryRef":  "Statut AD"
-                                                                                       },
-                                                                                       {
-                                                                                           "field":  {
-                                                                                                         "Column":  {
-                                                                                                                        "Expression":  {
-                                                                                                                                           "SourceRef":  {
-                                                                                                                                                             "Entity":  "T_Utilisateurs_Dim"
-                                                                                                                                                         }
-                                                                                                                                       },
-                                                                                                                        "Property":  "EtatActivite"
-                                                                                                                    }
-                                                                                                     },
-                                                                                           "queryRef":  "T_Utilisateurs_Dim.EtatActivite",
-                                                                                           "nativeQueryRef":  "EtatActivite"
-                                                                                       },
-                                                                                       {
-                                                                                           "field":  {
-                                                                                                         "Column":  {
-                                                                                                                        "Expression":  {
-                                                                                                                                           "SourceRef":  {
-                                                                                                                                                             "Entity":  "T_Utilisateurs_Dim"
-                                                                                                                                                         }
-                                                                                                                                       },
-                                                                                                                        "Property":  "LastSignIn"
-                                                                                                                    }
-                                                                                                     },
-                                                                                           "queryRef":  "T_Utilisateurs_Dim.LastSignIn",
-                                                                                           "nativeQueryRef":  "LastSignIn"
-                                                                                       },
-                                                                                       {
-                                                                                           "field":  {
-                                                                                                         "Column":  {
-                                                                                                                        "Expression":  {
-                                                                                                                                           "SourceRef":  {
-                                                                                                                                                             "Entity":  "T_Affectations_Fact"
-                                                                                                                                                         }
-                                                                                                                                       },
-                                                                                                                        "Property":  "NomProduit"
-                                                                                                                    }
-                                                                                                     },
-                                                                                           "queryRef":  "T_Affectations_Fact.NomProduit",
-                                                                                           "nativeQueryRef":  "NomProduit"
-                                                                                       }
-                                                                                   ],
-                                                                   "showAll":  false
-                                                               }
-                                                },
-                                 "sortDefinition":  {
-                                                        "sort":  [
-                                                                     {
-                                                                         "field":  {
-                                                                                       "Column":  {
-                                                                                                      "Expression":  {
-                                                                                                                         "SourceRef":  {
-                                                                                                                                           "Entity":  "T_Affectations_Fact"
-                                                                                                                                       }
-                                                                                                                     },
-                                                                                                      "Property":  "NomProduit"
-                                                                                                  }
-                                                                                   },
-                                                                         "direction":  "Descending"
-                                                                     }
-                                                                 ]
-                                                    }
-                             },
-                   "objects":  {
-                                   "values":  [
-                                                  {
-                                                      "properties":  {
-                                                                         "fontSize":  {
-                                                                                          "expr":  {
-                                                                                                       "Literal":  {
-                                                                                                                       "Value":  "11D"
-                                                                                                                   }
-                                                                                                   }
-                                                                                      }
-                                                                     }
-                                                  },
-                                                  {
-                                                      "properties":  {
-                                                                         "backColor":  {
-                                                                                           "solid":  {
-                                                                                                         "color":  {
-                                                                                                                       "expr":  {
-                                                                                                                                    "Conditional":  {
-                                                                                                                                                        "Cases":  [
-                                                                                                                                                                      {
-                                                                                                                                                                          "Condition":  {
-                                                                                                                                                                                            "Comparison":  {
-                                                                                                                                                                                                               "ComparisonKind":  2,
-                                                                                                                                                                                                               "Left":  {
-                                                                                                                                                                                                                            "Measure":  {
-                                                                                                                                                                                                                                            "Expression":  {
-                                                                                                                                                                                                                                                               "SourceRef":  {
-                                                                                                                                                                                                                                                                                 "Entity":  "_Mesures"
-                                                                                                                                                                                                                                                                             }
-                                                                                                                                                                                                                                                           },
-                                                                                                                                                                                                                                            "Property":  "LicencesComptesBloques"
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        },
-                                                                                                                                                                                                               "Right":  {
-                                                                                                                                                                                                                             "Literal":  {
-                                                                                                                                                                                                                                             "Value":  "1D"
-                                                                                                                                                                                                                                         }
-                                                                                                                                                                                                                         }
-                                                                                                                                                                                                           }
-                                                                                                                                                                                        },
-                                                                                                                                                                          "Value":  {
-                                                                                                                                                                                        "Literal":  {
-                                                                                                                                                                                                        "Value":  "\u0027#D64550\u0027"
-                                                                                                                                                                                                    }
-                                                                                                                                                                                    }
-                                                                                                                                                                      }
-                                                                                                                                                                  ]
-                                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                   }
-                                                                                                     }
-                                                                                       },
-                                                                         "fontColor":  {
-                                                                                           "solid":  {
-                                                                                                         "color":  {
-                                                                                                                       "expr":  {
-                                                                                                                                    "Conditional":  {
-                                                                                                                                                        "Cases":  [
-                                                                                                                                                                      {
-                                                                                                                                                                          "Condition":  {
-                                                                                                                                                                                            "Comparison":  {
-                                                                                                                                                                                                               "ComparisonKind":  2,
-                                                                                                                                                                                                               "Left":  {
-                                                                                                                                                                                                                            "Measure":  {
-                                                                                                                                                                                                                                            "Expression":  {
-                                                                                                                                                                                                                                                               "SourceRef":  {
-                                                                                                                                                                                                                                                                                 "Entity":  "_Mesures"
-                                                                                                                                                                                                                                                                             }
-                                                                                                                                                                                                                                                           },
-                                                                                                                                                                                                                                            "Property":  "LicencesComptesBloques"
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        },
-                                                                                                                                                                                                               "Right":  {
-                                                                                                                                                                                                                             "Literal":  {
-                                                                                                                                                                                                                                             "Value":  "1D"
-                                                                                                                                                                                                                                         }
-                                                                                                                                                                                                                         }
-                                                                                                                                                                                                           }
-                                                                                                                                                                                        },
-                                                                                                                                                                          "Value":  {
-                                                                                                                                                                                        "Literal":  {
-                                                                                                                                                                                                        "Value":  "\u0027#DEEFFF\u0027"
-                                                                                                                                                                                                    }
-                                                                                                                                                                                    }
-                                                                                                                                                                      }
-                                                                                                                                                                  ]
-                                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                   }
-                                                                                                     }
-                                                                                       }
-                                                                     },
-                                                      "selector":  {
-                                                                       "data":  [
-                                                                                    {
-                                                                                        "dataViewWildcard":  {
-                                                                                                                 "matchingOption":  1
-                                                                                                             }
-                                                                                    }
-                                                                                ],
-                                                                       "metadata":  "T_Utilisateurs_Dim.DisplayName"
-                                                                   }
-                                                  }
-                                              ],
-                                   "columnHeaders":  [
-                                                         {
-                                                             "properties":  {
-                                                                                "fontSize":  {
-                                                                                                 "expr":  {
-                                                                                                              "Literal":  {
-                                                                                                                              "Value":  "11D"
-                                                                                                                          }
-                                                                                                          }
-                                                                                             },
-                                                                                "bold":  {
-                                                                                             "expr":  {
-                                                                                                          "Literal":  {
-                                                                                                                          "Value":  "true"
-                                                                                                                      }
-                                                                                                      }
-                                                                                         },
-                                                                                "autoSizeColumnWidth":  {
-                                                                                                            "expr":  {
-                                                                                                                         "Literal":  {
-                                                                                                                                         "Value":  "true"
-                                                                                                                                     }
-                                                                                                                     }
-                                                                                                        }
-                                                                            }
-                                                         }
-                                                     ],
-                                   "total":  [
-                                                 {
-                                                     "properties":  {
-                                                                        "totals":  {
-                                                                                       "expr":  {
-                                                                                                    "Literal":  {
-                                                                                                                    "Value":  "true"
-                                                                                                                }
-                                                                                                }
-                                                                                   }
-                                                                    }
-                                                 }
-                                             ],
-                                   "columnFormatting":  [
-                                                            {
-                                                                "properties":  {
-                                                                                   "styleTotal":  {
-                                                                                                      "expr":  {
-                                                                                                                   "Literal":  {
-                                                                                                                                   "Value":  "false"
-                                                                                                                               }
-                                                                                                               }
-                                                                                                  },
-                                                                                   "styleHeader":  {
-                                                                                                       "expr":  {
-                                                                                                                    "Literal":  {
-                                                                                                                                    "Value":  "false"
-                                                                                                                                }
-                                                                                                                }
-                                                                                                   },
-                                                                                   "styleValues":  {
-                                                                                                       "expr":  {
-                                                                                                                    "Literal":  {
-                                                                                                                                    "Value":  "true"
-                                                                                                                                }
-                                                                                                                }
-                                                                                                   }
-                                                                               },
-                                                                "selector":  {
-                                                                                 "metadata":  "T_Utilisateurs_Dim.DisplayName"
-                                                                             }
-                                                            }
-                                                        ],
-                                   "grid":  [
-                                                {
-                                                    "properties":  {
-                                                                       "gridVertical":  {
-                                                                                            "expr":  {
-                                                                                                         "Literal":  {
-                                                                                                                         "Value":  "false"
-                                                                                                                     }
-                                                                                                     }
-                                                                                        }
-                                                                   }
-                                                }
-                                            ]
-                               },
-                   "visualContainerObjects":  {
-                                                  "title":  [
-                                                                {
-                                                                    "properties":  {
-                                                                                       "show":  {
-                                                                                                    "expr":  {
-                                                                                                                 "Literal":  {
-                                                                                                                                 "Value":  "true"
-                                                                                                                             }
-                                                                                                             }
-                                                                                                },
-                                                                                       "titleWrap":  {
-                                                                                                         "expr":  {
-                                                                                                                      "Literal":  {
-                                                                                                                                      "Value":  "true"
-                                                                                                                                  }
-                                                                                                                  }
-                                                                                                     },
-                                                                                       "text":  {
-                                                                                                    "expr":  {
-                                                                                                                 "Literal":  {
-                                                                                                                                 "Value":  "\u0027Tableau utilisateurs et licences\u0027"
-                                                                                                                             }
-                                                                                                             }
-                                                                                                }
-                                                                                   }
-                                                                }
-                                                            ],
-                                                  "background":  [
-                                                                     {
-                                                                         "properties":  {
-                                                                                            "show":  {
-                                                                                                         "expr":  {
-                                                                                                                      "Literal":  {
-                                                                                                                                      "Value":  "true"
-                                                                                                                                  }
-                                                                                                                  }
-                                                                                                     },
-                                                                                            "color":  {
-                                                                                                          "solid":  {
-                                                                                                                        "color":  {
-                                                                                                                                      "expr":  {
-                                                                                                                                                   "ThemeDataColor":  {
-                                                                                                                                                                          "ColorId":  0,
-                                                                                                                                                                          "Percent":  0
-                                                                                                                                                                      }
-                                                                                                                                               }
-                                                                                                                                  }
-                                                                                                                    }
-                                                                                                      },
-                                                                                            "transparency":  {
-                                                                                                                 "expr":  {
-                                                                                                                              "Literal":  {
-                                                                                                                                              "Value":  "0D"
-                                                                                                                                          }
-                                                                                                                          }
-                                                                                                             }
-                                                                                        }
-                                                                     }
-                                                                 ],
-                                                  "border":  [
-                                                                 {
-                                                                     "properties":  {
-                                                                                        "show":  {
-                                                                                                     "expr":  {
-                                                                                                                  "Literal":  {
-                                                                                                                                  "Value":  "true"
-                                                                                                                              }
-                                                                                                              }
-                                                                                                 },
-                                                                                        "color":  {
-                                                                                                      "solid":  {
-                                                                                                                    "color":  {
-                                                                                                                                  "expr":  {
-                                                                                                                                               "ThemeDataColor":  {
-                                                                                                                                                                      "ColorId":  0,
-                                                                                                                                                                      "Percent":  -0.1
-                                                                                                                                                                  }
-                                                                                                                                           }
-                                                                                                                              }
-                                                                                                                }
-                                                                                                  },
-                                                                                        "radius":  {
-                                                                                                       "expr":  {
-                                                                                                                    "Literal":  {
-                                                                                                                                    "Value":  "10D"
-                                                                                                                                }
-                                                                                                                }
-                                                                                                   },
-                                                                                        "width":  {
-                                                                                                      "expr":  {
-                                                                                                                   "Literal":  {
-                                                                                                                                   "Value":  "1D"
-                                                                                                                               }
-                                                                                                               }
-                                                                                                  }
-                                                                                    }
-                                                                 }
-                                                             ],
-                                                  "dropShadow":  [
-                                                                     {
-                                                                         "properties":  {
-                                                                                            "show":  {
-                                                                                                         "expr":  {
-                                                                                                                      "Literal":  {
-                                                                                                                                      "Value":  "true"
-                                                                                                                                  }
-                                                                                                                  }
-                                                                                                     },
-                                                                                            "color":  {
-                                                                                                          "solid":  {
-                                                                                                                        "color":  {
-                                                                                                                                      "expr":  {
-                                                                                                                                                   "ThemeDataColor":  {
-                                                                                                                                                                          "ColorId":  0,
-                                                                                                                                                                          "Percent":  -0.2
-                                                                                                                                                                      }
-                                                                                                                                               }
-                                                                                                                                  }
-                                                                                                                    }
-                                                                                                      }
-                                                                                        }
-                                                                     }
-                                                                 ],
-                                                  "visualTooltip":  [
-                                                                        {
-                                                                            "properties":  {
-                                                                                               "show":  {
-                                                                                                            "expr":  {
-                                                                                                                         "Literal":  {
-                                                                                                                                         "Value":  "true"
-                                                                                                                                     }
-                                                                                                                     }
-                                                                                                        }
-                                                                                           }
-                                                                        }
-                                                                    ],
-                                                  "stylePreset":  [
-                                                                      {
-                                                                          "properties":  {
-                                                                                             "name":  {
-                                                                                                          "expr":  {
-                                                                                                                       "Literal":  {
-                                                                                                                                       "Value":  "\u0027Default\u0027"
-                                                                                                                                   }
-                                                                                                                   }
-                                                                                                      }
-                                                                                         }
-                                                                      }
-                                                                  ]
-                                              },
-                   "drillFilterOtherVisuals":  true
-               },
-    "filterConfig":  {
-                         "filters":  [
-                                         {
-                                             "name":  "94301ec4070304a97226",
-                                             "field":  {
-                                                           "Column":  {
-                                                                          "Expression":  {
-                                                                                             "SourceRef":  {
-                                                                                                               "Entity":  "T_Affectations_Fact"
-                                                                                                           }
-                                                                                         },
-                                                                          "Property":  "NomProduit"
-                                                                      }
-                                                       },
-                                             "type":  "Advanced",
-                                             "howCreated":  "User",
-                                             "filter":  {
-                                                            "Version":  2,
-                                                            "From":  [
-                                                                         {
-                                                                             "Name":  "a",
-                                                                             "Entity":  "T_Affectations_Fact"
-                                                                         }
-                                                                     ],
-                                                            "Where":  [
-                                                                          {
-                                                                              "Condition":  {
-                                                                                                "Not":  {
-                                                                                                            "Expression":  {
-                                                                                                                               "Comparison":  {
-                                                                                                                                                  "ComparisonKind":  0,
-                                                                                                                                                  "Left":  {
-                                                                                                                                                               "Column":  {
-                                                                                                                                                                              "Expression":  {
-                                                                                                                                                                                                 "SourceRef":  {
-                                                                                                                                                                                                                   "Source":  "a"
-                                                                                                                                                                                                               }
-                                                                                                                                                                                             },
-                                                                                                                                                                              "Property":  "NomProduit"
-                                                                                                                                                                          }
-                                                                                                                                                           },
-                                                                                                                                                  "Right":  {
-                                                                                                                                                                "Literal":  {
-                                                                                                                                                                                "Value":  "null"
-                                                                                                                                                                            }
-                                                                                                                                                            }
-                                                                                                                                              }
-                                                                                                                           }
-                                                                                                        }
-                                                                                            }
-                                                                          }
-                                                                      ]
-                                                        }
-                                         }
-                                     ]
-                     }
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "87d3521e0b96312bffb0",
+  "position": {
+    "x": 776,
+    "y": 304,
+    "z": 3000,
+    "height": 756,
+    "width": 1128,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Mesures"
+                    }
+                  },
+                  "Property": "NomUtilisateurAffiche"
+                }
+              },
+              "queryRef": "_Mesures.NomUtilisateurAffiche",
+              "nativeQueryRef": "NomUtilisateurAffiche"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Utilisateurs_Dim"
+                    }
+                  },
+                  "Property": "UserPrincipalName"
+                }
+              },
+              "queryRef": "T_Utilisateurs_Dim.UserPrincipalName",
+              "nativeQueryRef": "UserPrincipalName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Utilisateurs_Dim"
+                    }
+                  },
+                  "Property": "CountryOrRegion"
+                }
+              },
+              "queryRef": "T_Utilisateurs_Dim.CountryOrRegion",
+              "nativeQueryRef": "CountryOrRegion"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Utilisateurs_Dim"
+                    }
+                  },
+                  "Property": "Statut AD"
+                }
+              },
+              "queryRef": "T_Utilisateurs_Dim.Statut AD",
+              "nativeQueryRef": "Statut AD"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Utilisateurs_Dim"
+                    }
+                  },
+                  "Property": "EtatActivite"
+                }
+              },
+              "queryRef": "T_Utilisateurs_Dim.EtatActivite",
+              "nativeQueryRef": "EtatActivite"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Utilisateurs_Dim"
+                    }
+                  },
+                  "Property": "LastSignIn"
+                }
+              },
+              "queryRef": "T_Utilisateurs_Dim.LastSignIn",
+              "nativeQueryRef": "LastSignIn"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Affectations_Fact"
+                    }
+                  },
+                  "Property": "NomProduit"
+                }
+              },
+              "queryRef": "T_Affectations_Fact.NomProduit",
+              "nativeQueryRef": "NomProduit"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "T_Utilisateurs_Dim"
+                  }
+                },
+                "Property": "UserPrincipalName"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Conditional": {
+                      "Cases": [
+                        {
+                          "Condition": {
+                            "Comparison": {
+                              "ComparisonKind": 2,
+                              "Left": {
+                                "Measure": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "_Mesures"
+                                    }
+                                  },
+                                  "Property": "FlagLigneCompteDesactive"
+                                }
+                              },
+                              "Right": {
+                                "Literal": {
+                                  "Value": "1D"
+                                }
+                              }
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#D64550'"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Conditional": {
+                      "Cases": [
+                        {
+                          "Condition": {
+                            "Comparison": {
+                              "ComparisonKind": 2,
+                              "Left": {
+                                "Measure": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "_Mesures"
+                                    }
+                                  },
+                                  "Property": "FlagLigneCompteDesactive"
+                                }
+                              },
+                              "Right": {
+                                "Literal": {
+                                  "Value": "1D"
+                                }
+                              }
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#DEEFFF'"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "_Mesures.NomUtilisateurAffiche"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "styleTotal": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "styleValues": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Mesures.NomUtilisateurAffiche"
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Tableau utilisateurs et licences'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Default'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "94301ec4070304a97226",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Affectations_Fact"
+              }
+            },
+            "Property": "NomProduit"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      }
+    ]
+  }
 }

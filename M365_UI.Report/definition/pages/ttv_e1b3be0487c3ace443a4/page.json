@@ -1,43 +1,41 @@
 {
-    "$schema":  "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
-    "name":  "ttv_e1b3be0487c3ace443a4",
-    "displayName":  "TT Licences Affectees",
-    "displayOption":  "FitToPage",
-    "height":  136,
-    "width":  308,
-    "type":  "Tooltip",
-    "visibility":  "HiddenInViewMode",
-    "pageBinding":  {
-                        "name":  "ttv_e1b3be0487c3ace443a4_binding",
-                        "type":  "Tooltip",
-                        "parameters":  [
-
-                                       ]
-                    },
-    "objects":  {
-                    "background":  [
-                                       {
-                                           "properties":  {
-                                                              "color":  {
-                                                                            "solid":  {
-                                                                                          "color":  {
-                                                                                                        "expr":  {
-                                                                                                                     "Literal":  {
-                                                                                                                                     "Value":  "\u0027#FFFFFF\u0027"
-                                                                                                                                 }
-                                                                                                                 }
-                                                                                                    }
-                                                                                      }
-                                                                        },
-                                                              "transparency":  {
-                                                                                   "expr":  {
-                                                                                                "Literal":  {
-                                                                                                                "Value":  "0D"
-                                                                                                            }
-                                                                                            }
-                                                                               }
-                                                          }
-                                       }
-                                   ]
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "ttv_e1b3be0487c3ace443a4",
+  "displayName": "TT Licences Affectees",
+  "displayOption": "FitToPage",
+  "height": 136,
+  "width": 308,
+  "type": "Tooltip",
+  "visibility": "HiddenInViewMode",
+  "pageBinding": {
+    "name": "ttv_e1b3be0487c3ace443a4_binding",
+    "type": "Tooltip",
+    "parameters": []
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#FFFFFF'"
+                  }
                 }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
 }

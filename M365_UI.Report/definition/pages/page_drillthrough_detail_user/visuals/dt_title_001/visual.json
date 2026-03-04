@@ -1,57 +1,57 @@
 {
-    "$schema":  "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
-    "name":  "dt_title_001",
-    "position":  {
-                     "x":  470,
-                     "y":  8,
-                     "z":  0,
-                     "height":  72,
-                     "width":  1230
-                 },
-    "visual":  {
-                   "visualType":  "textbox",
-                   "objects":  {
-                                   "general":  [
-                                                   {
-                                                       "properties":  {
-                                                                          "paragraphs":  [
-                                                                                             {
-                                                                                                 "textRuns":  [
-                                                                                                                  {
-                                                                                                                      "value":  "Detail Utilisateur",
-                                                                                                                      "textStyle":  {
-                                                                                                                                        "fontWeight":  "bold",
-                                                                                                                                        "fontSize":  "20pt",
-                                                                                                                                        "color":  {
-                                                                                                                                                      "solid":  {
-                                                                                                                                                                    "color":  "#1F4E79"
-                                                                                                                                                                }
-                                                                                                                                                  }
-                                                                                                                                    }
-                                                                                                                  }
-                                                                                                              ],
-                                                                                                 "horizontalTextAlignment":  "Center"
-                                                                                             },
-                                                                                             {
-                                                                                                 "textRuns":  [
-                                                                                                                  {
-                                                                                                                      "value":  "Identite, activite et licences de l\u0027utilisateur selectionne",
-                                                                                                                      "textStyle":  {
-                                                                                                                                        "fontSize":  "10pt",
-                                                                                                                                        "color":  {
-                                                                                                                                                      "solid":  {
-                                                                                                                                                                    "color":  "#6B7280"
-                                                                                                                                                                }
-                                                                                                                                                  }
-                                                                                                                                    }
-                                                                                                                  }
-                                                                                                              ],
-                                                                                                 "horizontalTextAlignment":  "Center"
-                                                                                             }
-                                                                                         ]
-                                                                      }
-                                                   }
-                                               ]
-                               }
-               }
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "dt_title_001",
+  "position": {
+    "x": 296,
+    "y": 20,
+    "z": 0,
+    "height": 64,
+    "width": 1504
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Detail Utilisateur",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "20pt",
+                      "color": {
+                        "solid": {
+                          "color": "#1F4E79"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Identite, activite et licences de l'utilisateur selectionne",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": {
+                        "solid": {
+                          "color": "#6B7280"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Center"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
 }

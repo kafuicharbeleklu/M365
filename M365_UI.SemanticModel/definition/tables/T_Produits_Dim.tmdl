@@ -68,6 +68,14 @@ table T_Produits_Dim
 
 		annotation SummarizationSetBy = Automatic
 
+	column NiveauRisqueStock
+		dataType: string
+		lineageTag: 2ea82ea9-399a-4ef6-87b7-15f1d047f74d
+		summarizeBy: none
+		sourceColumn: NiveauRisqueStock
+
+		annotation SummarizationSetBy = Automatic
+
 	partition T_Produits_Dim = m
 		mode: import
 		source = ```
@@ -306,8 +314,19 @@ table T_Produits_Dim
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 7. TYPAGE FINAL
 				    // ═══════════════════════════════════════════════════════════════════
+				    #"Niveau Risque Ajoute" = Table.AddColumn(
+				        #"Alerte Ajoutée",
+				        "NiveauRisqueStock",
+				        each
+				            if [StockDisponible] < 0 then "Depassement"
+				            else if [StockDisponible] = 0 and [LicencesAchetees] > 0 then "Stock epuise"
+				            else if [LicencesAchetees] > 0 and Number.From([StockDisponible]) / Number.From([LicencesAchetees]) <= 0.10 then "Stock critique <=10%"
+				            else "Stable",
+				        type text
+				    ),
+				
 				    #"Type modifié" = Table.TransformColumnTypes(
-				        #"Alerte Ajoutée", 
+				        #"Niveau Risque Ajoute", 
 				        {
 				            {"skuId", type text},
 				            {"CodeSKU", type text},
@@ -316,7 +335,8 @@ table T_Produits_Dim
 				            {"NomProduit", type text},
 				            {"TypeLicence", type text},
 				            {"StockDisponible", Int64.Type},
-				            {"AlerteStock", type text}
+				            {"AlerteStock", type text},
+				            {"NiveauRisqueStock", type text}
 				        }
 				    ),
 				
@@ -333,7 +353,8 @@ table T_Produits_Dim
 				            "LicencesAchetees", 
 				            "LicencesConsommees",
 				            "StockDisponible",
-				            "AlerteStock"
+				            "AlerteStock",
+				            "NiveauRisqueStock"
 				        }
 				    )
 				
