@@ -220,7 +220,6 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true,
-    "objects": {}
+    "drillFilterOtherVisuals": true
   }
 }

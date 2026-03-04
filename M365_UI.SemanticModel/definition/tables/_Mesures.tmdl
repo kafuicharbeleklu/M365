@@ -874,8 +874,7 @@ table _Mesures
 	/// B1 — Mesures pour page Detail Produit (drill-through)
 	/// ============================================================
 	/// Nombre d'utilisateurs affectes a un produit donne
-	measure DT_Produit_NbUtilisateurs =
-			DISTINCTCOUNT(T_Affectations_Fact[UserPrincipalName])
+	measure DT_Produit_NbUtilisateurs = DISTINCTCOUNT(T_Affectations_Fact[UserPrincipalName])
 		formatString: 0
 		displayFolder: Detail Produit
 		lineageTag: dt-produit-nb-utilisateurs-001
