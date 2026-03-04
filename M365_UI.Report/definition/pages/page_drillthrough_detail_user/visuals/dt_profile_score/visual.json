@@ -72,26 +72,6 @@
       ]
     },
     "visualContainerObjects": {
-      "visualTooltip": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'ttv_dt_kpi_actives'"
-                }
-              }
-            }
-          }
-        }
-      ],
       "background": [
         {
           "properties": {

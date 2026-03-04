@@ -140,7 +140,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFF4E8'"
+                      "Value": "'#E8F5E9'"
                     }
                   }
                 }
@@ -149,7 +149,7 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "15D"
                 }
               }
             }
@@ -214,26 +214,6 @@
                       "Percent": -0.2
                     }
                   }
-                }
-              }
-            }
-          }
-        }
-      ],
-      "visualTooltip": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'ttv_40db69b7a2dd5b305e58'"
                 }
               }
             }

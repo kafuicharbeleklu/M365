@@ -227,26 +227,6 @@
           }
         }
       ],
-      "visualTooltip": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'ttv_ed4f3b6ef5234a8c7a7e'"
-                }
-              }
-            }
-          }
-        }
-      ],
       "spacing": [
         {
           "properties": {

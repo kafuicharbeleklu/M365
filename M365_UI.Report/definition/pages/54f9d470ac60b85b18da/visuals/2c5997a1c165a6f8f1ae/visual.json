@@ -220,26 +220,6 @@
           }
         }
       ],
-      "visualTooltip": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'ttv_2c5997a1c165a6f8f1ae'"
-                }
-              }
-            }
-          }
-        }
-      ],
       "spacing": [
         {
           "properties": {

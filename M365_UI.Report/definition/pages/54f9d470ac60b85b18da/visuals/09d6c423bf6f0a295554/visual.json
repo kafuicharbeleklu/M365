@@ -143,6 +143,26 @@
             }
           }
         }
+      ],
+      "action": [
+        {
+          "properties": {
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Page'"
+                }
+              }
+            },
+            "destination": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ReportSection54f9d470ac60b85b18da'"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {

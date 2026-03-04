@@ -245,20 +245,8 @@
             }
           }
         }
-      ],
-      "visualTooltip": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        }
       ]
-    }
+    },
+    "objects": {}
   }
 }

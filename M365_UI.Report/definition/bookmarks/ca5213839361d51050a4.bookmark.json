@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.0.0/schema.json",
-  "displayName": "Signet 11",
+  "displayName": "Nav_UtilisateursFantomes",
   "name": "ca5213839361d51050a4",
   "options": {
     "targetVisualNames": []

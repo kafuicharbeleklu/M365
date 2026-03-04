@@ -116,6 +116,19 @@
             "id": "hover"
           }
         }
+      ],
+      "action": [
+        {
+          "properties": {
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Back'"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {

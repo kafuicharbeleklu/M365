@@ -73,35 +73,22 @@
       ]
     },
     "visualContainerObjects": {
-      "visualTooltip": [
+      "background": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'ttv_dt_kpi_licences'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "background": [
-        {
-          "properties": {
             "color": {
               "solid": {
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#EEF4FF'"
+                      "Value": "'#FFEBEE'"
                     }
                   }
                 }
@@ -110,14 +97,7 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
+                  "Value": "15D"
                 }
               }
             }
