@@ -22,7 +22,7 @@
                     "value": "Legende disponibilite: ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "color": "#4B5563"
                     }
                   },
@@ -30,7 +30,7 @@
                     "value": "Critique (<0)",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "fontWeight": "bold",
                       "color": "#D64550"
                     }
@@ -39,7 +39,7 @@
                     "value": " | ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "color": "#9CA3AF"
                     }
                   },
@@ -47,7 +47,7 @@
                     "value": "Elevee (<=10%)",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "fontWeight": "bold",
                       "color": "#F39C12"
                     }
@@ -56,7 +56,7 @@
                     "value": " | ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "color": "#9CA3AF"
                     }
                   },
@@ -64,7 +64,7 @@
                     "value": "Moderee (<=25%)",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "fontWeight": "bold",
                       "color": "#D4AC0D"
                     }
@@ -73,7 +73,7 @@
                     "value": " | ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "color": "#9CA3AF"
                     }
                   },
@@ -81,7 +81,7 @@
                     "value": "Surveiller (<=50%)",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "fontWeight": "bold",
                       "color": "#0F766E"
                     }
