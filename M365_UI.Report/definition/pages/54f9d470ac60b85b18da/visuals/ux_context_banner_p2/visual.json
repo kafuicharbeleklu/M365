@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
   "name": "ux_context_banner_p2",
   "position": {
-    "x": 300,
-    "y": 84,
-    "z": 16000,
-    "height": 28,
-    "width": 1300,
+    "x": 960,
+    "y": 32,
+    "z": 30000,
+    "height": 36,
+    "width": 640,
     "tabOrder": 16000
   },
   "visual": {
@@ -100,7 +100,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "13D"
                 }
               }
             }
@@ -131,7 +131,7 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "100D"
                 }
               }
             }
