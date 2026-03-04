@@ -9,7 +9,8 @@ table _Mesures
 		formatString: 0
 		lineageTag: 202b2563-2763-424c-9f16-716b53517aef
 
-	measure LicencesAffectees = COALESCE(COUNTROWS(T_Affectations_Fact), 0)
+	/// Nombre de licences affectees (unique par AffectationID pour eviter les doublons de fanout)
+	measure LicencesAffectees = COALESCE(DISTINCTCOUNT(T_Affectations_Fact[AffectationID]), 0)
 		formatString: 0
 		lineageTag: c9dd86b9-6901-43b1-a18a-5d0fcdc6444a
 

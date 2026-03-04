@@ -101,17 +101,17 @@
             },
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "T_Affectations_Fact"
+                      "Entity": "_Mesures"
                     }
                   },
-                  "Property": "NomProduit"
+                  "Property": "LicencesAffectees"
                 }
               },
-              "queryRef": "T_Affectations_Fact.NomProduit",
-              "nativeQueryRef": "NomProduit"
+              "queryRef": "_Mesures.LicencesAffectees",
+              "nativeQueryRef": "LicencesAffectees"
             }
           ]
         }
