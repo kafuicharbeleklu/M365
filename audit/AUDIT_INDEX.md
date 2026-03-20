@@ -16,3 +16,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | DQ-001 | Data Quality | Gaps jointure + TypeCompte + population Exclu | 2026-03-20 | ✅ Résolu — Exchange niveau 2 en attente lundi |
 | FIX-003 | Fix | Réécriture CiblesNettoyage via IsCible | 2026-03-20 | ✅ Appliqué |
 | FIX-004 | Fix | Bornage patterns TypeCompte risqués | 2026-03-20 | ✅ Appliqué |
+| FIX-005 | Fix | Bandeau MAJ toutes pages | 2026-03-20 | ✅ Appliqué |
