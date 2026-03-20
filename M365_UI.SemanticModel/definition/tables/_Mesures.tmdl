@@ -243,8 +243,10 @@ table _Mesures
 		lineageTag: 6eb920b2-fbc7-468e-8b0c-3c3bfec39bbc
 
 	measure CiblesNettoyage =
-			
-			[NbHumainsInactifs] + [NbHumainsJamaisConnectes] + [NbHumainsDesactives] + [NbBoitesInactives]
+			CALCULATE(
+				COUNTROWS(T_Utilisateurs_Dim),
+				T_Utilisateurs_Dim[IsCible] = TRUE()
+			)
 		formatString: 0
 		lineageTag: 1dff5eaa-1029-474e-b468-877e79b6be82
 
@@ -1281,25 +1283,25 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_fantomes_ctx = "AD actif mais zero activite M365 depuis 180 jours"
+	measure TT_p3_fantomes_ctx = "Actifs AD sans activité M365"
 		displayFolder: Tooltips
 		lineageTag: tt-p3-fantomes-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_fantomes_lect = "Action : contacter l'utilisateur ou desactiver le compte"
+	measure TT_p3_fantomes_lect = "Utilisateurs dont le compte Azure AD est actif mais qui n'apparaissent dans aucune donnée d'activité Microsoft 365 sur les 180 derniers jours. Distinct des utilisateurs jamais connectés à AD."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-fantomes-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_inactifs_ctx = "Aucune activite M365 depuis plus de 90 jours"
+	measure TT_p3_inactifs_ctx = "Jamais connectés à Azure AD"
 		displayFolder: Tooltips
 		lineageTag: tt-p3-inactifs-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_inactifs_lect = "Candidats a la desactivation ou revue manageur"
+	measure TT_p3_inactifs_lect = "Utilisateurs dont le champ LastSignIn est vide : ils ne se sont jamais authentifiés sur Azure AD. Un utilisateur fantôme peut s'être connecté à AD sans jamais utiliser une application M365."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-inactifs-lect
 

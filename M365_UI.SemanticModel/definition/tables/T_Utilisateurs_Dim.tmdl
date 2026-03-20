@@ -41,6 +41,22 @@ table T_Utilisateurs_Dim
 
 		annotation SummarizationSetBy = Automatic
 
+	column UsageLocation
+		dataType: string
+		lineageTag: 9c06f15e-d268-4c9d-a0fb-a4789cae8b87
+		summarizeBy: none
+		sourceColumn: UsageLocation
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserType
+		dataType: string
+		lineageTag: 61b6d665-7bb8-4290-a8b9-bba848536e62
+		summarizeBy: none
+		sourceColumn: UserType
+
+		annotation SummarizationSetBy = Automatic
+
 	column AccountEnabled
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
@@ -96,6 +112,10 @@ table T_Utilisateurs_Dim
 			IF(_estVide, "Non defini",
 			SWITCH(
 			    TRUE(),
+
+			    // === PRIMARY SIGNAL: userType from Graph API ===
+			    [UserType] = "Guest", "Technique",
+			    CONTAINSSTRING([UserPrincipalName], "#EXT#"), "Technique",
 			
 			    // ═══════════════════════════════════════════════════════════════════
 			    // 1. COMPTES EXTERNES
@@ -152,7 +172,7 @@ table T_Utilisateurs_Dim
 			    CONTAINSSTRING(Nom, "sync"), "Technique",
 			    CONTAINSSTRING(Nom, "bot"), "Technique",
 			    CONTAINSSTRING(Nom, "api"), "Technique",
-			    CONTAINSSTRING(Nom, "admin"), "Technique",
+			    (Nom = "admin" || LEFT(Nom, 6) = "admin " || CONTAINSSTRING(Email, "admin@") || CONTAINSSTRING(Email, ".admin@")), "Technique",
 			    CONTAINSSTRING(Nom, "svc"), "Technique",
 			    CONTAINSSTRING(Nom, "pool"), "Technique",
 			    CONTAINSSTRING(Nom, "spapp"), "Technique",
@@ -163,7 +183,7 @@ table T_Utilisateurs_Dim
 			    CONTAINSSTRING(Nom, "app_"), "Technique",
 			    CONTAINSSTRING(Nom, "svc_"), "Technique",
 			    CONTAINSSTRING(Nom, "srv_"), "Technique",
-			    CONTAINSSTRING(Nom, "test"), "Technique",
+			    (Nom = "test" || LEFT(Nom, 5) = "test " || RIGHT(Nom, 5) = " test"), "Technique",
 			    CONTAINSSTRING(Nom, "update"), "Technique",
 			    CONTAINSSTRING(Nom, "irium"), "Technique",
 			    CONTAINSSTRING(Nom, "mts "), "Technique",
@@ -226,7 +246,7 @@ table T_Utilisateurs_Dim
 			    // 10. RH / ADMINISTRATION / GÉNÉRIQUES
 			    // ═══════════════════════════════════════════════════════════════════
 			    CONTAINSSTRING(Nom, "sirh"), "Technique",
-			    CONTAINSSTRING(Nom, "formation"), "Technique",
+			    (Nom = "formation" || LEFT(Nom, 10) = "formation " || CONTAINSSTRING(Email, "formation@")), "Technique",
 			    CONTAINSSTRING(Nom, "induction"), "Technique",
 			    CONTAINSSTRING(Nom, "reservation"), "Technique",
 			    CONTAINSSTRING(Nom, "validation"), "Technique",
@@ -241,7 +261,7 @@ table T_Utilisateurs_Dim
 			    CONTAINSSTRING(Nom, "signcenter"), "Technique",
 			    CONTAINSSTRING(Nom, "stagiaire"), "Technique",
 			    CONTAINSSTRING(Nom, "delegues"), "Technique",
-			    CONTAINSSTRING(Nom, "visit"), "Technique",
+			    (Nom = "visit" || LEFT(Nom, 6) = "visit " || Nom = "visitor" || Nom = "visiteur"), "Technique",
 			    CONTAINSSTRING(Nom, "survey"), "Technique",
 			
 			    // ═══════════════════════════════════════════════════════════════════
@@ -281,7 +301,7 @@ table T_Utilisateurs_Dim
 			    CONTAINSSTRING(Nom, "polaris"), "Technique",
 			    CONTAINSSTRING(Nom, "generique"), "Technique",
 			    CONTAINSSTRING(Nom, "partage"), "Technique",
-			    CONTAINSSTRING(Nom, "service"), "Technique",
+			    (LEFT(Nom, 8) = "service " || Nom = "service" || CONTAINSSTRING(Email, "service@") || CONTAINSSTRING(Email, ".service@")), "Technique",
 			
 			    // ═══════════════════════════════════════════════════════════════════
 			    // PAR DÉFAUT : UTILISATEUR HUMAIN
@@ -448,7 +468,7 @@ table T_Utilisateurs_Dim
 				    BaseUrl = "https://graph.microsoft.com/beta/users?" 
 				              & "$top=999&" 
 				              & "$select=id,displayName,userPrincipalName,department,country,"
-				              & "usageLocation,accountEnabled,assignedLicenses,createdDateTime,signInActivity",
+				              & "usageLocation,userType,accountEnabled,assignedLicenses,createdDateTime,signInActivity",
 				
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 3. PAGINATION
@@ -476,8 +496,8 @@ table T_Utilisateurs_Dim
 				    Expanded = Table.ExpandRecordColumn(
 				        Tabled, 
 				        "Column1", 
-				        {"id", "displayName", "userPrincipalName", "department", "country", "accountEnabled", "createdDateTime", "signInActivity", "assignedLicenses"},
-				        {"UserID", "DisplayName", "UserPrincipalName", "Department", "CountryOrRegion", "AccountEnabled", "WhenCreated", "signInActivity", "Licences_Brutes"}
+				        {"id", "displayName", "userPrincipalName", "department", "country", "usageLocation", "userType", "accountEnabled", "createdDateTime", "signInActivity", "assignedLicenses"},
+				        {"UserID", "DisplayName", "UserPrincipalName", "Department", "CountryOrRegion", "UsageLocation", "UserType", "AccountEnabled", "WhenCreated", "signInActivity", "Licences_Brutes"}
 				    ),
 				
 				    // ═══════════════════════════════════════════════════════════════════
@@ -507,6 +527,8 @@ table T_Utilisateurs_Dim
 				    #"Type modifié" = Table.TransformColumnTypes(
 				        #"Colonnes supprimées",
 				        {
+				            {"UsageLocation", type text},
+				            {"UserType", type text},
 				            {"WhenCreated", type datetime}, 
 				            {"LastSignIn", type datetime}, 
 				            {"AccountEnabled", type logical}
