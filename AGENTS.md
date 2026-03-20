@@ -91,3 +91,8 @@ Verify `Param_Secret` contains only a placeholder such as `"__REDACTED__"`, neve
 - Types: `BL` | `UI` | `DQ` | `FIX`
 - Never modify `.tmdl` or report files without creating a `FIX` record
 - Run `/explore` before any structural change to verify current state
+
+## UI Layout Constraints
+- Power BI left navigation panel occupies approximately `x=0` to `x=190`. Never place visuals with `x < 200` on pages that use the nav panel.
+- Page header zone height varies per page. Always inspect `dt_title_001` or equivalent before placing banners on drillthrough pages.
+- Source-level coordinate audits cannot detect overlap with native Power BI UI chrome such as the nav panel or toolbar. Visual validation in Power BI Desktop is mandatory after any position change.

@@ -19,3 +19,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-005 | Fix | Bandeau MAJ toutes pages | 2026-03-20 | ✅ Appliqué |
 | UI-002 | UI Layout | Audit UI complet | 2026-03-20 | ✅ Résolu — corrections appliquées |
 | FIX-006 | Fix | Corrections UI boutons mismatches disclaimer | 2026-03-20 | ✅ Appliqué |
+| FIX-007 | Fix | Layout nav panel + header banner | 2026-03-20 | ✅ Appliqué |
