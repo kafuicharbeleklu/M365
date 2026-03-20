@@ -45,67 +45,139 @@ table _Mesures
 		lineageTag: e14dc89f-4a3b-4283-94e2-021e753627a5
 
 	measure NbHumainsActifs =
-			COALESCE(
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
 				CALCULATE(
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
 						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Actif"
 					)
-				),
-				0
-			)
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Actif"
+					),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		formatString: 0
 		lineageTag: e7698b1d-b19f-4138-a8e2-e7447d74d67b
 
 	measure NbHumainsInactifs =
-			COALESCE(
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
 				CALCULATE(
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
 						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif (>90j)"
 					)
-				),
-				0
-			)
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif (>90j)"
+					),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		formatString: 0
 		lineageTag: 5a890ccd-4f5f-4bcc-aafe-1862cab49265
 
 	measure NbHumainsJamaisConnectes =
-			COALESCE(
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
 				CALCULATE(
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
 					T_Utilisateurs_Dim[AccountEnabled] = TRUE(),
 					ISBLANK(T_Utilisateurs_Dim[LastSignIn])
-				),
-				0
-			)
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE(),
+					ISBLANK(T_Utilisateurs_Dim[LastSignIn]),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		formatString: 0
 		lineageTag: 35b10d51-618f-45eb-8b4c-452c02750c1c
 
 	measure NbHumainsDesactives =
-			COALESCE(
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
 				CALCULATE(
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
 					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
 					T_Utilisateurs_Dim[AccountEnabled] = FALSE()
-				),
-				0
-			)
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE(),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		formatString: 0
 		lineageTag: ba0253cf-d1fd-4af9-b836-9ec65a10d6ae
 
 	measure NbBoitesTotal =
-			COALESCE(
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
 				CALCULATE(
 					COUNTROWS(T_Utilisateurs_Dim),
 					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
 					T_Utilisateurs_Dim[TypeCompte] = "Technique"
-				),
-				0
-			)
+				)
+			VAR _scoped =
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Technique",
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		formatString: 0
 		lineageTag: 4f8e1014-8fbe-4686-88eb-59651ad6bfec
 
@@ -405,20 +477,36 @@ table _Mesures
 
 	/// Utilisateurs actifs AD sans aucune activitÃ© M365 enregistrÃ©e
 	measure NbUtilisateursFantomes =
-			VAR UsersActifsAD =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _baseUsersActifsAD =
 				CALCULATETABLE(
 					VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
 					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
 					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
 					T_Utilisateurs_Dim[AccountEnabled] = TRUE()
 				)
+			VAR _scopedUsersActifsAD =
+				CALCULATETABLE(
+					VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE(),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
 			VAR UsersAvecActivite =
 				CALCULATETABLE(
 					VALUES(T_Activite_M365[UserPrincipalName]),
 					REMOVEFILTERS(T_Affectations_Fact)
 				)
+			VAR _base = COUNTROWS(EXCEPT(_baseUsersActifsAD, UsersAvecActivite))
+			VAR _scoped = COUNTROWS(EXCEPT(_scopedUsersActifsAD, UsersAvecActivite))
 			RETURN
-			COALESCE(COUNTROWS(EXCEPT(UsersActifsAD, UsersAvecActivite)), 0)
+			COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		lineageTag: 19b607c3-d56b-4828-9738-0724ec264dea
 
 	measure NbLignesNonClassifiees =
@@ -471,16 +559,31 @@ table _Mesures
 		annotation SummarizationSetBy = Automatic
 
 	measure NbInactifsM365 =
-			COALESCE(
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
 				CALCULATE(
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
 						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif M365"
 					)
-				),
-				0
-			)
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif M365"
+					),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		displayFolder: Utilisateurs
 		lineageTag: nb-inactifs-m365-001
 
