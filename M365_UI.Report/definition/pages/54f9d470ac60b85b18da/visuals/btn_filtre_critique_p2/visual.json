@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "btn_filtre_critique_p2",
   "position": {
-    "x": 1110,
+    "x": 1102,
     "y": 272,
     "z": 14500,
     "height": 78,

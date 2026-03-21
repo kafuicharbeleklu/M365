@@ -34,3 +34,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-018 | Fix | DT header + spacing + filtre désactivés | 2026-03-21 | ? Appliqué |
 | FIX-019 | Fix | Detail Utilisateur layout final | 2026-03-21 | ? Appliqué |
 | FIX-020 | Fix | Header reset alignment 3 pages | 2026-03-21 | âœ… AppliquÃ© |
+| FIX-021 | Fix | Harmonisation espacement global | 2026-03-21 | âœ… AppliquÃ© |
