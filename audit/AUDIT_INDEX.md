@@ -27,3 +27,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-011 | Fix | Extension canvas action cards + tableau | 2026-03-20 | ✅ Appliqué |
 | FIX-012 | Fix | Dimensionnement définitif Analyse Utilisateur | 2026-03-20 | ✅ Appliqué |
 | FIX-013 | Fix | Smart filters + nav spacing + UI polish | 2026-03-20 | ✅ Appliqué |
+| FIX-014 | Fix | Correction schéma bookmark Nav_UsersProduitsDepassement | 2026-03-21 | ✅ Appliqué |
