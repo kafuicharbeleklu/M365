@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
   "name": "ux_context_banner_p3",
   "position": {
-    "x": 760,
-    "y": 36,
+    "x": 772,
+    "y": 22,
     "z": 30000,
-    "height": 32,
+    "height": 36,
     "width": 640,
     "tabOrder": 25000
   },

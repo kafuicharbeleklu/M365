@@ -1,10 +1,10 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "ux_refresh_banner_p2",
   "position": {
-    "x": 1610,
-    "y": 32,
-    "z": 30000,
+    "x": 1420,
+    "y": 22,
+    "z": 17000,
     "height": 36,
     "width": 290,
     "tabOrder": 17000

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
   "name": "ux_refresh_banner_p3",
   "position": {
-    "x": 1410,
-    "y": 36,
+    "x": 1420,
+    "y": 22,
     "z": 30000,
-    "height": 32,
-    "width": 280,
+    "height": 36,
+    "width": 290,
     "tabOrder": 26000
   },
   "visual": {
