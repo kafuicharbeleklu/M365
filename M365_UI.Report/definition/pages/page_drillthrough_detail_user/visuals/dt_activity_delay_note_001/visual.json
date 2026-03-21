@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "dt_activity_delay_note_001",
   "position": {
-    "x": 1197,
-    "y": 348,
+    "x": 120,
+    "y": 352,
     "z": 9500,
     "height": 16,
-    "width": 703,
+    "width": 1780,
     "tabOrder": 15500
   },
   "visual": {
