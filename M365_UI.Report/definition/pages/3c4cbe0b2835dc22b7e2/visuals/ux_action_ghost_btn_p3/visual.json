@@ -3,9 +3,9 @@
   "name": "ux_action_ghost_btn_p3",
   "position": {
     "x": 300,
-    "y": 440,
+    "y": 444,
     "z": 31000,
-    "height": 196,
+    "height": 216,
     "width": 300,
     "tabOrder": 30000
   },

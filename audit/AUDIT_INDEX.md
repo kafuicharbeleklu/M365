@@ -24,3 +24,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-008 | Fix | Layout pixel-perfect KPI row + header | 2026-03-20 | ✅ Appliqué |
 | FIX-009 | Fix | Restructuration layout Analyse Utilisateur | 2026-03-20 | ✅ Appliqué |
 | FIX-010 | Fix | Alignement hauteur tableau/action cards | 2026-03-20 | ✅ Appliqué |
+| FIX-011 | Fix | Extension canvas action cards + tableau | 2026-03-20 | ✅ Appliqué |
