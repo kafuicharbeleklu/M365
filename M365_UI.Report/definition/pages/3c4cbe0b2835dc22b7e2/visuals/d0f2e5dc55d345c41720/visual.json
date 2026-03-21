@@ -1,10 +1,10 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "d0f2e5dc55d345c41720",
   "position": {
     "x": 909,
     "y": 92,
-    "z": 13000,
+    "z": 11000,
     "height": 104,
     "width": 187,
     "tabOrder": 13000
@@ -97,7 +97,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Utilisateurs Desactives'"
+                  "Value": "'Désactivés'"
                 }
               }
             },

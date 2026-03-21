@@ -97,7 +97,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Comptes Tech. Inactifs'"
+                  "Value": "'Tech. Inactifs'"
                 }
               }
             },
