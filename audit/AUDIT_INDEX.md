@@ -22,3 +22,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-007 | Fix | Layout nav panel + header banner | 2026-03-20 | ✅ Appliqué |
 | UI-003 | UI Layout | Audit layout pixel-perfect | 2026-03-20 | ✅ Résolu — grille pixel-perfect appliquée |
 | FIX-008 | Fix | Layout pixel-perfect KPI row + header | 2026-03-20 | ✅ Appliqué |
+| FIX-009 | Fix | Restructuration layout Analyse Utilisateur | 2026-03-20 | ✅ Appliqué |

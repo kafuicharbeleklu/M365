@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
   "name": "87d3521e0b96312bffb0",
   "position": {
-    "x": 776,
-    "y": 268,
+    "x": 616,
+    "y": 212,
     "z": 3000,
-    "height": 792,
-    "width": 1128,
+    "height": 648,
+    "width": 1294,
     "tabOrder": 3000
   },
   "visual": {
@@ -455,6 +455,33 @@
               "expr": {
                 "Literal": {
                   "Value": "'Default'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualLink": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Drillthrough'"
+                }
+              }
+            },
+            "drillthroughSection": {
+              "expr": {
+                "Literal": {
+                  "Value": "'page_drillthrough_detail_user'"
                 }
               }
             }

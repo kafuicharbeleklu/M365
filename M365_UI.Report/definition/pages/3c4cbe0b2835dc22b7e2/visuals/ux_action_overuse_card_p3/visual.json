@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "ux_action_overuse_card_p3",
   "position": {
     "x": 300,
-    "y": 798,
-    "z": 30000,
-    "height": 80,
-    "width": 380,
+    "y": 652,
+    "z": 26000,
+    "height": 196,
+    "width": 300,
     "tabOrder": 33000
   },
   "visual": {
