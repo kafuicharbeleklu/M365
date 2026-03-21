@@ -26,3 +26,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-010 | Fix | Alignement hauteur tableau/action cards | 2026-03-20 | ✅ Appliqué |
 | FIX-011 | Fix | Extension canvas action cards + tableau | 2026-03-20 | ✅ Appliqué |
 | FIX-012 | Fix | Dimensionnement définitif Analyse Utilisateur | 2026-03-20 | ✅ Appliqué |
+| FIX-013 | Fix | Smart filters + nav spacing + UI polish | 2026-03-20 | ✅ Appliqué |
