@@ -372,12 +372,12 @@ table T_Utilisateurs_Dim
 
 	column StatutLicence = ```
 			
-			IF(
-			    // On compte le nombre de lignes dans la table Affectations liées à cet utilisateur
-			    COUNTROWS(RELATEDTABLE(T_Affectations_Fact)) > 0, 
-			    "ON", 
-			    "OFF"
-			)
+			VAR NbLicencesAffectees =
+			    CALCULATE(
+			        COALESCE(DISTINCTCOUNT(T_Affectations_Fact[AffectationID]), 0)
+			    )
+			RETURN
+			IF(NbLicencesAffectees > 0, "ON", "OFF")
 			```
 		lineageTag: 5d4e3984-4f92-4183-88c6-336d621e3362
 		summarizeBy: none

@@ -31,3 +31,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-015 | Fix | Smart filters + nav spacing + DT refonte | 2026-03-21 | ? Appliqué |
 | FIX-016 | Fix | Header alignment + nav spacing | 2026-03-21 | ? Appliqué |
 | FIX-017 | Fix | Filtres persistants + titres + Detail polish | 2026-03-21 | ? Appliqué |
+| FIX-018 | Fix | DT header + spacing + filtre désactivés | 2026-03-21 | ? Appliqué |

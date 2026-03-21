@@ -68,7 +68,7 @@
               "howCreated": 1
             },
             {
-              "name": "2c6bfea30db027782607",
+              "name": "5bbb815db2695ada8b0d",
               "type": "Categorical",
               "filter": {
                 "Version": 2,
@@ -91,7 +91,7 @@
                                   "Source": "t"
                                 }
                               },
-                              "Property": "Statut AD"
+                              "Property": "AccountEnabled"
                             }
                           }
                         ],
@@ -99,7 +99,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Désactivé'"
+                                "Value": "false"
                               }
                             }
                           ]
@@ -116,7 +116,7 @@
                       "Entity": "T_Utilisateurs_Dim"
                     }
                   },
-                  "Property": "Statut AD"
+                  "Property": "AccountEnabled"
                 }
               },
               "howCreated": 1
