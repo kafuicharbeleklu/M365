@@ -3,11 +3,11 @@
   "name": "ux_refresh_banner_dt",
   "position": {
     "x": 1510,
-    "y": 26,
+    "y": 30,
     "z": 17000,
     "height": 36,
     "width": 290,
-    "tabOrder": 17000
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "card",

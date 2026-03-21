@@ -1,12 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
-  "name": "dt_freshness_disclaimer_001",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "dt_activity_delay_note_001",
   "position": {
-    "x": 1137,
-    "y": 452,
-    "z": 18000,
-    "height": 24,
-    "width": 663
+    "x": 1197,
+    "y": 348,
+    "z": 9500,
+    "height": 16,
+    "width": 703,
+    "tabOrder": 15500
   },
   "visual": {
     "visualType": "textbox",
@@ -18,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "⚠️ Activité M365 : données issues du rapport Microsoft avec 48-72h de décalage structurel.",
+                    "value": "⚠️ Activité M365 : 48-72h de décalage",
                     "textStyle": {
                       "fontSize": "9pt",
                       "color": {

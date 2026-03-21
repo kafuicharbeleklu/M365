@@ -1,12 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "dt_table_licences",
   "position": {
     "x": 120,
-    "y": 476,
+    "y": 364,
     "z": 9000,
-    "height": 600,
-    "width": 1680
+    "height": 700,
+    "width": 1780,
+    "tabOrder": 16000
   },
   "visual": {
     "visualType": "tableEx",

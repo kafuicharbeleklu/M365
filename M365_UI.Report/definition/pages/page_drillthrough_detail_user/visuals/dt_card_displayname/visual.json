@@ -1,12 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "dt_card_displayname",
   "position": {
     "x": 120,
     "y": 92,
     "z": 1000,
-    "height": 108,
-    "width": 323
+    "height": 80,
+    "width": 343,
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "card",
@@ -63,7 +64,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "24D"
+                  "Value": "18D"
                 }
               }
             }
@@ -111,8 +112,8 @@
                 "color": {
                   "expr": {
                     "ThemeDataColor": {
-                      "Percent": -0.2,
-                      "ColorId": 0
+                      "ColorId": 0,
+                      "Percent": -0.2
                     }
                   }
                 }
@@ -143,8 +144,8 @@
                 "color": {
                   "expr": {
                     "ThemeDataColor": {
-                      "Percent": -0.1,
-                      "ColorId": 0
+                      "ColorId": 0,
+                      "Percent": -0.1
                     }
                   }
                 }
@@ -180,7 +181,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13D"
+                  "Value": "10D"
                 }
               }
             },
@@ -203,9 +204,6 @@
       ],
       "spacing": [
         {
-          "selector": {
-            "id": "default"
-          },
           "properties": {
             "verticalSpacing": {
               "expr": {
@@ -214,6 +212,9 @@
                 }
               }
             }
+          },
+          "selector": {
+            "id": "default"
           }
         }
       ]

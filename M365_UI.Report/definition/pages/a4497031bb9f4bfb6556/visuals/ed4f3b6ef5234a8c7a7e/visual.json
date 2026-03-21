@@ -89,7 +89,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "24D"
+                  "Value": "18D"
                 }
               }
             }
@@ -125,7 +125,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13D"
+                  "Value": "10D"
                 }
               }
             }
@@ -256,11 +256,11 @@
             "type": {
               "expr": {
                 "Literal": {
-                  "Value": "'PageNavigation'"
+                  "Value": "'Drillthrough'"
                 }
               }
             },
-            "navigationSection": {
+            "drillthroughSection": {
               "expr": {
                 "Literal": {
                   "Value": "'54f9d470ac60b85b18da'"
