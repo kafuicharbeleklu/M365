@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "ux_context_banner_p2",
   "position": {
-    "x": 772,
+    "x": 700,
     "y": 22,
     "z": 16000,
     "height": 36,
-    "width": 640,
+    "width": 652,
     "tabOrder": 16000
   },
   "visual": {
