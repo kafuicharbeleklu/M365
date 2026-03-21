@@ -5,7 +5,7 @@
     "x": 120,
     "y": 360,
     "z": 9500,
-    "height": 16,
+    "height": 28,
     "width": 1780,
     "tabOrder": 15500
   },
@@ -19,9 +19,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "⚠️ Activité M365 : 48-72h de décalage",
+                    "value": "⚠️ Activité M365 : données issues du rapport Microsoft avec 48-72h de décalage structurel.",
                     "textStyle": {
-                      "fontSize": "9pt",
+                      "fontSize": "10pt",
                       "color": {
                         "solid": {
                           "color": "#64748B"

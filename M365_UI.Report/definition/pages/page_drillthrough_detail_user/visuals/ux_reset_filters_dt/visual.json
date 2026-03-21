@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "ux_reset_filters_dt",
   "position": {
-    "x": 1718,
+    "x": 1658,
     "y": 22,
     "z": 18000,
     "height": 36,
-    "width": 186,
+    "width": 232,
     "tabOrder": 18000
   },
   "visual": {
