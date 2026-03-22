@@ -36,3 +36,5 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-020 | Fix | Header reset alignment 3 pages | 2026-03-21 | ✅ Appliqué |
 | FIX-021 | Fix | Harmonisation espacement global | 2026-03-21 | ✅ Appliqué |
 | FIX-022 | Fix | Filtre désactivés avec licence — LicencesAffectees>0 | 2026-03-21 | ✅ Appliqué |
+| BL-002 | Business Logic | Audit logique complet | 2026-03-21 | ⏳ Critiques+Hautes résolues — Moyennes en attente |
+| FIX-023 | Fix | BL-002 corrections logique | 2026-03-21 | ✅ Appliqué |

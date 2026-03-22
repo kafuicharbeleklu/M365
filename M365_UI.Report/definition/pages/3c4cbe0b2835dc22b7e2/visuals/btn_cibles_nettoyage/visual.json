@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
-  "name": "ux_action_ghost_btn_p3",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "btn_cibles_nettoyage",
   "position": {
-    "x": 300,
-    "y": 348,
-    "z": 31000,
-    "height": 120,
-    "width": 300,
-    "tabOrder": 30000
+    "x": 1693,
+    "y": 92,
+    "z": 21000,
+    "height": 104,
+    "width": 187,
+    "tabOrder": 21000
   },
   "visual": {
     "visualType": "actionButton",
@@ -19,22 +19,6 @@
               "expr": {
                 "Literal": {
                   "Value": "'blank'"
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "default"
-          }
-        }
-      ],
-      "shape": [
-        {
-          "properties": {
-            "roundEdge": {
-              "expr": {
-                "Literal": {
-                  "Value": "10L"
                 }
               }
             }
@@ -71,7 +55,23 @@
           }
         }
       ],
-      "glow": [
+      "shape": [
+        {
+          "properties": {
+            "roundEdge": {
+              "expr": {
+                "Literal": {
+                  "Value": "10L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "shadow": [
         {
           "properties": {
             "show": {
@@ -84,7 +84,7 @@
           }
         }
       ],
-      "shadow": [
+      "glow": [
         {
           "properties": {
             "show": {
@@ -119,7 +119,7 @@
             "bookmark": {
               "expr": {
                 "Literal": {
-                  "Value": "'ca5213839361d51050a4'"
+                  "Value": "'a5f1d2c3b4e506172841'"
                 }
               }
             }
@@ -188,6 +188,19 @@
               "expr": {
                 "Literal": {
                   "Value": "100D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
@@ -265,19 +278,6 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "padding": [
-        {
-          "properties": {
-            "bottom": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
                 }
               }
             }

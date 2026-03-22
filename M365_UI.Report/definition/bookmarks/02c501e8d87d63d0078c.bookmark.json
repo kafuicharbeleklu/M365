@@ -3,9 +3,7 @@
   "displayName": "Nav_HumainsActifs",
   "name": "02c501e8d87d63d0078c",
   "options": {
-    "targetVisualNames": [
-      "04a9392b160996ab9007"
-    ]
+    "targetVisualNames": []
   },
   "explorationState": {
     "version": "1.3",
