@@ -3,7 +3,9 @@
   "displayName": "Nav_TechniquesActives",
   "name": "f4a061ed23da49a09717",
   "options": {
-    "targetVisualNames": []
+    "targetVisualNames": [
+      "04a9392b160996ab9007"
+    ]
   },
   "explorationState": {
     "version": "1.3",

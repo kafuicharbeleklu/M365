@@ -13,14 +13,14 @@
         "filters": {
           "byExpr": [
             {
-              "name": "b5f1d2c3b4e506172842",
+              "name": "b2ec0fb7a087bac5da01",
               "type": "Categorical",
               "filter": {
                 "Version": 2,
                 "From": [
                   {
                     "Name": "t",
-                    "Entity": "T_Produits_Dim",
+                    "Entity": "T_Utilisateurs_Dim",
                     "Type": 0
                   }
                 ],
@@ -36,7 +36,7 @@
                                   "Source": "t"
                                 }
                               },
-                              "Property": "NiveauRisqueStock"
+                              "Property": "TypeCompte"
                             }
                           }
                         ],
@@ -44,7 +44,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Depassement'"
+                                "Value": "'Technique'"
                               }
                             }
                           ]
@@ -58,10 +58,10 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "T_Produits_Dim"
+                      "Entity": "T_Utilisateurs_Dim"
                     }
                   },
-                  "Property": "NiveauRisqueStock"
+                  "Property": "TypeCompte"
                 }
               },
               "howCreated": 1
