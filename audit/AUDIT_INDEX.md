@@ -36,3 +36,11 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-020 | Fix | Header reset alignment 3 pages | 2026-03-21 | âœ… AppliquÃ© |
 | FIX-021 | Fix | Harmonisation espacement global | 2026-03-21 | âœ… AppliquÃ© |
 | FIX-022 | Fix | Filtre dÃ©sactivÃ©s avec licence â€” LicencesAffectees>0 | 2026-03-21 | âœ… AppliquÃ© |
+| FIX-040 | Fix | Reactivation minimale des bookmarks legacy P3 sur recovery V6 | 2026-03-23 | ? Appliqué |
+| FIX-041 | Fix | Reactivation uniquement de Nav_UsersProduitsDepassement sur recovery V7 | 2026-03-23 | ? Appliqué |
+| FIX-042 | Fix | Reactivation uniquement du filtre critique P2 sur recovery V8 | 2026-03-23 | ? Appliqué |
+| FIX-043 | Fix | Reactivation uniquement du filtre depassement P2 sur recovery V9 | 2026-03-23 | ? Appliqué |
+| FIX-044 | Fix | Reactivation uniquement du filtre epuise P2 sur recovery V10 | 2026-03-23 | ? Appliqué |
+| FIX-045 | Fix | Reactivation uniquement du reset P2 sur recovery V11 | 2026-03-23 | ? Appliqué |
+| FIX-046 | Fix | Reactivation uniquement du reset P1 sur recovery V12 | 2026-03-23 | ? Appliqué |
+| FIX-047 | Fix | Reactivation uniquement du reset drillthrough sur recovery V13 | 2026-03-23 | ? Appliqué |

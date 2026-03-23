@@ -1,0 +1,136 @@
+table T_Affectations_Fact
+	lineageTag: 951a9095-14ca-42a9-b1bc-c92c5372c0b3
+
+	column UserPrincipalName
+		dataType: string
+		lineageTag: 0be7688f-c17a-4213-b0fe-e2a0745f0225
+		summarizeBy: none
+		sourceColumn: UserPrincipalName
+
+		annotation SummarizationSetBy = Automatic
+
+	column NomProduit
+		dataType: string
+		lineageTag: 82539096-942d-4288-b616-8006c5856708
+		summarizeBy: none
+		sourceColumn: NomProduit
+
+		annotation SummarizationSetBy = Automatic
+
+	column AffectationID
+		dataType: int64
+		formatString: 0
+		lineageTag: fc4b576a-78ff-4b4b-8304-b627c44fe0de
+		summarizeBy: count
+		sourceColumn: AffectationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TypeLicence
+		dataType: string
+		lineageTag: 2f9adfcc-bc37-44f3-a2d8-7d189128c127
+		summarizeBy: none
+		sourceColumn: TypeLicence
+
+		annotation SummarizationSetBy = Automatic
+
+	column CodeSKU
+		dataType: string
+		lineageTag: 6e5e3981-86d2-4c58-b33f-5d4db56fe7e1
+		summarizeBy: none
+		sourceColumn: CodeSKU
+
+		annotation SummarizationSetBy = Automatic
+
+	partition T_Affectations_Fact = m
+		mode: import
+		source = ```
+				let
+				    Source = T_Utilisateurs_Dim,
+				    
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 1. SÉLECTION DES COLONNES
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Colonnes sélectionnées" = Table.SelectColumns(
+				        Source, 
+				        {"UserPrincipalName", "Licences_Brutes"}
+				    ),
+				    
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 2. EXPLOSION DES LICENCES
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Expanded Licences" = Table.ExpandListColumn(
+				        #"Colonnes sélectionnées", 
+				        "Licences_Brutes"
+				    ),
+				    
+				    #"Lignes filtrées" = Table.SelectRows(
+				        #"Expanded Licences", 
+				        each [Licences_Brutes] <> null
+				    ),
+				    
+				    #"Expanded Record" = Table.ExpandRecordColumn(
+				        #"Lignes filtrées", 
+				        "Licences_Brutes", 
+				        {"skuId"}, 
+				        {"skuId"}
+				    ),
+				    
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 3. JOINTURE AVEC T_PRODUITS_DIM (Sur skuId)
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Requêtes fusionnées" = Table.NestedJoin(
+				        #"Expanded Record", 
+				        {"skuId"}, 
+				        T_Produits_Dim, 
+				        {"skuId"}, 
+				        "T_Produits_Dim", 
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    // Récupérer NomProduit ET TypeLicence
+				    #"Expanded Produits" = Table.ExpandTableColumn(
+				        #"Requêtes fusionnées", 
+				        "T_Produits_Dim", 
+				        {"CodeSKU", "NomProduit", "TypeLicence"}, 
+				        {"CodeSKU", "NomProduit", "TypeLicence"}
+				    ),
+				    
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 4. NETTOYAGE
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Colonnes supprimées" = Table.RemoveColumns(
+				        #"Expanded Produits", 
+				        {"skuId"}
+				    ),
+				    
+				    // Supprimer les doublons
+				    #"Doublons supprimés" = Table.Distinct(#"Colonnes supprimées"),
+				    
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 5. INDEX UNIQUE
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Index ajouté" = Table.AddIndexColumn(
+				        #"Doublons supprimés", 
+				        "AffectationID", 
+				        1, 
+				        1, 
+				        Int64.Type
+				    ),
+				    
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 6. RÉORGANISATION
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Colonnes réorganisées" = Table.ReorderColumns(
+				        #"Index ajouté", 
+				        {"AffectationID", "UserPrincipalName", "CodeSKU", "NomProduit", "TypeLicence"}
+				    )
+				
+				in
+				    #"Colonnes réorganisées"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,368 @@
+table T_Produits_Dim
+	lineageTag: 479c9946-db8b-49c8-8c08-2d850cc5f515
+
+	column skuId
+		dataType: string
+		lineageTag: 5b11577b-5482-43cd-b682-e255bad6c1a4
+		summarizeBy: none
+		sourceColumn: skuId
+
+		annotation SummarizationSetBy = Automatic
+
+	column NomProduit
+		dataType: string
+		lineageTag: 7691d78a-e874-4cea-8d34-95e60e3f646e
+		summarizeBy: none
+		sourceColumn: NomProduit
+
+		annotation SummarizationSetBy = Automatic
+
+	column LicencesAchetees
+		dataType: int64
+		formatString: 0
+		lineageTag: 988b8e94-0aac-49e3-890e-e94e582bf9d2
+		summarizeBy: none
+		sourceColumn: LicencesAchetees
+
+		annotation SummarizationSetBy = Automatic
+
+	column TypeLicence
+		dataType: string
+		lineageTag: 976ecd00-fd68-4737-a986-541e28c57c1a
+		summarizeBy: none
+		sourceColumn: TypeLicence
+
+		annotation SummarizationSetBy = Automatic
+
+	column LicencesConsommees
+		dataType: int64
+		formatString: 0
+		lineageTag: b6dadeb2-62f4-49c9-9faa-640c961804b5
+		summarizeBy: none
+		sourceColumn: LicencesConsommees
+
+		annotation SummarizationSetBy = Automatic
+
+	column CodeSKU
+		dataType: string
+		lineageTag: 7e1bdf65-7876-4f11-a53b-6286968ca48f
+		summarizeBy: none
+		sourceColumn: CodeSKU
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockDisponible
+		dataType: int64
+		formatString: 0
+		lineageTag: f8bbb2f2-8f9d-49a5-854a-e863c15627db
+		summarizeBy: none
+		sourceColumn: StockDisponible
+
+		annotation SummarizationSetBy = Automatic
+
+	column AlerteStock
+		dataType: string
+		lineageTag: ebddf4ff-5976-4a8a-ab64-60653570319d
+		summarizeBy: none
+		sourceColumn: AlerteStock
+
+		annotation SummarizationSetBy = Automatic
+
+	column NiveauRisqueStock
+		dataType: string
+		lineageTag: 2ea82ea9-399a-4ef6-87b7-15f1d047f74d
+		summarizeBy: none
+		sourceColumn: NiveauRisqueStock
+
+		annotation SummarizationSetBy = Automatic
+
+	partition T_Produits_Dim = m
+		mode: import
+		source = ```
+				let
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 1. AUTHENTIFICATION SÉCURISÉE (Via Paramètres)
+				    // ═══════════════════════════════════════════════════════════════════
+				    TenantId = Text.From(#"Param_TenantId"),
+				    ClientId = Text.From(#"Param_ClientId"),
+				    ClientSecret = Text.From(#"Param_Secret"),
+				
+				    GetAccessToken = () => 
+				        let
+				            Url = "https://login.microsoftonline.com/" & TenantId & "/oauth2/v2.0/token",
+				            Body = "client_id=" & ClientId & 
+				                   "&scope=https://graph.microsoft.com/.default" & 
+				                   "&client_secret=" & Uri.EscapeDataString(ClientSecret) & 
+				                   "&grant_type=client_credentials",
+				            Response = Json.Document(
+				                Web.Contents(Url, [
+				                    Headers = [#"Content-Type" = "application/x-www-form-urlencoded"], 
+				                    Content = Text.ToBinary(Body)
+				                ])
+				            ),
+				            Token = "Bearer " & Response[access_token]
+				        in 
+				            Token,
+				
+				    AuthToken = GetAccessToken(),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 2. APPEL API
+				    // ═══════════════════════════════════════════════════════════════════
+				    Source = Json.Document(
+				        Web.Contents(
+				            "https://graph.microsoft.com/v1.0/subscribedSkus", 
+				            [Headers = [Authorization = AuthToken]]
+				        )
+				    ),
+				    
+				    value = Source[value],
+				    
+				    #"Converti en table" = Table.FromList(
+				        value, 
+				        Splitter.SplitByNothing(), 
+				        null, 
+				        null, 
+				        ExtraValues.Error
+				    ),
+				    
+				    #"Expanded" = Table.ExpandRecordColumn(
+				        #"Converti en table", 
+				        "Column1", 
+				        {"skuId", "skuPartNumber", "consumedUnits", "prepaidUnits"}, 
+				        {"skuId", "CodeSKU", "LicencesConsommees", "prepaidUnits"}
+				    ),
+				    
+				    #"Expanded Units" = Table.ExpandRecordColumn(
+				        #"Expanded", 
+				        "prepaidUnits", 
+				        {"enabled"}, 
+				        {"LicencesAchetees"}
+				    ),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 3. DICTIONNAIRE COMPLET DE TRADUCTION SKU → NOM COMMERCIAL
+				    // ═══════════════════════════════════════════════════════════════════
+				    Dictionnaire = [
+				        // ─────────────────────────────────────────────────────────────────
+				        // MICROSOFT 365 / OFFICE 365
+				        // ─────────────────────────────────────────────────────────────────
+				        SPE_E3 = "Microsoft 365 E3",
+				        SPE_E5 = "Microsoft 365 E5",
+				        SPE_F1 = "Microsoft 365 F1",
+				        ENTERPRISEPACK = "Office 365 E3",
+				        ENTERPRISEPREMIUM = "Office 365 E5",
+				        STANDARDPACK = "Office 365 E1",
+				        DESKLESSPACK = "Office 365 F3",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // EXCHANGE ONLINE
+				        // ─────────────────────────────────────────────────────────────────
+				        EXCHANGESTANDARD = "Exchange Online (Plan 1)",
+				        EXCHANGEENTERPRISE = "Exchange Online (Plan 2)",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // TEAMS
+				        // ─────────────────────────────────────────────────────────────────
+				        Microsoft_Teams_Premium = "Teams Premium",
+				        #"Teams_Premium_(for_Departments)" = "Teams Premium (Départements)",
+				        Microsoft_Teams_Rooms_Pro = "Teams Rooms Pro",
+				        Microsoft_Teams_Rooms_Basic = "Teams Rooms Basic",
+				        Microsoft_Teams_Rooms_Basic_without_Audio_Conferencing = "Teams Rooms Basic (Sans Audio)",
+				        Microsoft_Teams_Exploratory_Dept = "Teams Exploratory (Départements)",
+				        TEAMS_EXPLORATORY = "Teams Exploratory",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // POWER BI
+				        // ─────────────────────────────────────────────────────────────────
+				        POWER_BI_PRO = "Power BI Pro",
+				        POWER_BI_STANDARD = "Power BI (Gratuit)",
+				        POWER_BI_PRO_DEPT = "Power BI Pro (Départements)",
+				        PBI_PREMIUM_PER_USER = "Power BI Premium Per User",
+				        PBI_PREMIUM_PER_USER_DEPT = "Power BI Premium Per User (Dept)",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // POWER APPS & POWER AUTOMATE
+				        // ─────────────────────────────────────────────────────────────────
+				        POWERAPPS_VIRAL = "Power Apps (Gratuit)",
+				        POWERAPPS_DEV = "Power Apps pour Développeurs",
+				        POWERAPPS_PER_USER = "Power Apps Per User",
+				        FLOW_FREE = "Power Automate (Gratuit)",
+				        FLOW_PER_USER = "Power Automate Per User",
+				        Power_Pages_vTrial_for_Makers = "Power Pages (Essai)",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // PROJET & VISIO
+				        // ─────────────────────────────────────────────────────────────────
+				        PROJECTPROFESSIONAL = "Project Plan 3",
+				        PROJECTPREMIUM = "Project Plan 5",
+				        PROJECT_P1 = "Project Plan 1",
+				        VISIOCLIENT = "Visio Plan 2",
+				        VISIO_PLAN1_DEPT = "Visio Plan 1",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // SÉCURITÉ & IDENTITÉ
+				        // ─────────────────────────────────────────────────────────────────
+				        AAD_BASIC = "Azure AD Basic",
+				        AAD_PREMIUM = "Azure AD Premium P1",
+				        AAD_PREMIUM_P2 = "Azure AD Premium P2",
+				        EMS = "Enterprise Mobility + Security E3",
+				        EMSPREMIUM = "Enterprise Mobility + Security E5",
+				        INTUNE_A = "Microsoft Intune",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // COPILOT & IA
+				        // ─────────────────────────────────────────────────────────────────
+				        Microsoft_365_Copilot = "Copilot pour Microsoft 365",
+				        CCIBOTS_PRIVPREV_VIRAL = "Copilot Studio (Essai)",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // DYNAMICS 365
+				        // ─────────────────────────────────────────────────────────────────
+				        Dynamics_365_Customer_Service_Enterprise_viral_trial = "Dynamics 365 Customer Service (Essai)",
+				        Dynamics_365_Sales_Premium_Viral_Trial = "Dynamics 365 Sales Premium (Essai)",
+				        DYN365_CUSTOMER_INSIGHTS_VIRAL = "Dynamics 365 Customer Insights (Essai)",
+				        DYN365_BUSINESS_MARKETING = "Dynamics 365 Marketing (Essai)",
+				        
+				        // ─────────────────────────────────────────────────────────────────
+				        // AUTRES SERVICES
+				        // ─────────────────────────────────────────────────────────────────
+				        STREAM = "Microsoft Stream",
+				        WINDOWS_STORE = "Windows Store for Business"
+				    ],
+				
+				    #"Nom Traduit" = Table.AddColumn(
+				        #"Expanded Units", 
+				        "NomProduit", 
+				        each 
+				            let 
+				                code = [CodeSKU] 
+				            in
+				                if Record.HasFields(Dictionnaire, code) 
+				                then Record.Field(Dictionnaire, code) 
+				                else code,
+				        type text
+				    ),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 4. CLASSIFICATION PAYANT / GRATUIT (Liste complète)
+				    // ═══════════════════════════════════════════════════════════════════
+				    LicencesPayantes = {
+				        // Suites M365/O365
+				        "SPE_E3", "SPE_E5", "SPE_F1",
+				        "ENTERPRISEPACK", "ENTERPRISEPREMIUM", "STANDARDPACK", "DESKLESSPACK",
+				        
+				        // Exchange
+				        "EXCHANGESTANDARD", "EXCHANGEENTERPRISE",
+				        
+				        // Teams (Payants)
+				        "Microsoft_Teams_Premium", "Teams_Premium_(for_Departments)", 
+				        "Microsoft_Teams_Rooms_Pro",
+				        
+				        // Power BI (Payants)
+				        "POWER_BI_PRO", "POWER_BI_PRO_DEPT",
+				        "PBI_PREMIUM_PER_USER", "PBI_PREMIUM_PER_USER_DEPT",
+				        
+				        // Power Apps & Automate (Payants)
+				        "POWERAPPS_PER_USER", "FLOW_PER_USER",
+				        
+				        // Projet & Visio
+				        "PROJECTPROFESSIONAL", "PROJECTPREMIUM", "PROJECT_P1",
+				        "VISIOCLIENT", "VISIO_PLAN1_DEPT",
+				        
+				        // Sécurité
+				        "AAD_PREMIUM", "AAD_PREMIUM_P2",
+				        "EMS", "EMSPREMIUM", "INTUNE_A",
+				        
+				        // Copilot
+				        "Microsoft_365_Copilot"
+				    },
+				
+				    #"Type Licence Ajouté" = Table.AddColumn(
+				        #"Nom Traduit", 
+				        "TypeLicence", 
+				        each 
+				            if List.Contains(LicencesPayantes, [CodeSKU]) 
+				            then "Payant" 
+				            else "Gratuit",
+				        type text
+				    ),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 5. CALCUL DU STOCK DISPONIBLE
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Stock Disponible Ajouté" = Table.AddColumn(
+				        #"Type Licence Ajouté",
+				        "StockDisponible",
+				        each [LicencesAchetees] - [LicencesConsommees],
+				        Int64.Type
+				    ),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 6. INDICATEUR D'ALERTE STOCK
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Alerte Ajoutée" = Table.AddColumn(
+				        #"Stock Disponible Ajouté",
+				        "AlerteStock",
+				        each 
+				            if [StockDisponible] < 0 then "🔴 Sur-allocation"
+				            else if [StockDisponible] = 0 then "🟡 Stock épuisé"
+				            else "🟢 OK",
+				        type text
+				    ),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 7. TYPAGE FINAL
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Niveau Risque Ajoute" = Table.AddColumn(
+				        #"Alerte Ajoutée",
+				        "NiveauRisqueStock",
+				        each
+				            if [StockDisponible] < 0 then "Depassement"
+				            else if [StockDisponible] = 0 and [LicencesAchetees] > 0 then "Stock epuise"
+				            else if [LicencesAchetees] > 0 and Number.From([StockDisponible]) / Number.From([LicencesAchetees]) <= 0.10 then "Stock critique <=10%"
+				            else "Stable",
+				        type text
+				    ),
+				
+				    #"Type modifié" = Table.TransformColumnTypes(
+				        #"Niveau Risque Ajoute", 
+				        {
+				            {"skuId", type text},
+				            {"CodeSKU", type text},
+				            {"LicencesAchetees", Int64.Type}, 
+				            {"LicencesConsommees", Int64.Type}, 
+				            {"NomProduit", type text},
+				            {"TypeLicence", type text},
+				            {"StockDisponible", Int64.Type},
+				            {"AlerteStock", type text},
+				            {"NiveauRisqueStock", type text}
+				        }
+				    ),
+				
+				    // ═══════════════════════════════════════════════════════════════════
+				    // 8. RÉORGANISATION DES COLONNES
+				    // ═══════════════════════════════════════════════════════════════════
+				    #"Colonnes réorganisées" = Table.ReorderColumns(
+				        #"Type modifié", 
+				        {
+				            "skuId", 
+				            "CodeSKU", 
+				            "NomProduit", 
+				            "TypeLicence", 
+				            "LicencesAchetees", 
+				            "LicencesConsommees",
+				            "StockDisponible",
+				            "AlerteStock",
+				            "NiveauRisqueStock"
+				        }
+				    )
+				
+				in
+				    #"Colonnes réorganisées"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
