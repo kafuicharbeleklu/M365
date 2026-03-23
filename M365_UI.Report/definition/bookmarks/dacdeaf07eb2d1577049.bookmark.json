@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
   "displayName": "Nav_HumainsDesactives",
   "name": "dacdeaf07eb2d1577049",
   "options": {
@@ -489,71 +489,6 @@
               ]
             }
           },
-          "256a79fcfd1a1485f625": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "b1a699e316d0c7540dc5",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "EtatActivite"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "f84b7a47c844a77b0ca4",
-                  "type": "Advanced",
-                  "expression": {
-                    "Aggregation": {
-                      "Expression": {
-                        "Column": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "T_Utilisateurs_Dim"
-                            }
-                          },
-                          "Property": "UserPrincipalName"
-                        }
-                      },
-                      "Function": 5
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Aggregation": {
-                      "Expression": {
-                        "Column": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "T_Utilisateurs_Dim"
-                            }
-                          },
-                          "Property": "UserPrincipalName"
-                        }
-                      },
-                      "Function": 5
-                    }
-                  }
-                }
-              ]
-            }
-          },
           "d8f1ebe5daefcb4ea661": {
             "filters": {
               "byExpr": [
@@ -887,46 +822,6 @@
               "objects": {}
             }
           },
-          "8030dbc87ab90506be3e": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "be6f0bedcc255bcc48e0",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsActifs"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsActifs"
-                    }
-                  }
-                }
-              ]
-            }
-          },
           "0781849f42b2a3099ac6": {
             "filters": {
               "byExpr": [
@@ -1047,51 +942,11 @@
               ]
             }
           },
-          "b5e7555e9ed80b014183": {
+          "18e02ee723e342995a61": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "e7a040306227d6040054",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsJamaisConnectes"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsJamaisConnectes"
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "13b24c306ab625400ecd": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "6379b306e930d300688c",
+                  "name": "fe3af7f343b54b35b828",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1142,11 +997,11 @@
               }
             }
           },
-          "cff18eebc6e8ac5a4392": {
+          "7c987dd0a69bc50ae8d6": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "b5bd8c0107bb0e79e786",
+                  "name": "e35b37334e80b6ca7b43",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1197,11 +1052,11 @@
               }
             }
           },
-          "d590c2deb480ca846ab9": {
+          "e0d8483582d3ec82b9bc": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "8636f63e2040d83c29e9",
+                  "name": "fe762ba5fce89df9cf9b",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
