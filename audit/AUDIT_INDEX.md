@@ -63,3 +63,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-065 | Fix | Liaison des bookmarks P3 humains aux segments visibles | 2026-03-23 | ? Appliqué |
 
 | FIX-066 | Fix | Bookmark dedie pour le KPI comptes desactives avec licence | 2026-03-23 | ? Appliqué |
+| BL-002 | Business Logic | Audit coherence KPI -> bouton -> bookmark | 2026-03-23 | ? Audité |
