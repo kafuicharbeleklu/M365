@@ -51,3 +51,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-052 | Fix | Finalisation de V17 comme baseline recovery interactive complete | 2026-03-23 | ? Appliqué |
 | FIX-053 | Fix | Promotion de V17 comme baseline root et purge des artefacts .pbi locaux | 2026-03-23 | ? Appliqué |
 | FIX-054 | Fix | Refactor workspace autour de V17 et suppression des doublons PBIP obsoletes | 2026-03-23 | ? Appliqué |
+| FIX-055 | Fix | Export de V17 vers le root et nettoyage du workspace | 2026-03-23 | ? Appliqué |

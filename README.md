@@ -6,22 +6,22 @@ Tableau de bord Power BI pour le suivi des utilisateurs Microsoft 365, des licen
 
 Le projet de travail valide est :
 
-- `RECOVERY_UI_SAFE_V17/M365_UI.pbip`
+- `M365_UI.pbip`
 
-Les copies PBIP obsoletes du root ont ete retirees pour limiter les doublons et travailler uniquement sur la base ouvrable.
+La baseline validee de `RECOVERY_UI_SAFE_V17` a ete promue au root pour travailler sur un seul chemin projet.
 
 ## Structure
 
-- `RECOVERY_UI_SAFE_V17/M365_UI.pbip` : point d'entree PBIP actif.
-- `RECOVERY_UI_SAFE_V17/M365_UI.Report/` : pages, visuels, bookmarks, theme.
-- `RECOVERY_UI_SAFE_V17/M365_UI.SemanticModel/` : modele tabulaire (TMDL), mesures DAX, relations.
+- `M365_UI.pbip` : point d'entree PBIP actif.
+- `M365_UI.Report/` : pages, visuels, bookmarks, theme.
+- `M365_UI.SemanticModel/` : modele tabulaire (TMDL), mesures DAX, relations.
 - `audit/` : historique des audits et correctifs.
 
 ## Ouvrir le projet
 
-1. Ouvrir `RECOVERY_UI_SAFE_V17/M365_UI.pbip` dans Power BI Desktop.
+1. Ouvrir `M365_UI.pbip` dans Power BI Desktop.
 2. Verifier les parametres du modele dans :
-   `RECOVERY_UI_SAFE_V17/M365_UI.SemanticModel/definition/expressions.tmdl`
+   `M365_UI.SemanticModel/definition/expressions.tmdl`
 3. S'assurer que les valeurs sensibles restent remplacees par des placeholders avant tout commit.
 
 ## Zones fonctionnelles

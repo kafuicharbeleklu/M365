@@ -5,7 +5,9 @@
 
 > [!IMPORTANT]
 > Base de travail active au 2026-03-23 :
-> `RECOVERY_UI_SAFE_V17/M365_UI.pbip`
+> `M365_UI.pbip`
+>
+> La baseline validee `RECOVERY_UI_SAFE_V17` a ete exportee au root et le dossier recovery a ete nettoye.
 >
 > Les copies PBIP obsolètes du root et l'ancien checkpoint `RECOVERY_UI_SAFE_V13` ont été retirés pour conserver une seule base ouvrable.
 
