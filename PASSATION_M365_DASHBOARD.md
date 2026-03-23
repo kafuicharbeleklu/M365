@@ -3,6 +3,13 @@
 **Date :** 2026-03-04  
 **Dépôt Git :** `git@github.com:kafuicharbeleklu/M365.git`
 
+> [!IMPORTANT]
+> Base de travail active au 2026-03-23 :
+> `RECOVERY_UI_SAFE_V17/M365_UI.pbip`
+>
+> Les copies PBIP obsolètes du root et l'ancien checkpoint `RECOVERY_UI_SAFE_V13` ont été retirés pour conserver une seule base ouvrable.
+
+
 ---
 
 ## 1. Vue d'ensemble du projet
