@@ -216,6 +216,40 @@
                 {
                   "name": "94301ec4070304a97226",
                   "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "m",
+                        "Entity": "_Mesures",
+                        "Type": 2
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 1,
+                            "Left": {
+                              "Measure": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "m"
+                                  }
+                                },
+                                "Property": "LicencesAffectees"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "0"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
                   "expression": {
                     "Measure": {
                       "Expression": {
@@ -223,7 +257,7 @@
                           "Entity": "_Mesures"
                         }
                       },
-                      "Property": "LicencesComptesBloques"
+                      "Property": "LicencesAffectees"
                     }
                   },
                   "howCreated": 1
