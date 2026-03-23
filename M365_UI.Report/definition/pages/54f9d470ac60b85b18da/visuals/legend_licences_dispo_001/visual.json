@@ -44,7 +44,7 @@
                     }
                   },
                   {
-                    "value": "Elevee (<=10%)",
+                    "value": "Elevee (seuil critique)",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "11pt",
@@ -61,7 +61,7 @@
                     }
                   },
                   {
-                    "value": "Moderee (<=25%)",
+                    "value": "Moderee (seuil alerte)",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "11pt",
@@ -78,7 +78,7 @@
                     }
                   },
                   {
-                    "value": "Surveiller (<=50%)",
+                    "value": "Surveiller (seuil surveillance)",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "11pt",

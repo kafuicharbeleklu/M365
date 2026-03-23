@@ -79,7 +79,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Stock critique <=10%'"
+                  "Value": "'Stock critique (seuil dynamique)'"
                 }
               }
             },

@@ -97,7 +97,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Utilisateurs Inactifs (>90j)'"
+                  "Value": "'Utilisateurs Inactifs (seuil dynamique)'"
                 }
               }
             },

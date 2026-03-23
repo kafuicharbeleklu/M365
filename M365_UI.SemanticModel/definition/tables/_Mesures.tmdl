@@ -781,10 +781,12 @@ table _Mesures
 			VAR _depassement = [UX_ProduitsEnDepassement]
 			VAR _epuise = [UX_ProduitsStockEpuise]
 			VAR _critique = [UX_ProduitsStockCritique]
+			VAR _seuilCritiquePct =
+				SELECTEDVALUE(T_Parametres_Dim[SeuilStockCritiquePct], 10)
 			RETURN
 				"Priorite capacite | Depassement: " & FORMAT(_depassement, "0")
 					& " | Stock epuise: " & FORMAT(_epuise, "0")
-					& " | Critique <=10%: " & FORMAT(_critique, "0")
+					& " | Critique <=" & FORMAT(_seuilCritiquePct, "0") & "%: " & FORMAT(_critique, "0")
 		displayFolder: UX
 		lineageTag: ux-bandeau-risque-licences-001
 
@@ -800,6 +802,14 @@ table _Mesures
 				SELECTEDVALUE(T_Parametres_Dim[ScoreBandStandard], 4)
 			VAR _scoreBandMinimal =
 				SELECTEDVALUE(T_Parametres_Dim[ScoreBandMinimal], 1)
+			VAR _labelInactif =
+				"Inactif >" & FORMAT(_seuilInactiviteJours, "0") & "j"
+			VAR _labelPowerUser =
+				"Intensif (" & FORMAT(_scoreBandPowerUser, "0") & "-10)"
+			VAR _labelStandard =
+				"Standard (" & FORMAT(_scoreBandStandard, "0") & "-" & FORMAT(_scoreBandPowerUser - 1, "0") & ")"
+			VAR _labelMinimal =
+				"Minimal (" & FORMAT(_scoreBandMinimal, "0") & "-" & FORMAT(_scoreBandStandard - 1, "0") & ")"
 			VAR _activiteUser =
 				FILTER(
 					ALL(T_Activite_M365),
@@ -826,10 +836,10 @@ table _Mesures
 					SWITCH(
 						TRUE(),
 						ISBLANK(_dateRef), "Aucune donnee usage",
-						NOT ISBLANK(_joursInactivite) && _joursInactivite > _seuilInactiviteJours, "Inactif >90j",
-						_score >= _scoreBandPowerUser, "Intensif (7-10)",
-						_score >= _scoreBandStandard, "Standard (4-6)",
-						_score >= _scoreBandMinimal, "Minimal (1-3)",
+						NOT ISBLANK(_joursInactivite) && _joursInactivite > _seuilInactiviteJours, _labelInactif,
+						_score >= _scoreBandPowerUser, _labelPowerUser,
+						_score >= _scoreBandStandard, _labelStandard,
+						_score >= _scoreBandMinimal, _labelMinimal,
 						"Aucun usage (0)"
 					)
 				)
@@ -1161,7 +1171,10 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_lic_dispo_lect = "Negatif = depassement. 0 = epuise. < 10% = critique"
+	measure TT_p1_lic_dispo_lect =
+			"Negatif = depassement. 0 = epuise. <= "
+			& FORMAT(SELECTEDVALUE(T_Parametres_Dim[SeuilStockCritiquePct], 10), "0")
+			& "% = critique"
 		displayFolder: Tooltips
 		lineageTag: tt-p1-lic-dispo-lect
 
@@ -1209,7 +1222,10 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_dispo_lect = "Negatif = depassement contractuel. < 10% = critique"
+	measure TT_p2_dispo_lect =
+			"Negatif = depassement contractuel. <= "
+			& FORMAT(SELECTEDVALUE(T_Parametres_Dim[SeuilStockCritiquePct], 10), "0")
+			& "% = critique"
 		displayFolder: Tooltips
 		lineageTag: tt-p2-dispo-lect
 
@@ -1287,7 +1303,10 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_actifs_ctx = "Comptes humains avec activite M365 recente (< 90j)"
+	measure TT_p3_actifs_ctx =
+			"Comptes humains avec activite M365 recente (<= "
+			& FORMAT(SELECTEDVALUE(T_Parametres_Dim[SeuilInactiviteJours], 90), "0")
+			& "j)"
 		displayFolder: Tooltips
 		lineageTag: tt-p3-actifs-ctx
 
