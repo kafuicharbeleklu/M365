@@ -49,3 +49,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-050 | Fix | Reactivation de Nav_TechniquesInactives avec bookmark corrige sur recovery V16 | 2026-03-23 | ? Appliqué |
 | FIX-051 | Fix | Reactivation de Nav_UtilisateursFantomes avec bookmark corrige sur recovery V17 | 2026-03-23 | ? Appliqué |
 | FIX-052 | Fix | Finalisation de V17 comme baseline recovery interactive complete | 2026-03-23 | ? Appliqué |
+| FIX-053 | Fix | Promotion de V17 comme baseline root et purge des artefacts .pbi locaux | 2026-03-23 | ? Appliqué |
