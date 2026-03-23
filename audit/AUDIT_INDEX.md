@@ -44,3 +44,8 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-045 | Fix | Reactivation uniquement du reset P2 sur recovery V11 | 2026-03-23 | ? Appliqué |
 | FIX-046 | Fix | Reactivation uniquement du reset P1 sur recovery V12 | 2026-03-23 | ? Appliqué |
 | FIX-047 | Fix | Reactivation uniquement du reset drillthrough sur recovery V13 | 2026-03-23 | ? Appliqué |
+| FIX-048 | Fix | Reactivation de Nav_HumainsActifs avec bookmark corrige sur recovery V14 | 2026-03-23 | ? Appliqué |
+| FIX-049 | Fix | Reactivation de Nav_TechniquesActives avec bookmark corrige sur recovery V15 | 2026-03-23 | ? Appliqué |
+| FIX-050 | Fix | Reactivation de Nav_TechniquesInactives avec bookmark corrige sur recovery V16 | 2026-03-23 | ? Appliqué |
+| FIX-051 | Fix | Reactivation de Nav_UtilisateursFantomes avec bookmark corrige sur recovery V17 | 2026-03-23 | ? Appliqué |
+| FIX-052 | Fix | Finalisation de V17 comme baseline recovery interactive complete | 2026-03-23 | ? Appliqué |

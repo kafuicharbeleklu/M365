@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "M365_UI"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "35558b34-29ad-4d17-a9f6-ac0f63614e25"
+  }
+}

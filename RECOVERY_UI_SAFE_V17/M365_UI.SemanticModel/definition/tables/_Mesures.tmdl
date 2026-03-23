@@ -1,0 +1,1390 @@
+table _Mesures
+	lineageTag: a850445f-f717-4463-a1d3-3d0a58d87076
+
+	measure TotalUtilisateurs = [NbHumainsTotal] + [NbBoitesTotal]
+		formatString: 0
+		lineageTag: c66486e4-de02-4215-87fd-41094f88a934
+
+	measure StockLicences = COALESCE(SUM(T_Produits_Dim[LicencesAchetees]), 0)
+		formatString: 0
+		lineageTag: 202b2563-2763-424c-9f16-716b53517aef
+
+	/// Nombre de licences affectees (unique par AffectationID pour eviter les doublons de fanout)
+	measure LicencesAffectees = COALESCE(DISTINCTCOUNT(T_Affectations_Fact[AffectationID]), 0)
+		formatString: 0
+		lineageTag: c9dd86b9-6901-43b1-a18a-5d0fcdc6444a
+
+	measure LicencesDisponibles =
+			VAR _stock = COALESCE([StockLicences], 0)
+			VAR _affectees = COALESCE([LicencesAffectees], 0)
+			RETURN
+			_stock - _affectees
+		formatString: 0
+		lineageTag: c93ab035-a7e9-4aa5-a9ef-73a571e4f218
+
+	measure NombreProduits = DISTINCTCOUNT(T_Produits_Dim[NomProduit])
+		formatString: 0
+		lineageTag: 050a0ed5-8639-4d4c-aaf7-17ffff7cd409
+
+	measure TauxUtilisation = DIVIDE([LicencesAffectees], [StockLicences], 0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 92b91ee1-e415-469f-affd-1fb7438e230e
+
+	/// Total comptes humains (TypeCompte = "Utilisateur"), toutes catégories.
+	/// Exclut les comptes techniques (EtatActivite = BLANK pour ceux-ci).
+	measure NbHumainsTotal =
+			COALESCE(
+				[NbHumainsActifs]
+				+ [NbHumainsInactifs]
+				+ [NbHumainsJamaisConnectes]
+				+ [NbInactifsM365]
+				+ [NbHumainsDesactives],
+				0
+			)
+		formatString: 0
+		lineageTag: e14dc89f-4a3b-4283-94e2-021e753627a5
+
+	measure NbHumainsActifs =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Actif"
+					)
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Actif"
+					),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
+		formatString: 0
+		lineageTag: e7698b1d-b19f-4138-a8e2-e7447d74d67b
+
+	measure NbHumainsInactifs =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif (>90j)"
+					)
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif (>90j)"
+					),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
+		formatString: 0
+		lineageTag: 5a890ccd-4f5f-4bcc-aafe-1862cab49265
+
+	measure NbHumainsJamaisConnectes =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE(),
+					ISBLANK(T_Utilisateurs_Dim[LastSignIn])
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE(),
+					ISBLANK(T_Utilisateurs_Dim[LastSignIn]),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
+		formatString: 0
+		lineageTag: 35b10d51-618f-45eb-8b4c-452c02750c1c
+
+	measure NbHumainsDesactives =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE()
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE(),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
+		formatString: 0
+		lineageTag: ba0253cf-d1fd-4af9-b836-9ec65a10d6ae
+
+	measure NbBoitesTotal =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Technique"
+				)
+			VAR _scoped =
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Technique",
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
+		formatString: 0
+		lineageTag: 4f8e1014-8fbe-4686-88eb-59651ad6bfec
+
+	measure NbBoitesInactives =
+			COALESCE(
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Technique",
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE()
+				),
+				0
+			)
+		formatString: 0
+		lineageTag: 252cc12a-eaed-44ab-baa2-e5716d65883e
+
+	measure NbBoitesActives =
+			COALESCE(
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Technique",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE()
+				),
+				0
+			)
+		formatString: 0
+		lineageTag: 721c0db6-9da2-4405-bf14-696a7a768841
+
+	measure LicencesInactives =
+			VAR _affectees = COALESCE([LicencesAffectees], 0)
+			VAR _actives = COALESCE([LicencesActives], 0)
+			RETURN
+			MAX(0, _affectees - _actives)
+		formatString: 0
+		lineageTag: bc241cca-a9cb-4b23-aa44-116c69afe4a2
+
+	measure LicencesActives =
+			VAR _actives =
+				CALCULATE(
+					[LicencesAffectees],
+					TREATAS(
+						CALCULATETABLE(
+							VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
+							FILTER(
+								T_Utilisateurs_Dim,
+								TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Actif"
+							)
+						),
+						T_Affectations_Fact[UserPrincipalName]
+					)
+				)
+			RETURN
+			COALESCE(_actives, 0)
+		formatString: 0
+		lineageTag: ebbf9efb-9959-4a33-85ae-9250badf11e9
+
+	measure TauxActiviteUtilisateurs =
+			VAR _baseActiveAD = MAX(0, [NbHumainsTotal] - [NbHumainsDesactives])
+			RETURN
+			DIVIDE([NbHumainsActifs], _baseActiveAD, 0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 6eb920b2-fbc7-468e-8b0c-3c3bfec39bbc
+
+	measure CiblesNettoyage =
+			CALCULATE(
+				COUNTROWS(T_Utilisateurs_Dim),
+				T_Utilisateurs_Dim[IsCible] = TRUE()
+			)
+		formatString: 0
+		lineageTag: 1dff5eaa-1029-474e-b468-877e79b6be82
+
+	measure LicencesComptesBloques =
+			COALESCE(
+				CALCULATE(
+					[LicencesAffectees],
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE()
+				),
+				0
+			)
+		formatString: 0
+		lineageTag: d03af568-c222-4dbf-abdf-a3895f900095
+
+	measure TauxGaspillage =
+			
+			DIVIDE([LicencesInactives], [LicencesAffectees], 0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: c02aa7e8-e8fc-4b77-ad95-16d3640338e3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure NbPowerUsers =
+			COALESCE(
+				CALCULATE(
+				    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+				    T_Activite_M365[NiveauUtilisation] = "Power User"
+				),
+				0
+			)
+		formatString: 0
+		lineageTag: 02885d39-fb82-4eba-95ed-4cc37fc1a865
+
+	measure NbUtilisateursStandards =
+			COALESCE(
+				CALCULATE(
+				    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+				    T_Activite_M365[NiveauUtilisation] = "Utilisateur Standard"
+				),
+				0
+			)
+		formatString: 0
+		lineageTag: a21d4898-984c-4e2d-b784-4d6b93f0c5de
+
+	measure NbUtilisateursMinimaux =
+			COALESCE(
+				CALCULATE(
+				    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+				    T_Activite_M365[NiveauUtilisation] = "Utilisateur Minimal"
+				),
+				0
+			)
+		formatString: 0
+		lineageTag: ae69a1bf-fcd2-401d-8f2d-edb2d20c4e8d
+
+	measure NbNonUtilisateurs =
+			COALESCE(
+				CALCULATE(
+				    DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+				    T_Activite_M365[NiveauUtilisation] = "Non Utilisateur"
+				),
+				0
+			)
+		formatString: 0
+		lineageTag: d64022fe-c2fe-4c45-a27e-88083d7f3f21
+
+	/// Score moyen d'utilisation par utilisateur distinct (dernier rapport)
+	measure ScoreMoyenUtilisation =
+			VAR DerniereDate = MAX(T_Activite_M365[DateRapport])
+			RETURN
+			CALCULATE(
+			    AVERAGE(T_Activite_M365[ScoreUtilisation]),
+			    T_Activite_M365[DateRapport] = DerniereDate
+			)
+		formatString: 0.00
+		lineageTag: 130df3ab-7397-4e21-8f74-58940cbb6f92
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'adoption â€” App_Teams (utilisateurs distincts)
+	measure TauxAdoptionTeams =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[App_Teams] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 932409fc-c616-4f12-b3a3-4c634d90e18c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'adoption â€” App_Outlook (utilisateurs distincts)
+	measure TauxAdoptionOutlook =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[App_Outlook] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 190ee47e-68bd-41ac-9628-f3dd692a973f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'adoption â€” App_Word (utilisateurs distincts)
+	measure TauxAdoptionWord =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[App_Word] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 6f630b66-4d85-44c3-8a97-0235482f9538
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'adoption â€” App_Excel (utilisateurs distincts)
+	measure TauxAdoptionExcel =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[App_Excel] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 968bec22-acc9-4deb-9f5a-3010c89898f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'adoption â€” App_PowerPoint (utilisateurs distincts)
+	measure TauxAdoptionPowerPoint =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[App_PowerPoint] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 7267ce25-e65f-40cb-b886-2e71264ff11b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'adoption â€” App_OneNote (utilisateurs distincts)
+	measure TauxAdoptionOneNote =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[App_OneNote] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 593d366a-555e-472d-a228-6fcac949cb65
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'utilisation plateforme â€” Utilise_Windows (utilisateurs distincts)
+	measure TauxUtilisationWindows =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[Utilise_Windows] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: b9d46d27-7985-4758-95a0-236912127ea0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'utilisation plateforme â€” Utilise_Mac (utilisateurs distincts)
+	measure TauxUtilisationMac =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[Utilise_Mac] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: ada99afc-6594-44bc-887e-fbfe29510fb6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'utilisation plateforme â€” Utilise_Mobile (utilisateurs distincts)
+	measure TauxUtilisationMobile =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[Utilise_Mobile] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 07b5bd8e-313c-48f8-8be6-046d30b516cf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Taux d'utilisation plateforme â€” Utilise_Web (utilisateurs distincts)
+	measure TauxUtilisationWeb =
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Activite_M365[UserPrincipalName]),
+			        T_Activite_M365[Utilise_Web] = TRUE()
+			    ),
+			    [NbHumainsActifs],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 5c56a977-5f65-4257-8073-9228ae31d299
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Utilisateurs actifs AD sans aucune activitÃ© M365 enregistrÃ©e
+	measure NbUtilisateursFantomes =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _baseUsersActifsAD =
+				CALCULATETABLE(
+					VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE()
+				)
+			VAR _scopedUsersActifsAD =
+				CALCULATETABLE(
+					VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE(),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			VAR UsersAvecActivite =
+				CALCULATETABLE(
+					VALUES(T_Activite_M365[UserPrincipalName]),
+					REMOVEFILTERS(T_Affectations_Fact)
+				)
+			VAR _base = COUNTROWS(EXCEPT(_baseUsersActifsAD, UsersAvecActivite))
+			VAR _scoped = COUNTROWS(EXCEPT(_scopedUsersActifsAD, UsersAvecActivite))
+			RETURN
+			COALESCE(IF(_isProductScoped, _scoped, _base), 0)
+		lineageTag: 19b607c3-d56b-4828-9738-0724ec264dea
+
+	measure NbLignesNonClassifiees =
+			// Mesure de contrÃ´le : doit retourner 0 si toutes les lignes sont classifiÃ©es
+			COUNTROWS(T_Utilisateurs_Dim) - [NbHumainsTotal] - [NbBoitesTotal]
+		formatString: 0
+		lineageTag: 1fe5aee1-4b08-4acf-aadd-03633f80c722
+
+	measure DT_Nom = COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[DisplayName]), "- Selectionnez un utilisateur -")
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-nom-v42-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_Email = COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName]), "-")
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-email-v42-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_Departement = COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[Department]), "-")
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-dept-v42-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_StatutAD = COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[Statut AD]), "-")
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-statut-v42-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_EtatActivite =
+			VAR _raw = SELECTEDVALUE(T_Utilisateurs_Dim[EtatActivite])
+			VAR _enabled = SELECTEDVALUE(T_Utilisateurs_Dim[AccountEnabled])
+			VAR _type = SELECTEDVALUE(T_Utilisateurs_Dim[TypeCompte])
+			RETURN
+			IF(
+				NOT(ISBLANK(_raw)),
+				_raw,
+				IF(
+					_enabled = FALSE(),
+					"Desactive AD",
+					IF(_type = "Technique", "Compte Technique", "-")
+				)
+			)
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-etat-v42-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure NbInactifsM365 =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif M365"
+					)
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					FILTER(
+						T_Utilisateurs_Dim,
+						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif M365"
+					),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
+		displayFolder: Utilisateurs
+		lineageTag: nb-inactifs-m365-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UsersOffice365E3 =
+			COALESCE(
+				CALCULATE(
+					DISTINCTCOUNT(T_Affectations_Fact[UserPrincipalName]),
+					T_Affectations_Fact[CodeSKU] = "ENTERPRISEPACK"
+				),
+				0
+			)
+		displayFolder: Audit Produits
+		lineageTag: c4471f8f-37eb-45fb-a97c-2ddf956bf80e
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UsersMicrosoft365E3 =
+			COALESCE(
+				CALCULATE(
+					DISTINCTCOUNT(T_Affectations_Fact[UserPrincipalName]),
+					T_Affectations_Fact[CodeSKU] = "SPE_E3"
+				),
+				0
+			)
+		displayFolder: Audit Produits
+		lineageTag: ccf11b6a-c4f0-4d87-a2a3-f3ddd10234b7
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UsersAvecLesDeuxE3 =
+			VAR UsersO365E3 =
+				CALCULATETABLE(
+					VALUES(T_Affectations_Fact[UserPrincipalName]),
+					T_Affectations_Fact[CodeSKU] = "ENTERPRISEPACK"
+				)
+			VAR UsersM365E3 =
+				CALCULATETABLE(
+					VALUES(T_Affectations_Fact[UserPrincipalName]),
+					T_Affectations_Fact[CodeSKU] = "SPE_E3"
+				)
+			RETURN
+			COALESCE(COUNTROWS(INTERSECT(UsersO365E3, UsersM365E3)), 0)
+		displayFolder: Audit Produits
+		lineageTag: 6f15ea88-faa6-47ce-b2c6-57d9a3f73d84
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DepassementCapacite =
+			VAR _stock = COALESCE([StockLicences], 0)
+			VAR _affectees = COALESCE([LicencesAffectees], 0)
+			RETURN
+			MAX(0, _affectees - _stock)
+		formatString: 0
+		lineageTag: 8f2559f8-3e06-4887-9bc7-f8013669d5c4
+
+	measure DepassementCapaciteFlag = IF([LicencesDisponibles] < 0, 1, 0)
+		formatString: 0
+		lineageTag: 6ec4004a-9dfa-4adf-9ff6-c5bb0212f94f
+
+	measure NiveauAlerteDisponibilite =
+			VAR _scopeProduit = ISINSCOPE(T_Produits_Dim[NomProduit])
+			VAR _stock = COALESCE([StockLicences], 0)
+			VAR _dispo = COALESCE([LicencesDisponibles], 0)
+			VAR _affectees = COALESCE([LicencesAffectees], 0)
+			VAR _ratioDispo = DIVIDE(_dispo, _stock, 0)
+			RETURN
+			IF(
+				NOT(_scopeProduit),
+				0,
+				SWITCH(
+					TRUE(),
+					(_stock = 0 && _affectees > 0) || _dispo < 0, 4,
+					_ratioDispo <= 0.10, 3,
+					_ratioDispo <= 0.25, 2,
+					_ratioDispo <= 0.50, 1,
+					0
+				)
+			)
+		formatString: 0
+		lineageTag: 86209fa6-45f3-4b7b-887a-c645422f8cc9
+
+	measure UX_ContexteFiltres =
+			VAR _produit = SELECTEDVALUE(T_Produits_Dim[NomProduit], "Tous")
+			VAR _etat = SELECTEDVALUE(T_Utilisateurs_Dim[EtatActivite], "Tous")
+			VAR _pays = SELECTEDVALUE(T_Utilisateurs_Dim[CountryOrRegion], "Tous")
+			VAR _departement = SELECTEDVALUE(T_Utilisateurs_Dim[Department], "Tous")
+			VAR _p = IF(LEN(_produit) > 24, LEFT(_produit, 24) & "...", _produit)
+			VAR _e = IF(LEN(_etat) > 18, LEFT(_etat, 18) & "...", _etat)
+			VAR _pa = IF(LEN(_pays) > 16, LEFT(_pays, 16) & "...", _pays)
+			VAR _d = IF(LEN(_departement) > 16, LEFT(_departement, 16) & "...", _departement)
+			RETURN
+			"Filtres | Prod: " & _p
+			& " | Etat: " & _e
+			& " | Pays: " & _pa
+			& " | Dept: " & _d
+		displayFolder: UX
+		lineageTag: ux-contexte-filtres-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UX_DerniereMiseAJour =
+			VAR _dateActivite = MAX(T_Activite_M365[DateRapport])
+			VAR _dateUsers = MAX(T_Utilisateurs_Dim[WhenCreated])
+			VAR _dateRef = COALESCE(_dateActivite, _dateUsers)
+			RETURN
+			"MAJ: " & IF(ISBLANK(_dateRef), "N/A", FORMAT(_dateRef, "yyyy-MM-dd"))
+		displayFolder: UX
+		lineageTag: ux-derniere-maj-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UX_ProduitsEnDepassement =
+			COALESCE(
+				COUNTROWS(
+					FILTER(
+						VALUES(T_Produits_Dim[NomProduit]),
+						[LicencesDisponibles] < 0
+					)
+				),
+				0
+			)
+		formatString: 0
+		displayFolder: UX
+		lineageTag: ux-produits-depassement-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UX_ProduitsStockEpuise =
+			COALESCE(
+				COUNTROWS(
+					FILTER(
+						VALUES(T_Produits_Dim[NomProduit]),
+						[StockLicences] > 0
+							&& [LicencesDisponibles] = 0
+					)
+				),
+				0
+			)
+		formatString: 0
+		displayFolder: UX
+		lineageTag: ux-produits-stock-epuise-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UX_ProduitsStockCritique =
+			COALESCE(
+				COUNTROWS(
+					FILTER(
+						VALUES(T_Produits_Dim[NomProduit]),
+						VAR _stock = [StockLicences]
+						VAR _dispo = [LicencesDisponibles]
+						RETURN
+							_stock > 0
+								&& _dispo > 0
+								&& DIVIDE(_dispo, _stock, 0) <= 0.10
+					)
+				),
+				0
+			)
+		formatString: 0
+		displayFolder: UX
+		lineageTag: ux-produits-stock-critique-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UX_NiveauRisqueLicences =
+			VAR _depassement = [UX_ProduitsEnDepassement]
+			VAR _epuise = [UX_ProduitsStockEpuise]
+			VAR _critique = [UX_ProduitsStockCritique]
+			RETURN
+				SWITCH(
+					TRUE(),
+					_depassement > 0, "Critique",
+					_epuise > 0 || _critique > 0, "A surveiller",
+					"Stable"
+				)
+		displayFolder: UX
+		lineageTag: ux-niveau-risque-licences-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UX_BandeauRisqueLicences =
+			VAR _depassement = [UX_ProduitsEnDepassement]
+			VAR _epuise = [UX_ProduitsStockEpuise]
+			VAR _critique = [UX_ProduitsStockCritique]
+			RETURN
+				"Priorite capacite | Depassement: " & FORMAT(_depassement, "0")
+					& " | Stock epuise: " & FORMAT(_epuise, "0")
+					& " | Critique <=10%: " & FORMAT(_critique, "0")
+		displayFolder: UX
+		lineageTag: ux-bandeau-risque-licences-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_NiveauUtilisation =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _activiteUser =
+				FILTER(
+					ALL(T_Activite_M365),
+					LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+				)
+			VAR _dateRef =
+				MAXX(
+					FILTER(_activiteUser, NOT ISBLANK(T_Activite_M365[DateRapport])),
+					T_Activite_M365[DateRapport]
+				)
+			VAR _ligneRecente =
+				TOPN(
+					1,
+					FILTER(_activiteUser, T_Activite_M365[DateRapport] = _dateRef),
+					T_Activite_M365[ScoreUtilisation], DESC,
+					T_Activite_M365[NbAppsUtilisees], DESC
+				)
+			VAR _score = COALESCE(MAXX(_ligneRecente, T_Activite_M365[ScoreUtilisation]), 0)
+			VAR _joursInactivite = MAXX(_ligneRecente, T_Activite_M365[JoursInactivite])
+			RETURN
+				IF(
+					ISBLANK(_upnNorm),
+					"-",
+					SWITCH(
+						TRUE(),
+						ISBLANK(_dateRef), "Aucune donnee usage",
+						NOT ISBLANK(_joursInactivite) && _joursInactivite > 90, "Inactif >90j",
+						_score >= 7, "Intensif (7-10)",
+						_score >= 4, "Standard (4-6)",
+						_score >= 1, "Minimal (1-3)",
+						"Aucun usage (0)"
+					)
+				)
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-niveau-utilisation-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_DateDerniereActivite =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _activiteUser =
+				FILTER(
+					ALL(T_Activite_M365),
+					LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+				)
+			VAR _dateActiviteApp =
+				MAXX(
+					FILTER(
+						_activiteUser,
+						NOT ISBLANK(T_Activite_M365[DateDerniereActivite])
+							&& (
+								COALESCE(T_Activite_M365[NbAppsUtilisees], 0) > 0
+								|| COALESCE(T_Activite_M365[ScoreUtilisation], 0) > 0
+							)
+					),
+					T_Activite_M365[DateDerniereActivite]
+				)
+			RETURN
+				IF(
+					ISBLANK(_upnNorm) || ISBLANK(_dateActiviteApp),
+					"-",
+					FORMAT(_dateActiviteApp, "yyyy-MM-dd")
+				)
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-date-derniere-activite-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_ScoreUtilisation =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _activiteUser =
+				FILTER(
+					ALL(T_Activite_M365),
+					LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+				)
+			VAR _dateRef =
+				MAXX(
+					FILTER(_activiteUser, NOT ISBLANK(T_Activite_M365[DateRapport])),
+					T_Activite_M365[DateRapport]
+				)
+			VAR _ligneRecente =
+				TOPN(
+					1,
+					FILTER(_activiteUser, T_Activite_M365[DateRapport] = _dateRef),
+					T_Activite_M365[ScoreUtilisation], DESC,
+					T_Activite_M365[NbAppsUtilisees], DESC
+				)
+			VAR _score = MAXX(_ligneRecente, T_Activite_M365[ScoreUtilisation])
+			RETURN
+				IF(ISBLANK(_upnNorm), 0, COALESCE(_score, 0))
+		formatString: 0
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-score-utilisation-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_NbAppsUtilisees =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _activiteUser =
+				FILTER(
+					ALL(T_Activite_M365),
+					LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+				)
+			VAR _dateRef =
+				MAXX(
+					FILTER(_activiteUser, NOT ISBLANK(T_Activite_M365[DateRapport])),
+					T_Activite_M365[DateRapport]
+				)
+			VAR _ligneRecente =
+				TOPN(
+					1,
+					FILTER(_activiteUser, T_Activite_M365[DateRapport] = _dateRef),
+					T_Activite_M365[NbAppsUtilisees], DESC,
+					T_Activite_M365[ScoreUtilisation], DESC
+				)
+			VAR _nbApps = MAXX(_ligneRecente, T_Activite_M365[NbAppsUtilisees])
+			RETURN
+				IF(ISBLANK(_upnNorm), 0, COALESCE(_nbApps, 0))
+		formatString: 0
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-nb-apps-utilisees-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_UPN_Courant =
+			VAR _upnFromUser = SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName])
+			VAR _displayName = SELECTEDVALUE(T_Utilisateurs_Dim[DisplayName])
+			VAR _upnFromDisplay =
+				IF(
+					NOT ISBLANK(_displayName),
+					CALCULATE(
+						MIN(T_Utilisateurs_Dim[UserPrincipalName]),
+						FILTER(
+							ALL(T_Utilisateurs_Dim),
+							T_Utilisateurs_Dim[DisplayName] = _displayName
+						)
+					)
+				)
+			VAR _upnFromAffectation = SELECTEDVALUE(T_Affectations_Fact[UserPrincipalName])
+			VAR _upnFromActivite = SELECTEDVALUE(T_Activite_M365[UserPrincipalName])
+			VAR _upnFinal = COALESCE(_upnFromUser, _upnFromDisplay, _upnFromAffectation, _upnFromActivite)
+			RETURN
+				IF(ISBLANK(_upnFinal), BLANK(), LOWER(TRIM(_upnFinal)))
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-upn-courant-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_DateDerniereAuthentification =
+			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _dateAuth =
+				MAXX(
+					FILTER(
+						ALL(T_Utilisateurs_Dim),
+						LOWER(TRIM(T_Utilisateurs_Dim[UserPrincipalName])) = _upnNorm
+					),
+					T_Utilisateurs_Dim[LastSignIn]
+				)
+			RETURN
+				IF(
+					ISBLANK(_upnNorm) || ISBLANK(_dateAuth),
+					"-",
+					FORMAT(_dateAuth, "yyyy-MM-dd HH:mm")
+				)
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-date-derniere-auth-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure NomUtilisateurAffiche =
+			VAR _nom = SELECTEDVALUE(T_Utilisateurs_Dim[DisplayNameAffiche])
+			VAR _upnDim = SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName])
+			VAR _upnFact = SELECTEDVALUE(T_Affectations_Fact[UserPrincipalName])
+			RETURN
+			COALESCE(_nom, _upnDim, _upnFact, "(Utilisateur non mappe)")
+		lineageTag: 00cd6ceb-8ead-4938-a716-3cc5ee00baf5
+
+	measure FlagLigneCompteDesactive =
+			VAR _upn =
+				COALESCE(
+					SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName]),
+					SELECTEDVALUE(T_Affectations_Fact[UserPrincipalName])
+				)
+			VAR _isDisabled =
+				COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[AccountEnabled]), TRUE()) = FALSE()
+			VAR _hasLicence = [LicencesAffectees] > 0
+			RETURN
+			IF(NOT ISBLANK(_upn) && _isDisabled && _hasLicence, 1, 0)
+		formatString: 0
+		lineageTag: 81b1022e-6396-4ac2-bdab-c6da8fc6e0d9
+
+	/// ============================================================
+	/// B1 — Mesures pour page Detail Produit (drill-through)
+	/// ============================================================
+	/// Nombre d'utilisateurs affectes a un produit donne
+	measure DT_Produit_NbUtilisateurs = DISTINCTCOUNT(T_Affectations_Fact[UserPrincipalName])
+		formatString: 0
+		displayFolder: Detail Produit
+		lineageTag: dt-produit-nb-utilisateurs-001
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Taux de remplissage d'un produit (affectes / stock)
+	measure DT_Produit_TauxRemplissage =
+			VAR _stock = SELECTEDVALUE(T_Produits_Dim[TotalUnits])
+			VAR _affectes = DISTINCTCOUNT(T_Affectations_Fact[UserPrincipalName])
+			RETURN
+				IF(ISBLANK(_stock) || _stock = 0, 0, DIVIDE(_affectes, _stock, 0))
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Detail Produit
+		lineageTag: dt-produit-taux-remplissage-001
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Marge restante sur un produit
+	measure DT_Produit_MargeRestante =
+			VAR _stock = COALESCE(SELECTEDVALUE(T_Produits_Dim[TotalUnits]), 0)
+			VAR _affectes = DISTINCTCOUNT(T_Affectations_Fact[UserPrincipalName])
+			RETURN
+				_stock - _affectes
+		formatString: 0
+		displayFolder: Detail Produit
+		lineageTag: dt-produit-marge-restante-001
+
+		annotation SummarizationSetBy = Automatic
+
+	/// ============================================================
+	/// B2 — Mesures pour historique activite utilisateur
+	/// ============================================================
+	/// Score utilisation par date de rapport (pour line chart temporel)
+	measure DT_Historique_Score =
+			VAR _upnNorm = [DT_UPN_Courant]
+			RETURN
+				IF(
+					ISBLANK(_upnNorm),
+					BLANK(),
+					CALCULATE(
+						AVERAGE(T_Activite_M365[ScoreUtilisation]),
+						FILTER(
+							ALL(T_Activite_M365),
+							LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+						)
+					)
+				)
+		formatString: 0.0
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-historique-score-001
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Nombre d'apps par date de rapport (pour line chart temporel)
+	measure DT_Historique_NbApps =
+			VAR _upnNorm = [DT_UPN_Courant]
+			RETURN
+				IF(
+					ISBLANK(_upnNorm),
+					BLANK(),
+					CALCULATE(
+						AVERAGE(T_Activite_M365[NbAppsUtilisees]),
+						FILTER(
+							ALL(T_Activite_M365),
+							LOWER(TRIM(T_Activite_M365[UserPrincipalName])) = _upnNorm
+						)
+					)
+				)
+		formatString: 0
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-historique-nbapps-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_comptes_ctx = "Tous comptes AD : humains + techniques (salles, services, partagees)"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-comptes-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_comptes_lect = "Decomposez par type sur la page Analyse Utilisateur"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-comptes-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_actifs_ctx = "Au moins 1 activite M365 dans les 90 derniers jours"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-actifs-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_actifs_lect = "Objectif > 80% du total. En dessous : investiguer sur P3"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-actifs-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_inactifs_ctx = "Aucune activite M365 detectee depuis plus de 90 jours"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-inactifs-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_inactifs_lect = "Si > 20% du total : planifier une campagne de revue"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-inactifs-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_desactives_ctx = "Comptes bloques dans Azure AD (AccountEnabled = FALSE)"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-desactives-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_desactives_lect = "Verifier si des licences sont encore affectees"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-desactives-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_stock_ctx = "Total des licences achetees (prepaidUnits enabled)"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-stock-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_stock_lect = "Comparer avec Affectees pour calculer le taux d'utilisation"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-stock-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_lic_actives_ctx = "Licences sur des comptes avec activite M365 recente"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-lic-actives-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_lic_actives_lect = "Ratio Actives/Affectees = efficacite d'usage reelle"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-lic-actives-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_lic_inactives_ctx = "Licences affectees mais sans activite detectee"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-lic-inactives-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_lic_inactives_lect = "Chaque licence inactive = cout sans usage. A recuperer"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-lic-inactives-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_lic_dispo_ctx = "Stock total moins licences affectees"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-lic-dispo-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p1_lic_dispo_lect = "Negatif = depassement. 0 = epuise. < 10% = critique"
+		displayFolder: Tooltips
+		lineageTag: tt-p1-lic-dispo-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_stock_ctx = "Budget total de licences achetees"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-stock-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_stock_lect = "Base de calcul du taux d'utilisation global"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-stock-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_affectees_ctx = "Licences distribuees aux utilisateurs"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-affectees-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_affectees_lect = "Taux = Affectees / Stock. Si > 100% = depassement"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-affectees-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_actives_ctx = "Licences utilisees activement"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-actives-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_actives_lect = "Ratio Actives/Affectees = efficacite reelle d'usage"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-actives-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_dispo_ctx = "Licences restantes disponibles a l'affectation"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-dispo-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_dispo_lect = "Negatif = depassement contractuel. < 10% = critique"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-dispo-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_inactives_ctx = "Licences affectees sans activite associee"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-inactives-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_inactives_lect = "Potentiel d'economie immediat. A desaffecter"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-inactives-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_produits_ctx = "Nombre de produits M365 distincts dans le tenant"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-produits-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_produits_lect = "Plus de produits = plus de complexite a gerer"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-produits-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_critique_ctx = "Produits avec moins de 10% du stock restant"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-critique-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_critique_lect = "Planifier un reapprovisionnement ou desaffecter"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-critique-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_epuise_ctx = "Zero licence restante sur ce produit"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-epuise-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_epuise_lect = "Impossible d'affecter de nouvelles licences"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-epuise-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_depassement_ctx = "Plus de licences attribuees que de stock achete"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-depassement-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_depassement_lect = "URGENT : risque contractuel. Regulariser en priorite"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-depassement-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_risque_ctx = "Score global de risque licences"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-risque-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p2_risque_lect = "Critique > A surveiller > Stable. Base : ratio stock"
+		displayFolder: Tooltips
+		lineageTag: tt-p2-risque-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_actifs_ctx = "Comptes humains avec activite M365 recente (< 90j)"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-actifs-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_actifs_lect = "Objectif : maintenir > 80% du total utilisateurs"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-actifs-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_fantomes_ctx = "Actifs AD sans activité M365"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-fantomes-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_fantomes_lect = "Utilisateurs dont le compte Azure AD est actif mais qui n'apparaissent dans aucune donnée d'activité Microsoft 365 sur les 180 derniers jours. Distinct des utilisateurs jamais connectés à AD."
+		displayFolder: Tooltips
+		lineageTag: tt-p3-fantomes-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_inactifs_ctx = "Jamais connectés à Azure AD"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-inactifs-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_inactifs_lect = "Utilisateurs dont le champ LastSignIn est vide : ils ne se sont jamais authentifiés sur Azure AD. Un utilisateur fantôme peut s'être connecté à AD sans jamais utiliser une application M365."
+		displayFolder: Tooltips
+		lineageTag: tt-p3-inactifs-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_desactives_ctx = "Comptes bloques dans Azure AD"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-desactives-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_desactives_lect = "Verifier si des licences sont encore affectees"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-desactives-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_cibles_ctx = "Inactifs + fantomes + desactives a traiter"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-cibles-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_cibles_lect = "Objectif : reduire progressivement ce chiffre a zero"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-cibles-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_boites_tot_ctx = "Salles, BAL partagees, services"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-boites-tot-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_boites_tot_lect = "Non comptabilises dans les KPI humains"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-boites-tot-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_boites_act_ctx = "Comptes techniques operationnels (AccountEnabled = TRUE)"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-boites-act-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_boites_act_lect = "Verifier l'usage reel de chaque compte actif"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-boites-act-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_boites_inact_ctx = "Comptes techniques desactives dans Azure AD"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-boites-inact-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_boites_inact_lect = "Candidats a la suppression si plus utilises"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-boites-inact-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Colonne 1'
+		dataType: string
+		lineageTag: 3f653d11-a7ca-4b56-8a8c-51706caa9cd1
+		summarizeBy: none
+		sourceColumn: Colonne 1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Mesures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Colonne 1" = _t]),
+				    #"Type modifiÃ©" = Table.TransformColumnTypes(Source,{{"Colonne 1", type text}})
+				in
+				    #"Type modifiÃ©"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
