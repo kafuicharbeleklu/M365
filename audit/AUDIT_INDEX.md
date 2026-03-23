@@ -55,3 +55,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-056 | Fix | Redaction des credentials Git et parametrage des seuils metier | 2026-03-23 | ? Appliqué |
 | FIX-057 | Fix | Alignement des libelles UI avec les seuils parametrables | 2026-03-23 | ? Appliqué |
 | FIX-058 | Fix | Decouplage des bookmarks des libelles de seuil | 2026-03-23 | ? Appliqué |
+| FIX-059 | Fix | Clarification du bandeau de contexte pour les comptes desactives avec licence | 2026-03-23 | ? Appliqué |

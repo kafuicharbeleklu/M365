@@ -677,15 +677,29 @@ table _Mesures
 
 	measure UX_ContexteFiltres =
 			VAR _produit = SELECTEDVALUE(T_Produits_Dim[NomProduit], "Tous")
-			VAR _etat = SELECTEDVALUE(T_Utilisateurs_Dim[EtatActivite], "Tous")
+			VAR _typeCompte = SELECTEDVALUE(T_Utilisateurs_Dim[TypeCompte], "Tous")
+			VAR _statutAd = SELECTEDVALUE(T_Utilisateurs_Dim[Statut AD], "Tous")
+			VAR _etatRaw = SELECTEDVALUE(T_Utilisateurs_Dim[EtatActivite])
+			VAR _etat =
+				SWITCH(
+					TRUE(),
+					ISBLANK(_etatRaw), "Tous",
+					_etatRaw = "Exclu" && (_statutAd <> "Tous" || _typeCompte <> "Tous"), "Tous",
+					_etatRaw = "Exclu", "N/A",
+					_etatRaw
+				)
 			VAR _pays = SELECTEDVALUE(T_Utilisateurs_Dim[CountryOrRegion], "Tous")
 			VAR _departement = SELECTEDVALUE(T_Utilisateurs_Dim[Department], "Tous")
+			VAR _t = IF(LEN(_typeCompte) > 12, LEFT(_typeCompte, 12) & "...", _typeCompte)
+			VAR _a = IF(LEN(_statutAd) > 12, LEFT(_statutAd, 12) & "...", _statutAd)
 			VAR _p = IF(LEN(_produit) > 24, LEFT(_produit, 24) & "...", _produit)
 			VAR _e = IF(LEN(_etat) > 18, LEFT(_etat, 18) & "...", _etat)
 			VAR _pa = IF(LEN(_pays) > 16, LEFT(_pays, 16) & "...", _pays)
 			VAR _d = IF(LEN(_departement) > 16, LEFT(_departement, 16) & "...", _departement)
 			RETURN
-			"Filtres | Prod: " & _p
+			"Filtres | Type: " & _t
+			& " | AD: " & _a
+			& " | Prod: " & _p
 			& " | Etat: " & _e
 			& " | Pays: " & _pa
 			& " | Dept: " & _d
