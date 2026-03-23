@@ -218,6 +218,11 @@ table T_Activite_M365
 				    TenantId = Text.From(#"Param_TenantId"),
 				    ClientId = Text.From(#"Param_ClientId"),
 				    ClientSecret = Text.From(#"Param_Secret"),
+				    SeuilInactiviteJours = Number.From(#"Param_SeuilInactiviteJours"),
+				    ScoreBandPowerUser = Number.From(#"Param_ScoreBandPowerUser"),
+				    ScoreBandStandard = Number.From(#"Param_ScoreBandStandard"),
+				    ScoreBandMinimal = Number.From(#"Param_ScoreBandMinimal"),
+				    PeriodeActivite = Text.From(#"Param_PeriodeActivite"),
 				
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 2. AUTHENTIFICATION
@@ -244,7 +249,7 @@ table T_Activite_M365
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 3. APPEL DU RAPPORT (180 jours)
 				    // ═══════════════════════════════════════════════════════════════════
-				    ReportUrl = "https://graph.microsoft.com/v1.0/reports/getM365AppUserDetail(period='D180')",
+				    ReportUrl = "https://graph.microsoft.com/v1.0/reports/getM365AppUserDetail(period='" & PeriodeActivite & "')",
 				    
 				    RawResponse = Web.Contents(ReportUrl, [
 				        Headers = [Authorization = AuthToken],
@@ -376,10 +381,10 @@ table T_Activite_M365
 				                "NiveauUtilisation", 
 				                each 
 				                    if [JoursInactivite] = null then "Jamais Connecté"
-				                    else if [JoursInactivite] > 90 then "Inactif (>90j)"
-				                    else if [ScoreUtilisation] >= 7 then "Power User"
-				                    else if [ScoreUtilisation] >= 4 then "Utilisateur Standard"
-				                    else if [ScoreUtilisation] >= 1 then "Utilisateur Minimal"
+				                    else if [JoursInactivite] > SeuilInactiviteJours then "Inactif (>90j)"
+				                    else if [ScoreUtilisation] >= ScoreBandPowerUser then "Power User"
+				                    else if [ScoreUtilisation] >= ScoreBandStandard then "Utilisateur Standard"
+				                    else if [ScoreUtilisation] >= ScoreBandMinimal then "Utilisateur Minimal"
 				                    else "Non Utilisateur", 
 				                type text
 				            ),

@@ -329,7 +329,10 @@ table T_Utilisateurs_Dim
 			
 			// Connexion Azure AD (authentification, indépendant des apps M365)
 			VAR AJamaisConnecteAD = ISBLANK([LastSignIn])
-			VAR EstInactif90j     = NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - 90
+			VAR SeuilInactiviteJours =
+			    SELECTEDVALUE(T_Parametres_Dim[SeuilInactiviteJours], 90)
+			VAR EstInactif90j =
+			    NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - SeuilInactiviteJours
 			
 			RETURN
 			IF(

@@ -8,7 +8,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["T_Utilisateurs_Dim","T_Produits_Dim","T_Affectations_Fact","_Mesures","Param_TenantId","Param_ClientId","Param_Secret","T_Activite_M365"]
+annotation PBI_QueryOrder = ["Param_TenantId","Param_ClientId","Param_Secret","Param_SeuilInactiviteJours","Param_SeuilStockCritiquePct","Param_SeuilStockAlertePct","Param_SeuilStockSurveillancePct","Param_ScoreBandPowerUser","Param_ScoreBandStandard","Param_ScoreBandMinimal","Param_PeriodeActivite","T_Parametres_Dim","T_Utilisateurs_Dim","T_Produits_Dim","T_Affectations_Fact","_Mesures","T_Activite_M365"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
@@ -19,6 +19,7 @@ ref table LocalDateTable_9c07b0b3-055f-453b-8431-e89adeffbe9c
 ref table T_Produits_Dim
 ref table T_Affectations_Fact
 ref table _Mesures
+ref table T_Parametres_Dim
 ref table T_Activite_M365
 ref table LocalDateTable_557a5972-c167-4905-a487-f6d1e941b794
 ref table LocalDateTable_2770b7dd-627a-4d40-9779-d46fe27054a3

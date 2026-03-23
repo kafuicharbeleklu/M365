@@ -86,6 +86,8 @@ table T_Produits_Dim
 				    TenantId = Text.From(#"Param_TenantId"),
 				    ClientId = Text.From(#"Param_ClientId"),
 				    ClientSecret = Text.From(#"Param_Secret"),
+				    SeuilStockCritiquePct = Number.From(#"Param_SeuilStockCritiquePct"),
+				    SeuilStockCritiqueRatio = SeuilStockCritiquePct / 100,
 				
 				    GetAccessToken = () => 
 				        let
@@ -320,7 +322,7 @@ table T_Produits_Dim
 				        each
 				            if [StockDisponible] < 0 then "Depassement"
 				            else if [StockDisponible] = 0 and [LicencesAchetees] > 0 then "Stock epuise"
-				            else if [LicencesAchetees] > 0 and Number.From([StockDisponible]) / Number.From([LicencesAchetees]) <= 0.10 then "Stock critique <=10%"
+				            else if [LicencesAchetees] > 0 and Number.From([StockDisponible]) / Number.From([LicencesAchetees]) <= SeuilStockCritiqueRatio then "Stock critique <=10%"
 				            else "Stable",
 				        type text
 				    ),

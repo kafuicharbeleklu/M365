@@ -1,19 +1,75 @@
-expression Param_TenantId = "7a1b77be-dbd5-45cb-8e11-b01cbec06667" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression Param_TenantId = "__SET_TENANT_ID_LOCALLY__" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 7c66efc6-4b59-4873-8d8f-0788f3a0fdd4
 
 	annotation PBI_ResultType = Exception
 
 	annotation PBI_NavigationStepName = Navigation
 
-expression Param_ClientId = "f7b0f3fd-c51a-4dd0-9d90-fb0e67c5b229" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression Param_ClientId = "__SET_CLIENT_ID_LOCALLY__" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 6c016636-915a-41de-bded-9c77ca1311fd
 
 	annotation PBI_ResultType = Exception
 
 	annotation PBI_NavigationStepName = Navigation
 
-expression Param_Secret = "__SET_IN_LOCAL_SETTINGS__" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression Param_Secret = "__SET_CLIENT_SECRET_LOCALLY__" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 671daa94-659b-4798-aed2-4d7a59b710c8
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression Param_SeuilInactiviteJours = 90 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: 2fbe6316-9c20-4606-8b43-f0507c037773
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression Param_SeuilStockCritiquePct = 10 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: 48a9be09-218e-4d92-bfa0-db8eb1607fa8
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression Param_SeuilStockAlertePct = 25 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: a42421d0-c599-487c-90a4-95417d1e0f13
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression Param_SeuilStockSurveillancePct = 50 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: 8cd0b98d-ce5e-4ad8-a9f5-59f22992e67d
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression Param_ScoreBandPowerUser = 7 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: 259da0cb-9c74-43d3-a4e6-17214f6b676c
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression Param_ScoreBandStandard = 4 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: a897ce87-e409-4f8f-b79d-4f18af0bf920
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression Param_ScoreBandMinimal = 1 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: ee692ef7-dbc0-4263-ad7b-5b027167c368
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression Param_PeriodeActivite = "D180" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 9ac3e119-dbd5-4823-b749-b749533eec2d
 
 	annotation PBI_NavigationStepName = Navigation
 

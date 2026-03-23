@@ -1,0 +1,114 @@
+table T_Parametres_Dim
+	isHidden
+	lineageTag: 58d1f780-81d3-40ba-83bf-c0aa6f8c72ac
+
+	column SeuilInactiviteJours
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f4bb2aa3-cd4c-4844-bba1-d65ea1f2a0d1
+		summarizeBy: none
+		sourceColumn: SeuilInactiviteJours
+
+		annotation SummarizationSetBy = Automatic
+
+	column SeuilStockCritiquePct
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e2056622-9fe4-4ae9-910a-8fe365ed3471
+		summarizeBy: none
+		sourceColumn: SeuilStockCritiquePct
+
+		annotation SummarizationSetBy = Automatic
+
+	column SeuilStockAlertePct
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2d0d51d0-9ae3-451a-aa44-b680ea7d5ff2
+		summarizeBy: none
+		sourceColumn: SeuilStockAlertePct
+
+		annotation SummarizationSetBy = Automatic
+
+	column SeuilStockSurveillancePct
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 67f27f77-28e8-4f23-bff1-38e6132437e3
+		summarizeBy: none
+		sourceColumn: SeuilStockSurveillancePct
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScoreBandPowerUser
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 30f7bc9f-a30b-4886-8318-5ef7f326375b
+		summarizeBy: none
+		sourceColumn: ScoreBandPowerUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScoreBandStandard
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3280b7f1-b5fa-4e25-b194-c1d6515f7581
+		summarizeBy: none
+		sourceColumn: ScoreBandStandard
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScoreBandMinimal
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 34090a7d-374e-483e-b822-79eb8ea40bf0
+		summarizeBy: none
+		sourceColumn: ScoreBandMinimal
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodeActivite
+		dataType: string
+		isHidden
+		lineageTag: 6f72dc9e-962c-47ca-b405-bf8be8e95c0a
+		summarizeBy: none
+		sourceColumn: PeriodeActivite
+
+		annotation SummarizationSetBy = Automatic
+
+	partition T_Parametres_Dim = m
+		mode: import
+		source = ```
+				let
+				    Source = #table(
+				        type table [
+				            SeuilInactiviteJours = Int64.Type,
+				            SeuilStockCritiquePct = Int64.Type,
+				            SeuilStockAlertePct = Int64.Type,
+				            SeuilStockSurveillancePct = Int64.Type,
+				            ScoreBandPowerUser = Int64.Type,
+				            ScoreBandStandard = Int64.Type,
+				            ScoreBandMinimal = Int64.Type,
+				            PeriodeActivite = text
+				        ],
+				        {{
+				            Number.From(#"Param_SeuilInactiviteJours"),
+				            Number.From(#"Param_SeuilStockCritiquePct"),
+				            Number.From(#"Param_SeuilStockAlertePct"),
+				            Number.From(#"Param_SeuilStockSurveillancePct"),
+				            Number.From(#"Param_ScoreBandPowerUser"),
+				            Number.From(#"Param_ScoreBandStandard"),
+				            Number.From(#"Param_ScoreBandMinimal"),
+				            Text.From(#"Param_PeriodeActivite")
+				        }}
+				    )
+				in
+				    Source
+			```
+
+	annotation PBI_NavigationStepName = Navigation

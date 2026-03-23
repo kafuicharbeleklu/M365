@@ -653,6 +653,12 @@ table _Mesures
 			VAR _dispo = COALESCE([LicencesDisponibles], 0)
 			VAR _affectees = COALESCE([LicencesAffectees], 0)
 			VAR _ratioDispo = DIVIDE(_dispo, _stock, 0)
+			VAR _seuilCritique =
+				DIVIDE(SELECTEDVALUE(T_Parametres_Dim[SeuilStockCritiquePct], 10), 100, 0)
+			VAR _seuilAlerte =
+				DIVIDE(SELECTEDVALUE(T_Parametres_Dim[SeuilStockAlertePct], 25), 100, 0)
+			VAR _seuilSurveillance =
+				DIVIDE(SELECTEDVALUE(T_Parametres_Dim[SeuilStockSurveillancePct], 50), 100, 0)
 			RETURN
 			IF(
 				NOT(_scopeProduit),
@@ -660,9 +666,9 @@ table _Mesures
 				SWITCH(
 					TRUE(),
 					(_stock = 0 && _affectees > 0) || _dispo < 0, 4,
-					_ratioDispo <= 0.10, 3,
-					_ratioDispo <= 0.25, 2,
-					_ratioDispo <= 0.50, 1,
+					_ratioDispo <= _seuilCritique, 3,
+					_ratioDispo <= _seuilAlerte, 2,
+					_ratioDispo <= _seuilSurveillance, 1,
 					0
 				)
 			)
@@ -739,10 +745,12 @@ table _Mesures
 						VALUES(T_Produits_Dim[NomProduit]),
 						VAR _stock = [StockLicences]
 						VAR _dispo = [LicencesDisponibles]
+						VAR _seuilCritique =
+							DIVIDE(SELECTEDVALUE(T_Parametres_Dim[SeuilStockCritiquePct], 10), 100, 0)
 						RETURN
 							_stock > 0
 								&& _dispo > 0
-								&& DIVIDE(_dispo, _stock, 0) <= 0.10
+								&& DIVIDE(_dispo, _stock, 0) <= _seuilCritique
 					)
 				),
 				0
@@ -784,6 +792,14 @@ table _Mesures
 
 	measure DT_NiveauUtilisation =
 			VAR _upnNorm = [DT_UPN_Courant]
+			VAR _seuilInactiviteJours =
+				SELECTEDVALUE(T_Parametres_Dim[SeuilInactiviteJours], 90)
+			VAR _scoreBandPowerUser =
+				SELECTEDVALUE(T_Parametres_Dim[ScoreBandPowerUser], 7)
+			VAR _scoreBandStandard =
+				SELECTEDVALUE(T_Parametres_Dim[ScoreBandStandard], 4)
+			VAR _scoreBandMinimal =
+				SELECTEDVALUE(T_Parametres_Dim[ScoreBandMinimal], 1)
 			VAR _activiteUser =
 				FILTER(
 					ALL(T_Activite_M365),
@@ -810,10 +826,10 @@ table _Mesures
 					SWITCH(
 						TRUE(),
 						ISBLANK(_dateRef), "Aucune donnee usage",
-						NOT ISBLANK(_joursInactivite) && _joursInactivite > 90, "Inactif >90j",
-						_score >= 7, "Intensif (7-10)",
-						_score >= 4, "Standard (4-6)",
-						_score >= 1, "Minimal (1-3)",
+						NOT ISBLANK(_joursInactivite) && _joursInactivite > _seuilInactiviteJours, "Inactif >90j",
+						_score >= _scoreBandPowerUser, "Intensif (7-10)",
+						_score >= _scoreBandStandard, "Standard (4-6)",
+						_score >= _scoreBandMinimal, "Minimal (1-3)",
 						"Aucun usage (0)"
 					)
 				)
