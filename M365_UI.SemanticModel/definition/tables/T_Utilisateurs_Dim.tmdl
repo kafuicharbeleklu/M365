@@ -424,6 +424,23 @@ table T_Utilisateurs_Dim
 
 		annotation SummarizationSetBy = Automatic
 
+	column EstDesactiveAvecLicence = ```
+			
+			VAR NbLicencesAffectees =
+			    CALCULATE(
+			        COALESCE(DISTINCTCOUNT(T_Affectations_Fact[AffectationID]), 0)
+			    )
+			RETURN
+			[TypeCompte] = "Utilisateur"
+			    && [AccountEnabled] = FALSE()
+			    && NbLicencesAffectees > 0
+			```
+		isHidden
+		lineageTag: estdesactiveaveclicence-calc-001-neemba
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	column Domaine
 		dataType: string
 		lineageTag: 178a8f11-925d-45b6-bdc0-225f56cfb9d9

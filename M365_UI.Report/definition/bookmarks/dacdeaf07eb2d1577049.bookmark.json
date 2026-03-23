@@ -145,7 +145,7 @@
                                   "Source": "t"
                                 }
                               },
-                              "Property": "StatutLicence"
+                              "Property": "EstDesactiveAvecLicence"
                             }
                           }
                         ],
@@ -153,7 +153,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'ON'"
+                                "Value": "true"
                               }
                             }
                           ]
@@ -170,7 +170,7 @@
                       "Entity": "T_Utilisateurs_Dim"
                     }
                   },
-                  "Property": "StatutLicence"
+                  "Property": "EstDesactiveAvecLicence"
                 }
               },
               "howCreated": 1
