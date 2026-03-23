@@ -37,7 +37,7 @@
                                   "Source": "t"
                                 }
                               },
-                              "Property": "EtatActivite"
+                              "Property": "CodeEtatActivite"
                             }
                           }
                         ],
@@ -45,14 +45,14 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Inactif (>90j)'"
+                                "Value": "'INACTIF'"
                               }
                             }
                           ],
                           [
                             {
                               "Literal": {
-                                "Value": "'Jamais Connecté'"
+                                "Value": "'JAMAIS_CONNECTE'"
                               }
                             }
                           ]
@@ -69,7 +69,7 @@
                       "Entity": "T_Utilisateurs_Dim"
                     }
                   },
-                  "Property": "EtatActivite"
+                  "Property": "CodeEtatActivite"
                 }
               },
               "howCreated": 1

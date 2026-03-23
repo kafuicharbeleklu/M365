@@ -331,7 +331,9 @@ table T_Utilisateurs_Dim
 			VAR AJamaisConnecteAD = ISBLANK([LastSignIn])
 			VAR SeuilInactiviteJours =
 			    SELECTEDVALUE(T_Parametres_Dim[SeuilInactiviteJours], 90)
-			VAR EstInactif90j =
+			VAR LabelInactif =
+			    "Inactif >" & FORMAT(SeuilInactiviteJours, "0") & "j"
+			VAR EstInactif =
 			    NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - SeuilInactiviteJours
 			
 			RETURN
@@ -342,20 +344,55 @@ table T_Utilisateurs_Dim
 			        NOT(ISBLANK(CategorieM365)),
 			        // Nuance : si M365 dit 'Jamais Connecté' mais Azure AD a une connexion
 			        // → l'user s'est authentifié mais n'utilise aucune app M365
-			        IF(
+			        SWITCH(
+			            TRUE(),
 			            CategorieM365 = "Jamais Connecté" && NOT(AJamaisConnecteAD),
 			            "Inactif M365",
+			            CategorieM365 = "Inactif (>90j)", LabelInactif,
 			            CategorieM365
 			        ),
 			        // Fallback sur Azure AD si aucune donnée M365
 			        IF(
 			            AJamaisConnecteAD,
 			            "Jamais Connecté",
-			            IF(EstInactif90j, "Inactif (>90j)", "Actif")
+			            IF(EstInactif, LabelInactif, "Actif")
 			        )
 			    )
 			)
 		lineageTag: 0db36ffc-10e6-4330-ba46-31ff1fa49493
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column CodeEtatActivite = ```
+			
+			VAR EstTechnique = [TypeCompte] = "Technique"
+			VAR EstDesactive = [AccountEnabled] = FALSE()
+			VAR UserEmail    = [UserPrincipalName]
+			VAR CategorieM365 =
+			    LOOKUPVALUE(
+			        T_Activite_M365[CategorieActivite],
+			        T_Activite_M365[UserPrincipalName], UserEmail
+			    )
+			VAR AJamaisConnecteAD = ISBLANK([LastSignIn])
+			VAR SeuilInactiviteJours =
+			    SELECTEDVALUE(T_Parametres_Dim[SeuilInactiviteJours], 90)
+			VAR EstInactif =
+			    NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - SeuilInactiviteJours
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    EstTechnique || EstDesactive, "EXCLU",
+			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais" && NOT(AJamaisConnecteAD), "INACTIF_M365",
+			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais", "JAMAIS_CONNECTE",
+			    CategorieM365 = "Inactif (>90j)", "INACTIF",
+			    AJamaisConnecteAD, "JAMAIS_CONNECTE",
+			    EstInactif, "INACTIF",
+			    "ACTIF"
+			)
+			```
+		isHidden
+		lineageTag: 2d2c17e8-62df-4a42-8186-cfd18c6919d2
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
@@ -411,7 +448,7 @@ table T_Utilisateurs_Dim
 			(
 			    T_Utilisateurs_Dim[TypeCompte] = "Utilisateur" &&
 			    T_Utilisateurs_Dim[Statut AD] = "Activé" &&
-			    T_Utilisateurs_Dim[EtatActivite] IN {"Inactif (>90j)", "Jamais Connecté"}
+			    T_Utilisateurs_Dim[CodeEtatActivite] IN {"INACTIF", "JAMAIS_CONNECTE"}
 			)
 			||
 			T_Utilisateurs_Dim[Statut AD] = "Désactivé"

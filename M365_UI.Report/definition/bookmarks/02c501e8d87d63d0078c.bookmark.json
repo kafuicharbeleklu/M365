@@ -144,7 +144,7 @@
                                   "Source": "t"
                                 }
                               },
-                              "Property": "EtatActivite"
+                              "Property": "CodeEtatActivite"
                             }
                           }
                         ],
@@ -152,7 +152,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Actif'"
+                                "Value": "'ACTIF'"
                               }
                             }
                           ]
@@ -169,7 +169,7 @@
                       "Entity": "T_Utilisateurs_Dim"
                     }
                   },
-                  "Property": "EtatActivite"
+                  "Property": "CodeEtatActivite"
                 }
               },
               "howCreated": 1

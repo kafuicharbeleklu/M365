@@ -322,7 +322,7 @@ table T_Produits_Dim
 				        each
 				            if [StockDisponible] < 0 then "Depassement"
 				            else if [StockDisponible] = 0 and [LicencesAchetees] > 0 then "Stock epuise"
-				            else if [LicencesAchetees] > 0 and Number.From([StockDisponible]) / Number.From([LicencesAchetees]) <= SeuilStockCritiqueRatio then "Stock critique <=10%"
+				            else if [LicencesAchetees] > 0 and Number.From([StockDisponible]) / Number.From([LicencesAchetees]) <= SeuilStockCritiqueRatio then "Stock critique"
 				            else "Stable",
 				        type text
 				    ),

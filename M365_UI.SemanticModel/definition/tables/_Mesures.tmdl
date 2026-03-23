@@ -51,7 +51,7 @@ table _Mesures
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
-						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Actif"
+						T_Utilisateurs_Dim[CodeEtatActivite] = "ACTIF"
 					)
 				)
 			VAR _scoped =
@@ -59,7 +59,7 @@ table _Mesures
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
-						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Actif"
+						T_Utilisateurs_Dim[CodeEtatActivite] = "ACTIF"
 					),
 					KEEPFILTERS(
 						TREATAS(
@@ -80,7 +80,7 @@ table _Mesures
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
-						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif (>90j)"
+						T_Utilisateurs_Dim[CodeEtatActivite] = "INACTIF"
 					)
 				)
 			VAR _scoped =
@@ -88,7 +88,7 @@ table _Mesures
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
-						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif (>90j)"
+						T_Utilisateurs_Dim[CodeEtatActivite] = "INACTIF"
 					),
 					KEEPFILTERS(
 						TREATAS(
@@ -224,7 +224,7 @@ table _Mesures
 							VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
 							FILTER(
 								T_Utilisateurs_Dim,
-								TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Actif"
+								T_Utilisateurs_Dim[CodeEtatActivite] = "ACTIF"
 							)
 						),
 						T_Affectations_Fact[UserPrincipalName]
@@ -567,7 +567,7 @@ table _Mesures
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
-						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif M365"
+						T_Utilisateurs_Dim[CodeEtatActivite] = "INACTIF_M365"
 					)
 				)
 			VAR _scoped =
@@ -575,7 +575,7 @@ table _Mesures
 					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
 					FILTER(
 						T_Utilisateurs_Dim,
-						TRIM(T_Utilisateurs_Dim[EtatActivite]) = "Inactif M365"
+						T_Utilisateurs_Dim[CodeEtatActivite] = "INACTIF_M365"
 					),
 					KEEPFILTERS(
 						TREATAS(

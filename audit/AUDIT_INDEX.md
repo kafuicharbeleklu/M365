@@ -54,3 +54,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-055 | Fix | Export de V17 vers le root et nettoyage du workspace | 2026-03-23 | ? Appliqué |
 | FIX-056 | Fix | Redaction des credentials Git et parametrage des seuils metier | 2026-03-23 | ? Appliqué |
 | FIX-057 | Fix | Alignement des libelles UI avec les seuils parametrables | 2026-03-23 | ? Appliqué |
+| FIX-058 | Fix | Decouplage des bookmarks des libelles de seuil | 2026-03-23 | ? Appliqué |
