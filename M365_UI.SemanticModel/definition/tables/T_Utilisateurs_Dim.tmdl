@@ -412,12 +412,21 @@ table T_Utilisateurs_Dim
 
 	column StatutLicence = ```
 			
+			VAR _upnNorm = LOWER(TRIM(COALESCE([UserPrincipalName], "")))
 			VAR NbLicencesAffectees =
-			    CALCULATE(
-			        COALESCE(DISTINCTCOUNT(T_Affectations_Fact[AffectationID]), 0)
+			    IF(
+			        _upnNorm = "",
+			        0,
+			        CALCULATE(
+			            DISTINCTCOUNT(T_Affectations_Fact[AffectationID]),
+			            FILTER(
+			                ALL(T_Affectations_Fact),
+			                LOWER(TRIM(COALESCE(T_Affectations_Fact[UserPrincipalName], ""))) = _upnNorm
+			            )
+			        )
 			    )
 			RETURN
-			IF(NbLicencesAffectees > 0, "ON", "OFF")
+			IF(COALESCE(NbLicencesAffectees, 0) > 0, "ON", "OFF")
 			```
 		lineageTag: 5d4e3984-4f92-4183-88c6-336d621e3362
 		summarizeBy: none
@@ -426,14 +435,23 @@ table T_Utilisateurs_Dim
 
 	column EstDesactiveAvecLicence = ```
 			
+			VAR _upnNorm = LOWER(TRIM(COALESCE([UserPrincipalName], "")))
 			VAR NbLicencesAffectees =
-			    CALCULATE(
-			        COALESCE(DISTINCTCOUNT(T_Affectations_Fact[AffectationID]), 0)
+			    IF(
+			        _upnNorm = "",
+			        0,
+			        CALCULATE(
+			            DISTINCTCOUNT(T_Affectations_Fact[AffectationID]),
+			            FILTER(
+			                ALL(T_Affectations_Fact),
+			                LOWER(TRIM(COALESCE(T_Affectations_Fact[UserPrincipalName], ""))) = _upnNorm
+			            )
+			        )
 			    )
 			RETURN
 			[TypeCompte] = "Utilisateur"
 			    && [AccountEnabled] = FALSE()
-			    && NbLicencesAffectees > 0
+			    && COALESCE(NbLicencesAffectees, 0) > 0
 			```
 		isHidden
 		lineageTag: estdesactiveaveclicence-calc-001-neemba

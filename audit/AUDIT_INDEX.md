@@ -58,3 +58,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-059 | Fix | Clarification du bandeau de contexte pour les comptes desactives avec licence | 2026-03-23 | ? Appliqué |
 | FIX-061 | Fix | Filtre de secours desactives avec licence via StatutLicence=ON | 2026-03-23 | ? Appliqué |
 | FIX-062 | Fix | Indicateur cache desactives avec licence pour bookmark stable | 2026-03-23 | ? Appliqué |
+| FIX-063 | Fix | Filtrage explicite par UPN pour les comptes desactives avec licence | 2026-03-23 | ? Appliqué |
