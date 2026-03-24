@@ -23,10 +23,15 @@ Verification des boutons interactifs sur la page `Analyse Utilisateur` (`3c4cbe0
 ## Verification complementaire
 - Le bouton `79259f2e49cae54295a9` de P3 est bien configure en action `Back`
 - Il ne pointe pas vers un bookmark KPI dans le `HEAD`
-- Le bookmark `Nav_HumainsJamaisConnectes` existe encore, mais aucun bouton de la page `Analyse Utilisateur` ne l'appelle
+
+## Bookmarks non appeles par un bouton
+- `Nav_HumainsJamaisConnectes`
+- `Nav_LicencesGaspillees`
+- `Nav_Techniques`
+- `Nav_HumainsDesactives`
+- `Signet 10`
 
 ## Conclusion
 - Les boutons KPI actifs de P3 sont maintenant globalement coherents dans le depot
-- La prochaine decision utile concerne surtout `Nav_HumainsJamaisConnectes`:
-  - soit le recabler a un bouton KPI dedie
-  - soit l'assumer comme bookmark orphelin et le documenter comme tel
+- Le vrai reliquat technique n'est plus un mauvais cablage de bouton, mais un petit stock de bookmarks legacy non appeles
+- La prochaine passe utile sera donc un nettoyage controle de ces bookmarks legacy, pas une reparation de KPI actifs
