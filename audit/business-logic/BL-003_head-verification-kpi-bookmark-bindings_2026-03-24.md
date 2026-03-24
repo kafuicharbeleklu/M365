@@ -20,12 +20,13 @@ Verification des boutons interactifs sur la page `Analyse Utilisateur` (`3c4cbe0
 - `Nav_HumainsInactifs` filtre deja `CodeEtatActivite = INACTIF` dans le `HEAD`
 - Les incoherences relevees sur ces points provenaient du working tree local reserialise par Power BI Desktop, pas du depot Git
 
-## Reliquats reels identifies dans le HEAD
-- Le bouton `79259f2e49cae54295a9` est une fleche `back` en haut de page, mais il pointe vers le bookmark `Nav_HumainsInactifs`
+## Verification complementaire
+- Le bouton `79259f2e49cae54295a9` de P3 est bien configure en action `Back`
+- Il ne pointe pas vers un bookmark KPI dans le `HEAD`
 - Le bookmark `Nav_HumainsJamaisConnectes` existe encore, mais aucun bouton de la page `Analyse Utilisateur` ne l'appelle
 
 ## Conclusion
 - Les boutons KPI actifs de P3 sont maintenant globalement coherents dans le depot
-- Les prochaines corrections utiles ne concernent plus les KPI deja recables, mais:
-  - la vraie destination du bouton `back` de P3
-  - le choix de conserver ou recabler `Nav_HumainsJamaisConnectes`
+- La prochaine decision utile concerne surtout `Nav_HumainsJamaisConnectes`:
+  - soit le recabler a un bouton KPI dedie
+  - soit l'assumer comme bookmark orphelin et le documenter comme tel
