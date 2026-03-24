@@ -67,3 +67,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-067 | Fix | Reparation de Signet 12 pour le KPI Désactivés | 2026-03-23 | ? Appliqué |
 | BL-003 | Business Logic | Verification HEAD des liaisons bouton -> bookmark | 2026-03-24 | ? Audité |
 | FIX-068 | Fix | Nettoyage des bookmarks legacy non appeles | 2026-03-24 | ? Appliqué |
+| FIX-069 | Fix | Restauration de l'etat des segments visibles pour le KPI comptes desactives avec licence | 2026-03-24 | ? Appliqué |
