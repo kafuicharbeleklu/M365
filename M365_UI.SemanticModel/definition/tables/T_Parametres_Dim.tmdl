@@ -84,31 +84,32 @@ table T_Parametres_Dim
 	partition T_Parametres_Dim = m
 		mode: import
 		source = ```
-				let
-				    Source = #table(
-				        type table [
-				            SeuilInactiviteJours = Int64.Type,
-				            SeuilStockCritiquePct = Int64.Type,
-				            SeuilStockAlertePct = Int64.Type,
-				            SeuilStockSurveillancePct = Int64.Type,
-				            ScoreBandPowerUser = Int64.Type,
-				            ScoreBandStandard = Int64.Type,
-				            ScoreBandMinimal = Int64.Type,
-				            PeriodeActivite = text
-				        ],
-				        {{
-				            Number.From(#"Param_SeuilInactiviteJours"),
-				            Number.From(#"Param_SeuilStockCritiquePct"),
-				            Number.From(#"Param_SeuilStockAlertePct"),
-				            Number.From(#"Param_SeuilStockSurveillancePct"),
-				            Number.From(#"Param_ScoreBandPowerUser"),
-				            Number.From(#"Param_ScoreBandStandard"),
-				            Number.From(#"Param_ScoreBandMinimal"),
-				            Text.From(#"Param_PeriodeActivite")
-				        }}
-				    )
-				in
-				    Source
-			```
+					let
+					    Source = #table(
+					        type table [
+					            SeuilInactiviteJours = Int64.Type,
+					            SeuilStockCritiquePct = Int64.Type,
+					            SeuilStockAlertePct = Int64.Type,
+					            SeuilStockSurveillancePct = Int64.Type,
+					            ScoreBandPowerUser = Int64.Type,
+					            ScoreBandStandard = Int64.Type,
+					            ScoreBandMinimal = Int64.Type,
+					            PeriodeActivite = text
+					        ],
+					        {{
+					            Number.From(#"Param_SeuilInactiviteJours"),
+					            Number.From(#"Param_SeuilStockCritiquePct"),
+					            Number.From(#"Param_SeuilStockAlertePct"),
+					            Number.From(#"Param_SeuilStockSurveillancePct"),
+					            Number.From(#"Param_ScoreBandPowerUser"),
+					            Number.From(#"Param_ScoreBandStandard"),
+					            Number.From(#"Param_ScoreBandMinimal"),
+					            Text.From(#"Param_PeriodeActivite")
+					        }}
+					    )
+					in
+					    Source
+				```
 
 	annotation PBI_NavigationStepName = Navigation
+

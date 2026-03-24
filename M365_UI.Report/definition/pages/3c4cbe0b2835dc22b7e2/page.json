@@ -303,6 +303,22 @@
         },
         "type": "Categorical",
         "howCreated": "User"
+      },
+      {
+        "name": "b5f1d2c3b4e50617283c",
+        "ordinal": 12,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Produits_Dim"
+              }
+            },
+            "Property": "NiveauRisqueStock"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
       }
     ],
     "filterSortOrder": "Custom"

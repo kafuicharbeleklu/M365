@@ -102,297 +102,240 @@ table T_Utilisateurs_Dim
 
 		annotation SummarizationSetBy = Automatic
 
-	column TypeCompte = ```
+	column TypeCompte =
 			
-			// Protection contre les valeurs nulles pour eviter les (Blank)
-			VAR Nom = LOWER(COALESCE([DisplayName], ""))
-			VAR Email = LOWER(COALESCE([UserPrincipalName], ""))
-			VAR _estVide = ISBLANK([DisplayName]) && ISBLANK([UserPrincipalName])
+			VAR Regle = [RegleTypeCompte]
 			RETURN
-			IF(_estVide, "Non defini",
 			SWITCH(
 			    TRUE(),
-
-			    // === PRIMARY SIGNAL: userType from Graph API ===
-			    [UserType] = "Guest", "Technique",
-			    CONTAINSSTRING([UserPrincipalName], "#EXT#"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 1. COMPTES EXTERNES
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Email, "#ext#"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 2. COMPTES PARTAGÉS / SALLES
-			    // ═══════════════════════════════════════════════════════════════════
-			    LEFT([DisplayName], 1) = "#", "Technique",
-			    CONTAINSSTRING(Nom, "salle"), "Technique",
-			    CONTAINSSTRING(Nom, "salon"), "Technique",
-			    CONTAINSSTRING(Nom, "meeting"), "Technique",
-			    CONTAINSSTRING(Nom, "conference"), "Technique",
-			    CONTAINSSTRING(Nom, "conférence"), "Technique",
-			    CONTAINSSTRING(Nom, "réunion"), "Technique",
-			    CONTAINSSTRING(Nom, "reunion"), "Technique",
-			    CONTAINSSTRING(Nom, "room"), "Technique",
-			    CONTAINSSTRING(Nom, "boardroom"), "Technique",
-			    CONTAINSSTRING(Nom, "bookings"), "Technique",
-			    CONTAINSSTRING(Nom, "accueil"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 3. EMAILS GÉNÉRIQUES / NO-REPLY
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Email, "info@"), "Technique",
-			    CONTAINSSTRING(Email, "contact@"), "Technique",
-			    CONTAINSSTRING(Email, "no-reply"), "Technique",
-			    CONTAINSSTRING(Email, "noreply"), "Technique",
-			    CONTAINSSTRING(Email, "norepley"), "Technique",
-			    CONTAINSSTRING(Email, "nepasrepondre"), "Technique",
-			    CONTAINSSTRING(Email, "support@"), "Technique",
-			    CONTAINSSTRING(Email, "catchall"), "Technique",
-			    CONTAINSSTRING(Email, "facture"), "Technique",
-			    CONTAINSSTRING(Email, "export"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 4. PATTERNS SUPPORT
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Email, "support_"), "Technique",
-			    CONTAINSSTRING(Nom, "support_"), "Technique",
-			    CONTAINSSTRING(Nom, "supportguarani"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 5. COMPTES IT / INFRASTRUCTURE
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Nom, "sql"), "Technique",
-			    CONTAINSSTRING(Nom, "proxy"), "Technique",
-			    CONTAINSSTRING(Nom, "backup"), "Technique",
-			    CONTAINSSTRING(Nom, "sauvegarde"), "Technique",
-			    CONTAINSSTRING(Nom, "ldap"), "Technique",
-			    CONTAINSSTRING(Nom, "utm"), "Technique",
-			    CONTAINSSTRING(Nom, "scan"), "Technique",
-			    CONTAINSSTRING(Nom, "sync"), "Technique",
-			    CONTAINSSTRING(Nom, "bot"), "Technique",
-			    CONTAINSSTRING(Nom, "api"), "Technique",
-			    (Nom = "admin" || LEFT(Nom, 6) = "admin " || CONTAINSSTRING(Email, "admin@") || CONTAINSSTRING(Email, ".admin@")), "Technique",
-			    CONTAINSSTRING(Nom, "svc"), "Technique",
-			    CONTAINSSTRING(Nom, "pool"), "Technique",
-			    CONTAINSSTRING(Nom, "spapp"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 6. PRÉFIXES TECHNIQUES
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Nom, "app_"), "Technique",
-			    CONTAINSSTRING(Nom, "svc_"), "Technique",
-			    CONTAINSSTRING(Nom, "srv_"), "Technique",
-			    (Nom = "test" || LEFT(Nom, 5) = "test " || RIGHT(Nom, 5) = " test"), "Technique",
-			    CONTAINSSTRING(Nom, "update"), "Technique",
-			    CONTAINSSTRING(Nom, "irium"), "Technique",
-			    CONTAINSSTRING(Nom, "mts "), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 7. BUSINESS OBJECTS / BI
-			    // ═══════════════════════════════════════════════════════════════════
-			    LEFT(Nom, 2) = "bo" && LEN(Nom) < 10, "Technique",
-			    CONTAINSSTRING(Nom, "bodev"), "Technique",
-			    CONTAINSSTRING(Nom, "boprod"), "Technique",
-			    CONTAINSSTRING(Nom, "bosched"), "Technique",
-			    CONTAINSSTRING(Nom, "bosql"), "Technique",
-			    CONTAINSSTRING(Nom, "businessobject"), "Technique",
-			    CONTAINSSTRING(Nom, "powerbi"), "Technique",
-			    CONTAINSSTRING(Nom, "pbi "), "Technique",
-			    CONTAINSSTRING(Nom, "bi "), "Technique",
-			    CONTAINSSTRING(Nom, "ireporting"), "Technique",
-			    CONTAINSSTRING(Email, "pbi-"), "Technique",
-			    CONTAINSSTRING(Email, "bi."), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 8. OUTILS / APPLICATIONS IT
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Nom, "azure"), "Technique",
-			    CONTAINSSTRING(Nom, "migration"), "Technique",
-			    CONTAINSSTRING(Nom, "migwiz"), "Technique",
-			    CONTAINSSTRING(Nom, "veeam"), "Technique",
-			    CONTAINSSTRING(Nom, "rubrik"), "Technique",
-			    CONTAINSSTRING(Nom, "sophos"), "Technique",
-			    CONTAINSSTRING(Nom, "sentinel"), "Technique",
-			    CONTAINSSTRING(Nom, "talend"), "Technique",
-			    CONTAINSSTRING(Nom, "mulesoft"), "Technique",
-			    CONTAINSSTRING(Nom, "matrix42"), "Technique",
-			    CONTAINSSTRING(Nom, "m42"), "Technique",
-			    CONTAINSSTRING(Nom, "sage"), "Technique",
-			    CONTAINSSTRING(Nom, "quest"), "Technique",
-			    CONTAINSSTRING(Nom, "coservit"), "Technique",
-			    CONTAINSSTRING(Nom, "projeqtor"), "Technique",
-			    CONTAINSSTRING(Nom, "wordpress"), "Technique",
-			    CONTAINSSTRING(Nom, "systancia"), "Technique",
-			    CONTAINSSTRING(Nom, "aquiweb"), "Technique",
-			    CONTAINSSTRING(Nom, "automator"), "Technique",
-			    CONTAINSSTRING(Nom, "mimecast"), "Technique",
-			    CONTAINSSTRING(Nom, "manageengine"), "Technique",
-			    CONTAINSSTRING(Nom, "rpmglobal"), "Technique",
-			    CONTAINSSTRING(Nom, "svn"), "Technique",
-			    CONTAINSSTRING(Nom, "skype"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 9. INFRASTRUCTURE RÉSEAU
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Nom, "xg"), "Technique",
-			    CONTAINSSTRING(Nom, "xcc"), "Technique",
-			    CONTAINSSTRING(Nom, "firewall"), "Technique",
-			    CONTAINSSTRING(Nom, "visor"), "Technique",
-			    CONTAINSSTRING(Nom, "winstox"), "Technique",
-			    CONTAINSSTRING(Nom, "i80"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 10. RH / ADMINISTRATION / GÉNÉRIQUES
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Nom, "sirh"), "Technique",
-			    (Nom = "formation" || LEFT(Nom, 10) = "formation " || CONTAINSSTRING(Email, "formation@")), "Technique",
-			    CONTAINSSTRING(Nom, "induction"), "Technique",
-			    CONTAINSSTRING(Nom, "reservation"), "Technique",
-			    CONTAINSSTRING(Nom, "validation"), "Technique",
-			    CONTAINSSTRING(Nom, "compta"), "Technique",
-			    CONTAINSSTRING(Nom, "congé"), "Technique",
-			    CONTAINSSTRING(Nom, "occasion"), "Technique",
-			    CONTAINSSTRING(Nom, "interfaces"), "Technique",
-			    CONTAINSSTRING(Nom, "intranet"), "Technique",
-			    CONTAINSSTRING(Nom, "supervision"), "Technique",
-			    CONTAINSSTRING(Nom, "operateur"), "Technique",
-			    CONTAINSSTRING(Nom, "gestsup"), "Technique",
-			    CONTAINSSTRING(Nom, "signcenter"), "Technique",
-			    CONTAINSSTRING(Nom, "stagiaire"), "Technique",
-			    CONTAINSSTRING(Nom, "delegues"), "Technique",
-			    (Nom = "visit" || LEFT(Nom, 6) = "visit " || Nom = "visitor" || Nom = "visiteur"), "Technique",
-			    CONTAINSSTRING(Nom, "survey"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 11. PATTERNS EMAIL SPÉCIFIQUES
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Email, "sirh@"), "Technique",
-			    CONTAINSSTRING(Email, ".sirh@"), "Technique",
-			    CONTAINSSTRING(Email, "survey@"), "Technique",
-			    CONTAINSSTRING(Email, "alerts@"), "Technique",
-			    CONTAINSSTRING(Email, "edi@"), "Technique",
-			    CONTAINSSTRING(Email, "-edi@"), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 12. COMPTES COURTS / GÉNÉRIQUES (3-4 lettres majuscules)
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Nom, "amt"), "Technique",
-			    CONTAINSSTRING(Nom, "cat"), "Technique",
-			    CONTAINSSTRING(Nom, "cesu"), "Technique",
-			    CONTAINSSTRING(Nom, "dfi"), "Technique",
-			    CONTAINSSTRING(Nom, "bissas"), "Technique",
-			    CONTAINSSTRING(Nom, "qsec"), "Technique",
-			    CONTAINSSTRING(Nom, "scrute"), "Technique",
-			    CONTAINSSTRING(Nom, "suwonda"), "Technique",
-			    CONTAINSSTRING(Nom, "partswe"), "Technique",
-			    CONTAINSSTRING(Nom, "saudequip"), "Technique",
-			    
-			    // Comptes très courts (2-3 lettres seules)
-			    Nom = "su", "Technique",
-			    Nom = "sac", "Technique",
-			    Nom = "rcc", "Technique",
-			    Nom = "ae", "Technique",
-			    Nom = "dp", "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // 13. COMPTES PARTAGÉS / GÉNÉRIQUES
-			    // ═══════════════════════════════════════════════════════════════════
-			    CONTAINSSTRING(Nom, "polaris"), "Technique",
-			    CONTAINSSTRING(Nom, "generique"), "Technique",
-			    CONTAINSSTRING(Nom, "partage"), "Technique",
-			    (LEFT(Nom, 8) = "service " || Nom = "service" || CONTAINSSTRING(Email, "service@") || CONTAINSSTRING(Email, ".service@")), "Technique",
-			
-			    // ═══════════════════════════════════════════════════════════════════
-			    // PAR DÉFAUT : UTILISATEUR HUMAIN
-			    // ═══════════════════════════════════════════════════════════════════
+			    Regle = "EMPTY", "Non defini",
+			    LEFT(Regle, 5) = "TECH_", "Technique",
 			    "Utilisateur"
-			))
-			```
+			)
 		lineageTag: 4d34890f-8b49-437f-83f2-a2540bc09908
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
-	column EtatActivite =
-			
-			VAR EstTechnique = [TypeCompte] = "Technique"
-			VAR EstDesactive = [AccountEnabled] = FALSE()
-			VAR UserEmail    = [UserPrincipalName]
-			
-			// Catégorie issue des données d'activité Microsoft 365
-			VAR CategorieM365 =
-			    LOOKUPVALUE(
-			        T_Activite_M365[CategorieActivite],
-			        T_Activite_M365[UserPrincipalName], UserEmail
-			    )
-			
-			// Connexion Azure AD (authentification, indépendant des apps M365)
-			VAR AJamaisConnecteAD = ISBLANK([LastSignIn])
-			VAR SeuilInactiviteJours =
-			    SELECTEDVALUE(T_Parametres_Dim[SeuilInactiviteJours], 90)
-			VAR LabelInactif =
-			    "Inactif >" & FORMAT(SeuilInactiviteJours, "0") & "j"
-			VAR EstInactif =
-			    NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - SeuilInactiviteJours
-			
+	column RegleTypeCompte =
+
+			VAR Nom = LOWER(COALESCE([DisplayName], ""))
+			VAR Email = LOWER(COALESCE([UserPrincipalName], ""))
+			VAR EstVide = ISBLANK([DisplayName]) && ISBLANK([UserPrincipalName])
+			VAR MotConferenceAccent = "conf" & UNICHAR(233) & "rence"
+			VAR MotReunionAccent = "r" & UNICHAR(233) & "union"
+			VAR MotCongeAccent = "cong" & UNICHAR(233)
+			VAR IsGuest = [UserType] = "Guest"
+			VAR IsExternal = CONTAINSSTRING(Email, "#ext#")
+			VAR IsSharedRoom =
+			    LEFT(COALESCE([DisplayName], ""), 1) = "#"
+			        || CONTAINSSTRING(Nom, "salle")
+			        || CONTAINSSTRING(Nom, "salon")
+			        || CONTAINSSTRING(Nom, "meeting")
+			        || CONTAINSSTRING(Nom, "conference")
+			        || CONTAINSSTRING(Nom, MotConferenceAccent)
+			        || CONTAINSSTRING(Nom, "reunion")
+			        || CONTAINSSTRING(Nom, MotReunionAccent)
+			        || CONTAINSSTRING(Nom, "room")
+			        || CONTAINSSTRING(Nom, "boardroom")
+			        || CONTAINSSTRING(Nom, "bookings")
+			        || CONTAINSSTRING(Nom, "accueil")
+			VAR IsGenericEmail =
+			    CONTAINSSTRING(Email, "info@")
+			        || CONTAINSSTRING(Email, "contact@")
+			        || CONTAINSSTRING(Email, "no-reply")
+			        || CONTAINSSTRING(Email, "noreply")
+			        || CONTAINSSTRING(Email, "norepley")
+			        || CONTAINSSTRING(Email, "nepasrepondre")
+			        || CONTAINSSTRING(Email, "support@")
+			        || CONTAINSSTRING(Email, "catchall")
+			        || CONTAINSSTRING(Email, "facture")
+			        || CONTAINSSTRING(Email, "export")
+			VAR IsSupport =
+			    CONTAINSSTRING(Email, "support_")
+			        || CONTAINSSTRING(Nom, "support_")
+			        || CONTAINSSTRING(Nom, "supportguarani")
+			VAR IsInfra =
+			    CONTAINSSTRING(Nom, "sql")
+			        || CONTAINSSTRING(Nom, "proxy")
+			        || CONTAINSSTRING(Nom, "backup")
+			        || CONTAINSSTRING(Nom, "sauvegarde")
+			        || CONTAINSSTRING(Nom, "ldap")
+			        || CONTAINSSTRING(Nom, "utm")
+			        || CONTAINSSTRING(Nom, "scan")
+			        || CONTAINSSTRING(Nom, "sync")
+			        || CONTAINSSTRING(Nom, "bot")
+			        || CONTAINSSTRING(Nom, "api")
+			        || CONTAINSSTRING(Nom, "svc")
+			        || CONTAINSSTRING(Nom, "pool")
+			        || CONTAINSSTRING(Nom, "spapp")
+			VAR IsAdminPattern =
+			    Nom = "admin"
+			        || LEFT(Nom, 6) = "admin "
+			        || CONTAINSSTRING(Email, "admin@")
+			        || CONTAINSSTRING(Email, ".admin@")
+			VAR IsPrefix =
+			    CONTAINSSTRING(Nom, "app_")
+			        || CONTAINSSTRING(Nom, "svc_")
+			        || CONTAINSSTRING(Nom, "srv_")
+			        || CONTAINSSTRING(Nom, "update")
+			        || CONTAINSSTRING(Nom, "irium")
+			        || CONTAINSSTRING(Nom, "mts ")
+			VAR IsTestPattern =
+			    Nom = "test"
+			        || LEFT(Nom, 5) = "test "
+			        || RIGHT(Nom, 5) = " test"
+			VAR IsBI =
+			    (LEFT(Nom, 2) = "bo" && LEN(Nom) < 10)
+			        || CONTAINSSTRING(Nom, "bodev")
+			        || CONTAINSSTRING(Nom, "boprod")
+			        || CONTAINSSTRING(Nom, "bosched")
+			        || CONTAINSSTRING(Nom, "bosql")
+			        || CONTAINSSTRING(Nom, "businessobject")
+			        || CONTAINSSTRING(Nom, "powerbi")
+			        || CONTAINSSTRING(Nom, "pbi ")
+			        || CONTAINSSTRING(Nom, "bi ")
+			        || CONTAINSSTRING(Nom, "ireporting")
+			        || CONTAINSSTRING(Email, "pbi-")
+			        || CONTAINSSTRING(Email, "bi.")
+			VAR IsTooling =
+			    CONTAINSSTRING(Nom, "azure")
+			        || CONTAINSSTRING(Nom, "migration")
+			        || CONTAINSSTRING(Nom, "migwiz")
+			        || CONTAINSSTRING(Nom, "veeam")
+			        || CONTAINSSTRING(Nom, "rubrik")
+			        || CONTAINSSTRING(Nom, "sophos")
+			        || CONTAINSSTRING(Nom, "sentinel")
+			        || CONTAINSSTRING(Nom, "talend")
+			        || CONTAINSSTRING(Nom, "mulesoft")
+			        || CONTAINSSTRING(Nom, "matrix42")
+			        || CONTAINSSTRING(Nom, "m42")
+			        || CONTAINSSTRING(Nom, "sage")
+			        || CONTAINSSTRING(Nom, "quest")
+			        || CONTAINSSTRING(Nom, "coservit")
+			        || CONTAINSSTRING(Nom, "projeqtor")
+			        || CONTAINSSTRING(Nom, "wordpress")
+			        || CONTAINSSTRING(Nom, "systancia")
+			        || CONTAINSSTRING(Nom, "aquiweb")
+			        || CONTAINSSTRING(Nom, "automator")
+			        || CONTAINSSTRING(Nom, "mimecast")
+			        || CONTAINSSTRING(Nom, "manageengine")
+			        || CONTAINSSTRING(Nom, "rpmglobal")
+			        || CONTAINSSTRING(Nom, "svn")
+			        || CONTAINSSTRING(Nom, "skype")
+			VAR IsNetwork =
+			    CONTAINSSTRING(Nom, "xg")
+			        || CONTAINSSTRING(Nom, "xcc")
+			        || CONTAINSSTRING(Nom, "firewall")
+			        || CONTAINSSTRING(Nom, "visor")
+			        || CONTAINSSTRING(Nom, "winstox")
+			        || CONTAINSSTRING(Nom, "i80")
+			VAR IsFormationPattern =
+			    Nom = "formation"
+			        || LEFT(Nom, 10) = "formation "
+			        || CONTAINSSTRING(Email, "formation@")
+			VAR IsVisitPattern =
+			    Nom = "visit"
+			        || LEFT(Nom, 6) = "visit "
+			        || Nom = "visitor"
+			        || Nom = "visiteur"
+			VAR IsBackoffice =
+			    CONTAINSSTRING(Nom, "sirh")
+			        || CONTAINSSTRING(Nom, "induction")
+			        || CONTAINSSTRING(Nom, "reservation")
+			        || CONTAINSSTRING(Nom, "validation")
+			        || CONTAINSSTRING(Nom, "compta")
+			        || CONTAINSSTRING(Nom, MotCongeAccent)
+			        || CONTAINSSTRING(Nom, "occasion")
+			        || CONTAINSSTRING(Nom, "interfaces")
+			        || CONTAINSSTRING(Nom, "intranet")
+			        || CONTAINSSTRING(Nom, "supervision")
+			        || CONTAINSSTRING(Nom, "operateur")
+			        || CONTAINSSTRING(Nom, "gestsup")
+			        || CONTAINSSTRING(Nom, "signcenter")
+			        || CONTAINSSTRING(Nom, "stagiaire")
+			        || CONTAINSSTRING(Nom, "delegues")
+			        || CONTAINSSTRING(Nom, "survey")
+			VAR IsSpecificEmail =
+			    CONTAINSSTRING(Email, "sirh@")
+			        || CONTAINSSTRING(Email, ".sirh@")
+			        || CONTAINSSTRING(Email, "survey@")
+			        || CONTAINSSTRING(Email, "alerts@")
+			        || CONTAINSSTRING(Email, "edi@")
+			        || CONTAINSSTRING(Email, "-edi@")
+			VAR IsShortGeneric =
+			    CONTAINSSTRING(Nom, "amt")
+			        || CONTAINSSTRING(Nom, "cat")
+			        || CONTAINSSTRING(Nom, "cesu")
+			        || CONTAINSSTRING(Nom, "dfi")
+			        || CONTAINSSTRING(Nom, "bissas")
+			        || CONTAINSSTRING(Nom, "qsec")
+			        || CONTAINSSTRING(Nom, "scrute")
+			        || CONTAINSSTRING(Nom, "suwonda")
+			        || CONTAINSSTRING(Nom, "partswe")
+			        || CONTAINSSTRING(Nom, "saudequip")
+			        || Nom = "su"
+			        || Nom = "sac"
+			        || Nom = "rcc"
+			        || Nom = "ae"
+			        || Nom = "dp"
+			VAR IsSharedGeneric =
+			    CONTAINSSTRING(Nom, "polaris")
+			        || CONTAINSSTRING(Nom, "generique")
+			        || CONTAINSSTRING(Nom, "partage")
+			        || LEFT(Nom, 8) = "service "
+			        || Nom = "service"
+			        || CONTAINSSTRING(Email, "service@")
+			        || CONTAINSSTRING(Email, ".service@")
 			RETURN
-			IF(
-			    EstTechnique || EstDesactive,
-			    "Exclu",	// Remplace BLANK() par une valeur explicite pour eviter les (Blank) dans les filtres
-			    IF(
-			        NOT(ISBLANK(CategorieM365)),
-			        // Nuance : si M365 dit 'Jamais Connecté' mais Azure AD a une connexion
-			        // → l'user s'est authentifié mais n'utilise aucune app M365
-			        SWITCH(
-			            TRUE(),
-			            CategorieM365 = "Jamais Connecté" && NOT(AJamaisConnecteAD),
-			            "Inactif M365",
-			            CategorieM365 = "Inactif (>90j)", LabelInactif,
-			            CategorieM365
-			        ),
-			        // Fallback sur Azure AD si aucune donnée M365
-			        IF(
-			            AJamaisConnecteAD,
-			            "Jamais Connecté",
-			            IF(EstInactif, LabelInactif, "Actif")
-			        )
-			    )
+			SWITCH(
+			    TRUE(),
+			    EstVide, "EMPTY",
+			    IsGuest, "TECH_SIGNAL_GUEST",
+			    IsExternal, "TECH_SIGNAL_EXT",
+			    IsSharedRoom, "TECH_SHARED_ROOM",
+			    IsGenericEmail, "TECH_GENERIC_EMAIL",
+			    IsSupport, "TECH_SUPPORT",
+			    IsInfra, "TECH_INFRA",
+			    IsAdminPattern, "TECH_ADMIN_BOUNDED",
+			    IsPrefix, "TECH_PREFIX",
+			    IsTestPattern, "TECH_TEST_BOUNDED",
+			    IsBI, "TECH_BI",
+			    IsTooling, "TECH_TOOLING",
+			    IsNetwork, "TECH_NETWORK",
+			    IsFormationPattern, "TECH_FORMATION_BOUNDED",
+			    IsVisitPattern, "TECH_VISIT_BOUNDED",
+			    IsBackoffice, "TECH_BACKOFFICE",
+			    IsSpecificEmail, "TECH_EMAIL_SPECIFIC",
+			    IsShortGeneric, "TECH_SHORT_GENERIC",
+			    IsSharedGeneric, "TECH_SHARED_GENERIC",
+			    "USER_DEFAULT"
 			)
-		lineageTag: 0db36ffc-10e6-4330-ba46-31ff1fa49493
+		isHidden
+		lineageTag: regletypecompte-calc-001-neemba
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
-	column CodeEtatActivite = ```
-			
-			VAR EstTechnique = [TypeCompte] = "Technique"
-			VAR EstDesactive = [AccountEnabled] = FALSE()
-			VAR UserEmail    = [UserPrincipalName]
-			VAR CategorieM365 =
-			    LOOKUPVALUE(
-			        T_Activite_M365[CategorieActivite],
-			        T_Activite_M365[UserPrincipalName], UserEmail
-			    )
-			VAR AJamaisConnecteAD = ISBLANK([LastSignIn])
+	column EtatActivite =
+
+			VAR CodeEtat = [CodeEtatActivite]
 			VAR SeuilInactiviteJours =
-			    SELECTEDVALUE(T_Parametres_Dim[SeuilInactiviteJours], 90)
-			VAR EstInactif =
-			    NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - SeuilInactiviteJours
+			    MAXX(T_Parametres_Dim, T_Parametres_Dim[SeuilInactiviteJours])
+			VAR LabelInactif =
+			    "Inactif >" & FORMAT(SeuilInactiviteJours, "0") & "j"
+
 			RETURN
 			SWITCH(
-			    TRUE(),
-			    EstTechnique || EstDesactive, "EXCLU",
-			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais" && NOT(AJamaisConnecteAD), "INACTIF_M365",
-			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais", "JAMAIS_CONNECTE",
-			    CategorieM365 = "Inactif (>90j)", "INACTIF",
-			    AJamaisConnecteAD, "JAMAIS_CONNECTE",
-			    EstInactif, "INACTIF",
-			    "ACTIF"
+			    CodeEtat,
+			    "ACTIF", "Actif",
+			    "INACTIF", LabelInactif,
+			    "JAMAIS_CONNECTE", "Jamais Connect" & UNICHAR(233),
+			    "INACTIF_M365", "Inactif M365",
+			    "EXCLU", "Exclu",
+			    "Exclu"
 			)
-			```
-		isHidden
-		lineageTag: 2d2c17e8-62df-4a42-8186-cfd18c6919d2
+		lineageTag: 0db36ffc-10e6-4330-ba46-31ff1fa49493
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
@@ -410,51 +353,33 @@ table T_Utilisateurs_Dim
 
 		annotation SummarizationSetBy = Automatic
 
-	column StatutLicence = ```
-			
+	column NbLicencesAffecteesDistinctes =
+
 			VAR _upnNorm = LOWER(TRIM(COALESCE([UserPrincipalName], "")))
-			VAR NbLicencesAffectees =
-			    IF(
-			        _upnNorm = "",
-			        0,
-			        CALCULATE(
-			            DISTINCTCOUNT(T_Affectations_Fact[AffectationID]),
-			            FILTER(
-			                ALL(T_Affectations_Fact),
-			                LOWER(TRIM(COALESCE(T_Affectations_Fact[UserPrincipalName], ""))) = _upnNorm
-			            )
+			RETURN
+			IF(
+			    _upnNorm = "",
+			    0,
+			    CALCULATE(
+			        DISTINCTCOUNT(T_Affectations_Fact[AffectationID]),
+			        FILTER(
+			            ALL(T_Affectations_Fact),
+			            LOWER(TRIM(COALESCE(T_Affectations_Fact[UserPrincipalName], ""))) = _upnNorm
 			        )
 			    )
-			RETURN
-			IF(COALESCE(NbLicencesAffectees, 0) > 0, "ON", "OFF")
-			```
-		lineageTag: 5d4e3984-4f92-4183-88c6-336d621e3362
+			)
+		isHidden
+		lineageTag: nblicencesaffecteesdistinctes-calc-001-neemba
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
-	column EstDesactiveAvecLicence = ```
-			
-			VAR _upnNorm = LOWER(TRIM(COALESCE([UserPrincipalName], "")))
-			VAR NbLicencesAffectees =
-			    IF(
-			        _upnNorm = "",
-			        0,
-			        CALCULATE(
-			            DISTINCTCOUNT(T_Affectations_Fact[AffectationID]),
-			            FILTER(
-			                ALL(T_Affectations_Fact),
-			                LOWER(TRIM(COALESCE(T_Affectations_Fact[UserPrincipalName], ""))) = _upnNorm
-			            )
-			        )
-			    )
+	column StatutLicence =
+
+			VAR NbLicencesAffectees = COALESCE([NbLicencesAffecteesDistinctes], 0)
 			RETURN
-			[TypeCompte] = "Utilisateur"
-			    && [AccountEnabled] = FALSE()
-			    && COALESCE(NbLicencesAffectees, 0) > 0
-			```
-		isHidden
-		lineageTag: estdesactiveaveclicence-calc-001-neemba
+			IF(COALESCE(NbLicencesAffectees, 0) > 0, "ON", "OFF")
+		lineageTag: 5d4e3984-4f92-4183-88c6-336d621e3362
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
@@ -479,7 +404,7 @@ table T_Utilisateurs_Dim
 	column IsCible =
 			
 			// Colonne calculée : identifie les comptes cibles pour le nettoyage
-			// Cible = Humain actif AD mais dormant (>90j ou jamais connecté) OU tout compte désactivé AD
+			// Cible = Humain actif AD mais dormant (au-dela du seuil parametre ou jamais connecte) OU tout compte desactive AD
 			(
 			    T_Utilisateurs_Dim[TypeCompte] = "Utilisateur" &&
 			    T_Utilisateurs_Dim[Statut AD] = "Activé" &&
@@ -507,113 +432,66 @@ table T_Utilisateurs_Dim
 
 		annotation SummarizationSetBy = Automatic
 
+	column CodeEtatActivite =
+
+			VAR EstTechnique = [TypeCompte] = "Technique"
+			VAR EstDesactive = [AccountEnabled] = FALSE()
+			VAR UserEmail    = [UserPrincipalName]
+			VAR CategorieM365 =
+			    LOOKUPVALUE(
+			        T_Activite_M365[CategorieActivite],
+			        T_Activite_M365[UserPrincipalName], UserEmail
+			    )
+			VAR AJamaisConnecteAD = ISBLANK([LastSignIn])
+			VAR SeuilInactiviteJours =
+			    MAXX(T_Parametres_Dim, T_Parametres_Dim[SeuilInactiviteJours])
+			VAR LabelInactifM365 =
+			    "Inactif (>" & FORMAT(SeuilInactiviteJours, "0") & "j)"
+			VAR EstInactif =
+			    NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - SeuilInactiviteJours
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    EstTechnique || EstDesactive, "EXCLU",
+			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais" && NOT(AJamaisConnecteAD), "INACTIF_M365",
+			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais", "JAMAIS_CONNECTE",
+			    CategorieM365 = LabelInactifM365, "INACTIF",
+			    AJamaisConnecteAD, "JAMAIS_CONNECTE",
+			    EstInactif, "INACTIF",
+			    "ACTIF"
+			)
+		isHidden
+		lineageTag: 2d2c17e8-62df-4a42-8186-cfd18c6919d2
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column EstDesactiveAvecLicence =
+
+			VAR NbLicencesAffectees = COALESCE([NbLicencesAffecteesDistinctes], 0)
+			RETURN
+			[TypeCompte] = "Utilisateur"
+			    && [AccountEnabled] = FALSE()
+			    && COALESCE(NbLicencesAffectees, 0) > 0
+		isHidden
+		lineageTag: estdesactiveaveclicence-calc-001-neemba
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition T_Utilisateurs_Dim = m
 		mode: import
 		source = ```
 				let
 				    // ═══════════════════════════════════════════════════════════════════
-				    // 1. AUTHENTIFICATION SÉCURISÉE (Via Paramètres)
+				    // 1. SOURCE BRUTE PARTAGÉE
 				    // ═══════════════════════════════════════════════════════════════════
-				    TenantId = Text.From(#"Param_TenantId"),
-				    ClientId = Text.From(#"Param_ClientId"),
-				    ClientSecret = Text.From(#"Param_Secret"),
-				
-				    GetAccessToken = () =>
-				        let
-				            Url = "https://login.microsoftonline.com/" & TenantId & "/oauth2/v2.0/token",
-				            Body = "client_id=" & ClientId & 
-				                   "&scope=https://graph.microsoft.com/.default" & 
-				                   "&client_secret=" & Uri.EscapeDataString(ClientSecret) & 
-				                   "&grant_type=client_credentials",
-				            Response = Json.Document(
-				                Web.Contents(Url, [
-				                    Headers = [#"Content-Type" = "application/x-www-form-urlencoded"], 
-				                    Content = Text.ToBinary(Body)
-				                ])
-				            ),
-				            Token = "Bearer " & Response[access_token]
-				        in
-				            Token,
-				
-				    AuthToken = GetAccessToken(),
+				    Source = GetUsersBaseTable,
 				
 				    // ═══════════════════════════════════════════════════════════════════
-				    // 2. URL CIBLE (API BETA pour signInActivity)
+				    // 2. CORRECTIONS GÉOGRAPHIQUES
 				    // ═══════════════════════════════════════════════════════════════════
-				    BaseUrl = "https://graph.microsoft.com/beta/users?" 
-				              & "$top=999&" 
-				              & "$select=id,displayName,userPrincipalName,department,country,"
-				              & "usageLocation,userType,accountEnabled,assignedLicenses,createdDateTime,signInActivity",
-				
-				    // ═══════════════════════════════════════════════════════════════════
-				    // 3. PAGINATION
-				    // ═══════════════════════════════════════════════════════════════════
-				    FetchPage = (url) =>
-				        let
-				            RawData = Json.Document(Web.Contents(url, [Headers = [Authorization = AuthToken]])),
-				            NextLink = try RawData[#"@odata.nextLink"] otherwise null,
-				            Data = try RawData[value] otherwise null
-				        in
-				            [Data = Data, Next = NextLink],
-				
-				    AllPages = List.Generate(
-				        () => FetchPage(BaseUrl),
-				        each [Data] <> null,
-				        each FetchPage([Next]),
-				        each [Data]
-				    ),
-				
-				    // ═══════════════════════════════════════════════════════════════════
-				    // 4. TRANSFORMATION EN TABLE
-				    // ═══════════════════════════════════════════════════════════════════
-				    CombinedList = List.Combine(AllPages),
-				    Tabled = Table.FromList(CombinedList, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
-				    Expanded = Table.ExpandRecordColumn(
-				        Tabled, 
-				        "Column1", 
-				        {"id", "displayName", "userPrincipalName", "department", "country", "usageLocation", "userType", "accountEnabled", "createdDateTime", "signInActivity", "assignedLicenses"},
-				        {"UserID", "DisplayName", "UserPrincipalName", "Department", "CountryOrRegion", "UsageLocation", "UserType", "AccountEnabled", "WhenCreated", "signInActivity", "Licences_Brutes"}
-				    ),
-				
-				    // ═══════════════════════════════════════════════════════════════════
-				    // 5. CALCUL DE LA DERNIÈRE ACTIVITÉ
-				    // ═══════════════════════════════════════════════════════════════════
-				    #"LastSignIn Ajouté" = Table.AddColumn(
-				        Expanded, 
-				        "LastSignIn", 
-				        each 
-				            if [signInActivity] <> null then 
-				                let
-				                    Interactive = try Record.Field([signInActivity], "lastSignInDateTime") otherwise null,
-				                    NonInteractive = try Record.Field([signInActivity], "lastNonInteractiveSignInDateTime") otherwise null,
-				                    DateList = List.RemoveNulls({Interactive, NonInteractive}),
-				                    MaxDate = if List.IsEmpty(DateList) then null else List.Max(DateList)
-				                in 
-				                    MaxDate
-				            else 
-				                null
-				    ),
-				
-				    #"Colonnes supprimées" = Table.RemoveColumns(#"LastSignIn Ajouté", {"signInActivity"}),
-				
-				    // ═══════════════════════════════════════════════════════════════════
-				    // 6. TYPAGE INITIAL
-				    // ═══════════════════════════════════════════════════════════════════
-				    #"Type modifié" = Table.TransformColumnTypes(
-				        #"Colonnes supprimées",
-				        {
-				            {"UsageLocation", type text},
-				            {"UserType", type text},
-				            {"WhenCreated", type datetime}, 
-				            {"LastSignIn", type datetime}, 
-				            {"AccountEnabled", type logical}
-				        }
-				    ),
-				
-				    // ═══════════════════════════════════════════════════════════════════
-				    // 7. CORRECTIONS GÉOGRAPHIQUES
-				    // ═══════════════════════════════════════════════════════════════════
-				    #"Valeur remplacée" = Table.ReplaceValue(#"Type modifié", "Senegal", "Sénégal", Replacer.ReplaceText, {"CountryOrRegion"}),
+				    #"Valeur remplacée" = Table.ReplaceValue(Source, "Senegal", "Sénégal", Replacer.ReplaceText, {"CountryOrRegion"}),
 				    #"Valeur remplacée1" = Table.ReplaceValue(#"Valeur remplacée", "Benin", "Bénin", Replacer.ReplaceText, {"CountryOrRegion"}),
 				    #"Valeur remplacée2" = Table.ReplaceValue(#"Valeur remplacée1", "Mauritania", "Mauritanie", Replacer.ReplaceText, {"CountryOrRegion"}),
 				    #"Valeur remplacée3" = Table.ReplaceValue(#"Valeur remplacée2", "Burkina-Faso", "Burkina Faso", Replacer.ReplaceText, {"CountryOrRegion"}),
@@ -625,7 +503,7 @@ table T_Utilisateurs_Dim
 				    #"Valeur remplacée9" = Table.ReplaceValue(#"Valeur remplacée8", "Côte'Ivoire", "Côte d'Ivoire", Replacer.ReplaceText, {"CountryOrRegion"}),
 				
 				    // ═══════════════════════════════════════════════════════════════════
-				    // 8. NOUVELLES COLONNES CALCULÉES (Phase 3)
+				    // 3. NOUVELLES COLONNES CALCULÉES (Phase 3)
 				    // ═══════════════════════════════════════════════════════════════════
 				    
 				    // Extraction du domaine email
@@ -652,7 +530,7 @@ table T_Utilisateurs_Dim
 				    ),
 				
 				    // ═══════════════════════════════════════════════════════════════════
-				    // 9. RÉORGANISATION DES COLONNES
+				    // 4. RÉORGANISATION DES COLONNES
 				    // ═══════════════════════════════════════════════════════════════════
 				    #"Colonnes réorganisées" = Table.ReorderColumns(
 				        #"Jours Ajouté", 

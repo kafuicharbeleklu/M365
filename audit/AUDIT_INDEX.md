@@ -71,3 +71,19 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-070 | Fix | Restauration de la navigation KPI P1 et du bouton P3 comptes desactives avec licence | 2026-03-24 | ? Appliqué |
 | FIX-071 | Fix | Verrouillage du bookmark comptes desactives avec licence sur le tableau cible | 2026-03-24 | ? Appliqué |
 | FIX-072 | Fix | Exposition de StatutLicence comme filtre de page sur Analyse Utilisateur | 2026-03-24 | ? Appliqué |
+| FIX-073 | Fix | Realignement des bookmarks humains Actifs/Inactifs avec le filtre visible EtatActivite | 2026-03-24 | ? Appliqué |
+| FIX-074 | Fix | Exposition de NiveauRisqueStock comme filtre de page sur Analyse Utilisateur | 2026-03-24 | ? Appliqué |
+| FIX-075 | Fix | Alignement des bookmarks P2 de risque avec le filtre visible NiveauRisqueStock | 2026-03-24 | ? Appliqué |
+| FIX-076 | Fix | Alignement des KPI utilisateurs avec des comptes distincts sur Analyse Utilisateur | 2026-03-24 | ? Appliqué |
+| BL-004 | Business Logic | Revue architecture extraction -> modele -> mesures -> report | 2026-03-24 | ? Audité |
+| FIX-077 | Fix | Organisation des mesures partagees par dossiers metier | 2026-03-24 | ? Appliqué |
+| FIX-078 | Fix | Factorisation de l'auth Graph dans une expression Power Query partagee | 2026-03-24 | ? Appliqué |
+| FIX-079 | Fix | Deduplication du nombre de licences par utilisateur dans une colonne cachee | 2026-03-24 | ? Appliqué |
+| FIX-080 | Fix | Redaction des credentials Graph locaux avant commit | 2026-03-24 | ? Appliqué |
+| FIX-081 | Fix | Faire de EtatActivite un libelle derive de CodeEtatActivite | 2026-03-24 | ? Appliqué |
+| FIX-082 | Fix | Refactor TypeCompte en colonne de regle diagnostique + sortie fine | 2026-03-24 | ? Appliqué |
+| FIX-083 | Fix | Suppression des mesures partagees clairement sans usage dans _Mesures | 2026-03-24 | ? Appliqué |
+| FIX-084 | Fix | Decouplage de T_Affectations_Fact via une expression partagee users base | 2026-03-24 | ? Appliqué |
+| FIX-085 | Fix | Parametrage des derniers libelles et comparaisons de seuils | 2026-03-24 | ? Appliqué |
+| FIX-086 | Fix | Mise a jour des notes AGENTS sur seuils et bookmarks apres audit source | 2026-03-24 | ? Appliqué |
+| FIX-087 | Fix | Suppression des mesures tooltip P2 orphelines et cloture de l'alerte doc | 2026-03-24 | ? Appliqué |

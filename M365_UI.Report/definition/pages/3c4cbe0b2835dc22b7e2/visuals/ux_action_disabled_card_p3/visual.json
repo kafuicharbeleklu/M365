@@ -23,11 +23,11 @@
                       "Entity": "_Mesures"
                     }
                   },
-                  "Property": "LicencesComptesBloques"
+                  "Property": "NbComptesDesactivesAvecLicence"
                 }
               },
-              "queryRef": "_Mesures.LicencesComptesBloques",
-              "nativeQueryRef": "LicencesComptesBloques"
+              "queryRef": "_Mesures.NbComptesDesactivesAvecLicence",
+              "nativeQueryRef": "NbComptesDesactivesAvecLicence"
             }
           ]
         }

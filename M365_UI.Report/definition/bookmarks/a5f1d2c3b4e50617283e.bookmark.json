@@ -3,20 +3,32 @@
   "displayName": "Nav_Reset_P2",
   "name": "a5f1d2c3b4e50617283e",
   "options": {
-    "targetVisualNames": [
-      "3626dc072b6e376f3a86",
-      "9be3f2f347da33375eb0",
-      "86770fbf6fe57e94e998",
-      "90319ee1bdd377ebb01a",
-      "2e4b80c68d53a65fee7c",
-      "ux_risk_quickfilter_p2"
-    ]
+    "targetVisualNames": []
   },
   "explorationState": {
     "version": "1.3",
     "activeSection": "54f9d470ac60b85b18da",
     "sections": {
       "54f9d470ac60b85b18da": {
+        "filters": {
+          "byExpr": [
+            {
+              "name": "e5f1d2c3b4e506172836",
+              "type": "Categorical",
+              "expression": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Produits_Dim"
+                    }
+                  },
+                  "Property": "NiveauRisqueStock"
+                }
+              },
+              "howCreated": 5
+            }
+          ]
+        },
         "visualContainers": {
           "3626dc072b6e376f3a86": {
             "filters": {

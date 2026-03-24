@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
   "displayName": "Nav_TechniquesInactives",
   "name": "bab47829329722d7d720",
   "options": {
@@ -252,7 +252,7 @@
                           "Entity": "_Mesures"
                         }
                       },
-                      "Property": "LicencesComptesBloques"
+                      "Property": "NbComptesDesactivesAvecLicence"
                     }
                   },
                   "howCreated": 1
@@ -458,71 +458,6 @@
                         }
                       },
                       "Property": "NbBoitesInactives"
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "256a79fcfd1a1485f625": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "4d055c10d56830ae244b",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "EtatActivite"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "0a6532341a42e937b836",
-                  "type": "Advanced",
-                  "expression": {
-                    "Aggregation": {
-                      "Expression": {
-                        "Column": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "T_Utilisateurs_Dim"
-                            }
-                          },
-                          "Property": "UserPrincipalName"
-                        }
-                      },
-                      "Function": 5
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Aggregation": {
-                      "Expression": {
-                        "Column": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "T_Utilisateurs_Dim"
-                            }
-                          },
-                          "Property": "UserPrincipalName"
-                        }
-                      },
-                      "Function": 5
                     }
                   }
                 }
@@ -862,46 +797,6 @@
               "objects": {}
             }
           },
-          "8030dbc87ab90506be3e": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "fe335e6058e03659636d",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsActifs"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsActifs"
-                    }
-                  }
-                }
-              ]
-            }
-          },
           "0781849f42b2a3099ac6": {
             "filters": {
               "byExpr": [
@@ -1022,181 +917,6 @@
               ]
             }
           },
-          "b5e7555e9ed80b014183": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "99708afea82dbcd04ed0",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsJamaisConnectes"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsJamaisConnectes"
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "13b24c306ab625400ecd": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "de1069dfd1e219607c00",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "TypeCompte"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Basic'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "TypeCompte"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "cff18eebc6e8ac5a4392": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "12980e8161626803edc0",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "Statut AD"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Basic'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "Statut AD"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "d590c2deb480ca846ab9": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "924b570d4413d271074c",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "StatutLicence"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
-            }
-          },
           "79259f2e49cae54295a9": {
             "singleVisual": {
               "visualType": "actionButton",
@@ -1204,12 +924,6 @@
             }
           },
           "bc689230263b260580e0": {
-            "singleVisual": {
-              "visualType": "actionButton",
-              "objects": {}
-            }
-          },
-          "47d6cec71d3710a42e63": {
             "singleVisual": {
               "visualType": "actionButton",
               "objects": {}

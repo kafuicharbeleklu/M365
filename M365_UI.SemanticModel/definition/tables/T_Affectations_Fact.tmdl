@@ -46,7 +46,7 @@ table T_Affectations_Fact
 		mode: import
 		source = ```
 				let
-				    Source = T_Utilisateurs_Dim,
+				    Source = GetUsersBaseTable,
 				    
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 1. SÉLECTION DES COLONNES

@@ -47,24 +47,21 @@ Never commit real values for `Param_TenantId`, `Param_ClientId`, or `Param_Secre
 - `T_Activite_M365` is sourced from `getM365AppUserDetail(period='D180')`. The period is hardcoded in Power Query; do not change it without explicit instruction.
 - `DateTableTemplate_*` and `LocalDateTable_*` are generated artifacts. Never edit them manually and never create relationships to them directly.
 
-## Hardcoded Thresholds - Parameterization Backlog
-The following thresholds are currently hardcoded in DAX and Power Query. When editing measures that contain these values, do not silently change them. Flag them as candidates for `Param_*` parameterization:
+## Threshold Parameterization Status
+The main threshold families below are parameterized as of `2026-03-24`. When editing these flows, preserve the linkage to `Param_*` and do not reintroduce hardcoded fallbacks silently:
 
-| Location | Hardcoded value | Intended param name |
-|----------|-----------------|---------------------|
-| `T_Utilisateurs_Dim[EtatActivite]` | `TODAY() - 90` | `Param_SeuilInactiviteJours` |
-| `DT_NiveauUtilisation` | `> 90j`, score bands `7/4/1` | `Param_SeuilInactiviteJours`, `Param_ScoreBands` |
-| `NiveauAlerteDisponibilite` | `0.10`, `0.25`, `0.50` | `Param_SeuilAlerteStock` |
-| `UX_ProduitsStockCritique` | `<= 0.10` | `Param_SeuilAlerteStock` |
-| `getM365AppUserDetail` | `period='D180'` | `Param_PeriodeActivite` |
+| Location | Status | Parameter source |
+|----------|--------|------------------|
+| `T_Utilisateurs_Dim[EtatActivite]` / `CodeEtatActivite` | Parameterized | `Param_SeuilInactiviteJours` |
+| `DT_NiveauUtilisation` | Parameterized | `Param_SeuilInactiviteJours`, `Param_ScoreBand*` |
+| `NiveauAlerteDisponibilite` | Parameterized | `Param_SeuilStockCritiquePct`, `Param_SeuilStockAlertePct`, `Param_SeuilStockSurveillancePct` |
+| `UX_ProduitsStockCritique` | Parameterized | `Param_SeuilStockCritiquePct` |
+| `getM365AppUserDetail` | Parameterized | `Param_PeriodeActivite` |
 
 ## Known Report Artifacts Needing Repair
 Do not work around these silently; flag them in your response:
 
-- Broken bookmarks: `Nav_HumainsActifs`, `Nav_TechniquesActives`, `Nav_TechniquesInactives` reference visual id `04a9392b160996ab9007` which no longer exists. Do not re-target without explicit instruction.
-- Bookmark filter mismatch: `Nav_ProduitsDepassement` and `Nav_UtilisateursFantomes` serialize `TypeCompte=Technique` instead of their intended filter. Do not silently fix; report the discrepancy.
-- `Signet 12`: unnamed bookmark with `TypeCompte=Technique`; orphan, purpose unknown. Do not delete without confirmation.
-- Orphaned tooltip measures: `TT_p2_critique_*`, `TT_p2_epuise_*`, `TT_p2_depassement_*`, `TT_p2_risque_*` exist in `_Mesures.tmdl` but have no corresponding `ttv_*` tooltip page. Treat as dead code until tooltip pages are created.
+- No currently tracked report artifact remains open in source after the `2026-03-24` bookmark and tooltip audit.
 
 ## Security - Mandatory Pre-Commit Check
 Before every commit, run:
@@ -96,3 +93,93 @@ Verify `Param_Secret` contains only a placeholder such as `"__REDACTED__"`, neve
 - Power BI left navigation panel occupies approximately `x=0` to `x=190`. Never place visuals with `x < 200` on pages that use the nav panel.
 - Page header zone height varies per page. Always inspect `dt_title_001` or equivalent before placing banners on drillthrough pages.
 - Source-level coordinate audits cannot detect overlap with native Power BI UI chrome such as the nav panel or toolbar. Visual validation in Power BI Desktop is mandatory after any position change.
+
+---
+
+## Codex / AI Agent Operating Constraints
+
+This section is specifically for AI coding agents (Codex, Gemini, etc.) operating on this repository in a sandboxed environment.
+
+### What you CAN do
+- Read and edit all `.tmdl`, `.json`, and `.md` files.
+- Create, modify, and delete DAX measures in `_Mesures.tmdl`.
+- Add or edit Power Query (M) expressions in `expressions.tmdl`.
+- Add, reorder, or modify report pages and visuals by editing their JSON definitions under `M365_UI.Report/definition/pages/`.
+- Create and manage bookmark JSON files under `M365_UI.Report/definition/bookmarks/`.
+- Create and update audit records under `audit/`.
+- Run `git` commands and file-search tools (`rg`, `fd`, `grep`).
+
+### What you CANNOT do
+- Open Power BI Desktop or refresh the semantic model. All visual validation must be deferred to the human operator.
+- Execute DAX queries or Power Query (M) code. You can only write and lint them statically.
+- Test drillthrough, slicer interactions, or cross-filter behavior. Flag these for manual validation.
+- Access external APIs (Microsoft Graph, Azure AD). Do not attempt HTTP calls.
+
+### Operating principles
+1. **Explore before editing.** Read the target file in full before proposing changes. For structural changes, list the directory tree first.
+2. **One concern per commit.** Group related `.tmdl` and `.json` edits together, but do not mix unrelated changes.
+3. **Flag, don't fix silently.** If you encounter a known issue from "Known Report Artifacts Needing Repair" or "Hardcoded Thresholds", report it and ask for confirmation.
+4. **Respect serialization formats.** `.tmdl` files use tabs for indentation. JSON files use 2-space indentation. Never reformat an entire file.
+5. **Audit trail is mandatory.** Every `.tmdl` or report JSON change must have a corresponding `FIX-*` record in `audit/fixes/`.
+
+## File Inventory
+
+### Semantic Model Tables (`M365_UI.SemanticModel/definition/tables/`)
+
+| File | Purpose |
+|------|---------|
+| `_Mesures.tmdl` | All shared DAX measures (~45 KB). Primary editing target. |
+| `T_Utilisateurs_Dim.tmdl` | User dimension: accounts, TypeCompte classification, EtatActivite. |
+| `T_Produits_Dim.tmdl` | License product dimension: SKU, stock, thresholds. |
+| `T_Activite_M365.tmdl` | M365 app usage activity (source: `getM365AppUserDetail`). |
+| `T_Affectations_Fact.tmdl` | Current-state license assignments (no date column). |
+| `T_Parametres_Dim.tmdl` | Dashboard parameters and configuration. |
+| `DateTableTemplate_*.tmdl` | Auto-generated. **Do not edit.** |
+| `LocalDateTable_*.tmdl` (×5) | Auto-generated. **Do not edit.** |
+
+### Key Model Files
+
+| File | Purpose |
+|------|---------|
+| `expressions.tmdl` | Power Query (M) data sources and parameters. **Contains secrets — never commit real values.** |
+| `relationships.tmdl` | All model relationships. |
+| `model.tmdl` | Model-level settings (culture, compatibility). |
+
+### Report Pages (`M365_UI.Report/definition/pages/`)
+
+| Folder | Type | Description |
+|--------|------|-------------|
+| `3c4cbe0b2835dc22b7e2` | Main page | Primary dashboard page (hash ID). |
+| `54f9d470ac60b85b18da` | Main page | Secondary dashboard page (hash ID). |
+| `a4497031bb9f4bfb6556` | Main page | Tertiary dashboard page (hash ID). |
+| `page_drillthrough_detail_user` | Drillthrough | User 360° detail page. |
+| `ttv_p1_*` (×8) | Tooltip | Page 1 tooltip overlays (actifs, comptes, desactives, inactifs, licences). |
+| `ttv_p2_*` (×6) | Tooltip | Page 2 tooltip overlays (actives, affectees, dispo, inactives, produits, stock). |
+| `ttv_p3_*` (×7) | Tooltip | Page 3 tooltip overlays (actifs, boites, cibles, desactives, fantomes, inactifs). |
+
+### Other Key Paths
+
+| Path | Purpose |
+|------|---------|
+| `M365_UI.Report/StaticResources/` | Theme JSON and image assets. |
+| `M365_UI.Report/definition/bookmarks/` | Bookmark definitions (see "Known Report Artifacts Needing Repair"). |
+| `audit/AUDIT_INDEX.md` | Master audit index. |
+| `audit/fixes/` | FIX records for code changes. |
+| `audit/business-logic/` | BL audit records. |
+| `audit/data-quality/` | DQ audit records. |
+| `audit/ui-layout/` | UI audit records. |
+| `Lab/` | Experimental fork of the project. Not the active working copy. |
+
+## Quick-Start Checklist (for AI Agents)
+
+When starting a new task on this repo:
+
+1. Read this `AGENTS.md` in full.
+2. Identify which files are affected by the request.
+3. Read each affected file before editing.
+4. For DAX measure changes → edit `_Mesures.tmdl`.
+5. For visual/page changes → edit JSON under `M365_UI.Report/definition/pages/<page_id>/`.
+6. For data source changes → edit `expressions.tmdl` (never commit secrets).
+7. Create a `FIX-*` audit record in `audit/fixes/` for every change.
+8. Run `git diff -- M365_UI.SemanticModel/definition/expressions.tmdl` to verify no secrets leak.
+9. Flag any items from "Known Report Artifacts Needing Repair" or "Hardcoded Thresholds" encountered during the task.

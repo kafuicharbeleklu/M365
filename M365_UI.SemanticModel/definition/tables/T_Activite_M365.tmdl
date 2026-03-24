@@ -215,39 +215,20 @@ table T_Activite_M365
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 1. PARAMÈTRES
 				    // ═══════════════════════════════════════════════════════════════════
-				    TenantId = Text.From(#"Param_TenantId"),
-				    ClientId = Text.From(#"Param_ClientId"),
-				    ClientSecret = Text.From(#"Param_Secret"),
 				    SeuilInactiviteJours = Number.From(#"Param_SeuilInactiviteJours"),
 				    ScoreBandPowerUser = Number.From(#"Param_ScoreBandPowerUser"),
 				    ScoreBandStandard = Number.From(#"Param_ScoreBandStandard"),
 				    ScoreBandMinimal = Number.From(#"Param_ScoreBandMinimal"),
 				    PeriodeActivite = Text.From(#"Param_PeriodeActivite"),
+				    LibelleInactif = "Inactif (>" & Number.ToText(SeuilInactiviteJours) & "j)",
 				
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 2. AUTHENTIFICATION
 				    // ═══════════════════════════════════════════════════════════════════
-				    GetAccessToken = () =>
-				        let
-				            Url = "https://login.microsoftonline.com/" & TenantId & "/oauth2/v2.0/token",
-				            Body = "client_id=" & ClientId 
-				                   & "&scope=https://graph.microsoft.com/.default" 
-				                   & "&client_secret=" & Uri.EscapeDataString(ClientSecret) 
-				                   & "&grant_type=client_credentials",
-				            Response = Json.Document(
-				                Web.Contents(Url, [
-				                    Headers = [#"Content-Type" = "application/x-www-form-urlencoded"], 
-				                    Content = Text.ToBinary(Body)
-				                ])
-				            ),
-				            Token = "Bearer " & Response[access_token]
-				        in
-				            Token,
-				
-				    AuthToken = GetAccessToken(),
+				    AuthToken = GetGraphAccessToken,
 				
 				    // ═══════════════════════════════════════════════════════════════════
-				    // 3. APPEL DU RAPPORT (180 jours)
+				    // 3. APPEL DU RAPPORT (PERIODE PARAMETREE)
 				    // ═══════════════════════════════════════════════════════════════════
 				    ReportUrl = "https://graph.microsoft.com/v1.0/reports/getM365AppUserDetail(period='" & PeriodeActivite & "')",
 				    
@@ -374,14 +355,14 @@ table T_Activite_M365
 				            ),
 				
 				            // ═══════════════════════════════════════════════════════════
-				            // 9. CLASSIFICATION (SEUIL 90 JOURS)
+				            // 9. CLASSIFICATION (SEUIL PARAMETRE)
 				            // ═══════════════════════════════════════════════════════════
 				            Classification = Table.AddColumn(
 				                ScoreUtilisation, 
 				                "NiveauUtilisation", 
 				                each 
 				                    if [JoursInactivite] = null then "Jamais Connecté"
-				                    else if [JoursInactivite] > SeuilInactiviteJours then "Inactif (>90j)"
+				                    else if [JoursInactivite] > SeuilInactiviteJours then LibelleInactif
 				                    else if [ScoreUtilisation] >= ScoreBandPowerUser then "Power User"
 				                    else if [ScoreUtilisation] >= ScoreBandStandard then "Utilisateur Standard"
 				                    else if [ScoreUtilisation] >= ScoreBandMinimal then "Utilisateur Minimal"
@@ -397,7 +378,7 @@ table T_Activite_M365
 				                "CategorieActivite",
 				                each
 				                    if [NiveauUtilisation] = "Jamais Connecté" then "Jamais Connecté"
-				                    else if [NiveauUtilisation] = "Inactif (>90j)" then "Inactif (>90j)"
+				                    else if [NiveauUtilisation] = LibelleInactif then LibelleInactif
 				                    else "Actif",
 				                type text
 				            )

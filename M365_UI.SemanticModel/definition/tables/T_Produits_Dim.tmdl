@@ -83,30 +83,9 @@ table T_Produits_Dim
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 1. AUTHENTIFICATION SÉCURISÉE (Via Paramètres)
 				    // ═══════════════════════════════════════════════════════════════════
-				    TenantId = Text.From(#"Param_TenantId"),
-				    ClientId = Text.From(#"Param_ClientId"),
-				    ClientSecret = Text.From(#"Param_Secret"),
 				    SeuilStockCritiquePct = Number.From(#"Param_SeuilStockCritiquePct"),
 				    SeuilStockCritiqueRatio = SeuilStockCritiquePct / 100,
-				
-				    GetAccessToken = () => 
-				        let
-				            Url = "https://login.microsoftonline.com/" & TenantId & "/oauth2/v2.0/token",
-				            Body = "client_id=" & ClientId & 
-				                   "&scope=https://graph.microsoft.com/.default" & 
-				                   "&client_secret=" & Uri.EscapeDataString(ClientSecret) & 
-				                   "&grant_type=client_credentials",
-				            Response = Json.Document(
-				                Web.Contents(Url, [
-				                    Headers = [#"Content-Type" = "application/x-www-form-urlencoded"], 
-				                    Content = Text.ToBinary(Body)
-				                ])
-				            ),
-				            Token = "Bearer " & Response[access_token]
-				        in 
-				            Token,
-				
-				    AuthToken = GetAccessToken(),
+				    AuthToken = GetGraphAccessToken,
 				
 				    // ═══════════════════════════════════════════════════════════════════
 				    // 2. APPEL API

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
   "displayName": "Nav_UtilisateursFantomes",
   "name": "ca5213839361d51050a4",
   "options": {
@@ -222,7 +222,7 @@
                           "Entity": "_Mesures"
                         }
                       },
-                      "Property": "LicencesComptesBloques"
+                      "Property": "NbComptesDesactivesAvecLicence"
                     }
                   },
                   "howCreated": 1
@@ -428,71 +428,6 @@
                         }
                       },
                       "Property": "NbBoitesInactives"
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "256a79fcfd1a1485f625": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "c31587a03412e38ca065",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "EtatActivite"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "7203d0b27ee7a527a1c3",
-                  "type": "Advanced",
-                  "expression": {
-                    "Aggregation": {
-                      "Expression": {
-                        "Column": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "T_Utilisateurs_Dim"
-                            }
-                          },
-                          "Property": "UserPrincipalName"
-                        }
-                      },
-                      "Function": 5
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Aggregation": {
-                      "Expression": {
-                        "Column": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "T_Utilisateurs_Dim"
-                            }
-                          },
-                          "Property": "UserPrincipalName"
-                        }
-                      },
-                      "Function": 5
                     }
                   }
                 }
@@ -832,46 +767,6 @@
               "objects": {}
             }
           },
-          "8030dbc87ab90506be3e": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "51f9ef3fe074de5b00c0",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsActifs"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsActifs"
-                    }
-                  }
-                }
-              ]
-            }
-          },
           "0781849f42b2a3099ac6": {
             "filters": {
               "byExpr": [
@@ -990,181 +885,6 @@
                   }
                 }
               ]
-            }
-          },
-          "b5e7555e9ed80b014183": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "e41feb5289c93e0b4102",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsJamaisConnectes"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Mesures"
-                        }
-                      },
-                      "Property": "NbHumainsJamaisConnectes"
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "13b24c306ab625400ecd": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "54f7f59d37c908021e50",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "TypeCompte"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Basic'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "TypeCompte"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "cff18eebc6e8ac5a4392": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "437ebd792785600ee9c3",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "Statut AD"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Basic'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "Statut AD"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "d590c2deb480ca846ab9": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "0a1207f0263d58e89c86",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "StatutLicence"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
             }
           },
           "79259f2e49cae54295a9": {

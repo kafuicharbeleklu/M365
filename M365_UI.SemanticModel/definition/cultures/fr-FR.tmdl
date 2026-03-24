@@ -216,7 +216,7 @@ cultureInfo fr-FR
 			            "utilisateurs inactifs",
 			            "inactifs",
 			            "dormants",
-			            "inactifs 90 jours"
+			            "inactifs prolonges"
 			          ]
 			        },
 			        "NbHumainsJamaisConnectes": {

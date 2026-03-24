@@ -223,7 +223,7 @@
                           "Entity": "_Mesures"
                         }
                       },
-                      "Property": "LicencesComptesBloques"
+                      "Property": "NbComptesDesactivesAvecLicence"
                     }
                   },
                   "howCreated": 1

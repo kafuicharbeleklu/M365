@@ -144,7 +144,7 @@
                                   "Source": "t"
                                 }
                               },
-                              "Property": "CodeEtatActivite"
+                              "Property": "EtatActivite"
                             }
                           }
                         ],
@@ -152,7 +152,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'ACTIF'"
+                                "Value": "'Actif'"
                               }
                             }
                           ]
@@ -169,7 +169,7 @@
                       "Entity": "T_Utilisateurs_Dim"
                     }
                   },
-                  "Property": "CodeEtatActivite"
+                  "Property": "EtatActivite"
                 }
               },
               "howCreated": 1
@@ -276,7 +276,7 @@
                           "Entity": "_Mesures"
                         }
                       },
-                      "Property": "LicencesComptesBloques"
+                      "Property": "NbComptesDesactivesAvecLicence"
                     }
                   },
                   "howCreated": 1
@@ -939,116 +939,6 @@
                   }
                 }
               ]
-            }
-          },
-          "18e02ee723e342995a61": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "fe3af7f343b54b35b828",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "TypeCompte"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Basic'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "TypeCompte"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "7c987dd0a69bc50ae8d6": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "e35b37334e80b6ca7b43",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "Statut AD"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Basic'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "T_Utilisateurs_Dim"
-                        }
-                      },
-                      "Property": "Statut AD"
-                    }
-                  }
-                ]
-              }
             }
           },
           "79259f2e49cae54295a9": {

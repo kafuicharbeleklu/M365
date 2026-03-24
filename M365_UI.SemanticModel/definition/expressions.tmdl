@@ -75,3 +75,91 @@ expression Param_PeriodeActivite = "D180" meta [IsParameterQuery=true, Type="Tex
 
 	annotation PBI_ResultType = Text
 
+expression GetGraphAccessToken = ```
+		let
+		    TenantId = Text.From(#"Param_TenantId"),
+		    ClientId = Text.From(#"Param_ClientId"),
+		    ClientSecret = Text.From(#"Param_Secret"),
+		    Url = "https://login.microsoftonline.com/" & TenantId & "/oauth2/v2.0/token",
+		    Body = "client_id=" & ClientId
+		           & "&scope=https://graph.microsoft.com/.default"
+		           & "&client_secret=" & Uri.EscapeDataString(ClientSecret)
+		           & "&grant_type=client_credentials",
+		    Response = Json.Document(
+		        Web.Contents(Url, [
+		            Headers = [#"Content-Type" = "application/x-www-form-urlencoded"],
+		            Content = Text.ToBinary(Body)
+		        ])
+		    )
+		in
+		    "Bearer " & Response[access_token]
+	```
+	lineageTag: 0fb95837-2a0c-4a48-9284-91c7489328ec
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression GetUsersBaseTable = ```
+		let
+		    AuthToken = GetGraphAccessToken,
+		    BaseUrl = "https://graph.microsoft.com/beta/users?"
+		              & "$top=999&"
+		              & "$select=id,displayName,userPrincipalName,department,country,"
+		              & "usageLocation,userType,accountEnabled,assignedLicenses,createdDateTime,signInActivity",
+		    FetchPage = (url) =>
+		        let
+		            RawData = Json.Document(Web.Contents(url, [Headers = [Authorization = AuthToken]])),
+		            NextLink = try RawData[#"@odata.nextLink"] otherwise null,
+		            Data = try RawData[value] otherwise null
+		        in
+		            [Data = Data, Next = NextLink],
+		    AllPages = List.Generate(
+		        () => FetchPage(BaseUrl),
+		        each [Data] <> null,
+		        each FetchPage([Next]),
+		        each [Data]
+		    ),
+		    CombinedList = List.Combine(AllPages),
+		    Tabled = Table.FromList(CombinedList, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+		    Expanded = Table.ExpandRecordColumn(
+		        Tabled,
+		        "Column1",
+		        {"id", "displayName", "userPrincipalName", "department", "country", "usageLocation", "userType", "accountEnabled", "createdDateTime", "signInActivity", "assignedLicenses"},
+		        {"UserID", "DisplayName", "UserPrincipalName", "Department", "CountryOrRegion", "UsageLocation", "UserType", "AccountEnabled", "WhenCreated", "signInActivity", "Licences_Brutes"}
+		    ),
+		    #"LastSignIn Added" = Table.AddColumn(
+		        Expanded,
+		        "LastSignIn",
+		        each
+		            if [signInActivity] <> null then
+		                let
+		                    Interactive = try Record.Field([signInActivity], "lastSignInDateTime") otherwise null,
+		                    NonInteractive = try Record.Field([signInActivity], "lastNonInteractiveSignInDateTime") otherwise null,
+		                    DateList = List.RemoveNulls({Interactive, NonInteractive}),
+		                    MaxDate = if List.IsEmpty(DateList) then null else List.Max(DateList)
+		                in
+		                    MaxDate
+		            else
+		                null
+		    ),
+		    #"Removed signInActivity" = Table.RemoveColumns(#"LastSignIn Added", {"signInActivity"}),
+		    #"Typed Users" = Table.TransformColumnTypes(
+		        #"Removed signInActivity",
+		        {
+		            {"UsageLocation", type text},
+		            {"UserType", type text},
+		            {"WhenCreated", type datetime},
+		            {"LastSignIn", type datetime},
+		            {"AccountEnabled", type logical}
+		        }
+		    )
+		in
+		    #"Typed Users"
+	```
+	lineageTag: 4d3f20ec-9729-46bf-8dd3-15a6573502d1
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
