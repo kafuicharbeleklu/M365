@@ -70,3 +70,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-069 | Fix | Restauration de l'etat des segments visibles pour le KPI comptes desactives avec licence | 2026-03-24 | ? Appliqué |
 | FIX-070 | Fix | Restauration de la navigation KPI P1 et du bouton P3 comptes desactives avec licence | 2026-03-24 | ? Appliqué |
 | FIX-071 | Fix | Verrouillage du bookmark comptes desactives avec licence sur le tableau cible | 2026-03-24 | ? Appliqué |
+| FIX-072 | Fix | Exposition de StatutLicence comme filtre de page sur Analyse Utilisateur | 2026-03-24 | ? Appliqué |

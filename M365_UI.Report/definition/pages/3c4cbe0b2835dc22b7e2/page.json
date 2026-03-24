@@ -287,6 +287,22 @@
         },
         "type": "Categorical",
         "howCreated": "User"
+      },
+      {
+        "name": "0702cdef1ed5a9113ad1",
+        "ordinal": 11,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Utilisateurs_Dim"
+              }
+            },
+            "Property": "StatutLicence"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
       }
     ],
     "filterSortOrder": "Custom"
