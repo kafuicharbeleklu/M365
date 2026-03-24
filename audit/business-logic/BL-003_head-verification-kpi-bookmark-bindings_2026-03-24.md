@@ -1,4 +1,4 @@
-# BL-003 — Verification HEAD des liaisons bouton -> bookmark
+# BL-003 - Verification HEAD des liaisons bouton -> bookmark
 **Date**: 2026-03-24
 
 ## Portee
@@ -18,7 +18,7 @@ Verification des boutons interactifs sur la page `Analyse Utilisateur` (`3c4cbe0
 - `Nav_HumainsInactifs` a deja `targetVisualNames: []` dans le `HEAD`
 - `Nav_TechniquesActives` a deja `targetVisualNames: []` dans le `HEAD`
 - `Nav_HumainsInactifs` filtre deja `CodeEtatActivite = INACTIF` dans le `HEAD`
-- Les incoherences relevees sur ces points provenaient du working tree local resérialise par Power BI Desktop, pas du depot Git
+- Les incoherences relevees sur ces points provenaient du working tree local reserialise par Power BI Desktop, pas du depot Git
 
 ## Reliquats reels identifies dans le HEAD
 - Le bouton `79259f2e49cae54295a9` est une fleche `back` en haut de page, mais il pointe vers le bookmark `Nav_HumainsInactifs`
