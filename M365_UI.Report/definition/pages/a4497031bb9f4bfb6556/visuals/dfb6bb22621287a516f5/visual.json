@@ -249,11 +249,11 @@
             "type": {
               "expr": {
                 "Literal": {
-                  "Value": "'Drillthrough'"
+                  "Value": "'PageNavigation'"
                 }
               }
             },
-            "drillthroughSection": {
+            "navigationSection": {
               "expr": {
                 "Literal": {
                   "Value": "'54f9d470ac60b85b18da'"

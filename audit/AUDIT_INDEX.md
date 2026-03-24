@@ -68,3 +68,4 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | BL-003 | Business Logic | Verification HEAD des liaisons bouton -> bookmark | 2026-03-24 | ? Audité |
 | FIX-068 | Fix | Nettoyage des bookmarks legacy non appeles | 2026-03-24 | ? Appliqué |
 | FIX-069 | Fix | Restauration de l'etat des segments visibles pour le KPI comptes desactives avec licence | 2026-03-24 | ? Appliqué |
+| FIX-070 | Fix | Restauration de la navigation KPI P1 et du bouton P3 comptes desactives avec licence | 2026-03-24 | ? Appliqué |
