@@ -3,11 +3,11 @@
   "name": "ux_action_overuse_card_p3",
   "position": {
     "x": 300,
-    "y": 484,
-    "z": 26000,
+    "y": 356,
+    "z": 27000,
     "height": 120,
     "width": 300,
-    "tabOrder": 33000
+    "tabOrder": 32000
   },
   "visual": {
     "visualType": "card",
@@ -23,11 +23,11 @@
                       "Entity": "_Mesures"
                     }
                   },
-                  "Property": "UX_ProduitsEnDepassement"
+                  "Property": "NbHumainsJamaisConnectes"
                 }
               },
-              "queryRef": "_Mesures.UX_ProduitsEnDepassement",
-              "nativeQueryRef": "UX_ProduitsEnDepassement"
+              "queryRef": "_Mesures.NbHumainsJamaisConnectes",
+              "nativeQueryRef": "NbHumainsJamaisConnectes"
             }
           ]
         }
@@ -64,7 +64,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "24D"
                 }
               }
             }
@@ -135,7 +135,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },
@@ -188,7 +188,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Produits en depassement'"
+                  "Value": "'Jamais connectes'"
                 }
               }
             },
@@ -215,6 +215,46 @@
           },
           "selector": {
             "id": "default"
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Canvas'"
+                }
+              }
+            },
+            "section": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ttv_p3_depassement'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            }
           }
         }
       ]

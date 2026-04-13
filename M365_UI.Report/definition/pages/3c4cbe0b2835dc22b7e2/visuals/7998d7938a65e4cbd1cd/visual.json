@@ -3,7 +3,7 @@
   "name": "7998d7938a65e4cbd1cd",
   "position": {
     "x": 20,
-    "y": 466,
+    "y": 494,
     "z": 7000,
     "height": 86,
     "width": 240,
@@ -160,7 +160,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },

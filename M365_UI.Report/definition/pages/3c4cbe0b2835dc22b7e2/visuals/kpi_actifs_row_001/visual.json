@@ -4,10 +4,10 @@
   "position": {
     "x": 499,
     "y": 92,
-    "z": 6000,
+    "z": 9000,
     "height": 104,
     "width": 187,
-    "tabOrder": 6000
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "card",
@@ -103,7 +103,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13D"
+                  "Value": "14D"
                 }
               }
             }
@@ -166,7 +166,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },
@@ -234,7 +234,7 @@
             "type": {
               "expr": {
                 "Literal": {
-                  "Value": "'ReportPage'"
+                  "Value": "'Canvas'"
                 }
               }
             },
@@ -242,6 +242,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'ttv_p3_actifs'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
                 }
               }
             }

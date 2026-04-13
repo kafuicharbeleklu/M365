@@ -194,59 +194,99 @@ table _Mesures
 		lineageTag: 4f8e1014-8fbe-4686-88eb-59651ad6bfec
 
 	measure NbBoitesInactives =
-			COALESCE(
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
 				CALCULATE(
 					COUNTROWS(T_Utilisateurs_Dim),
 					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
 					T_Utilisateurs_Dim[TypeCompte] = "Technique",
 					T_Utilisateurs_Dim[AccountEnabled] = FALSE()
-				),
-				0
-			)
+				)
+			VAR _scoped =
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Technique",
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE(),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		formatString: 0
 		displayFolder: Comptes Techniques
 		lineageTag: 252cc12a-eaed-44ab-baa2-e5716d65883e
 
 	measure NbBoitesActives =
-			COALESCE(
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
 				CALCULATE(
 					COUNTROWS(T_Utilisateurs_Dim),
 					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
 					T_Utilisateurs_Dim[TypeCompte] = "Technique",
 					T_Utilisateurs_Dim[AccountEnabled] = TRUE()
-				),
-				0
-			)
+				)
+			VAR _scoped =
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Technique",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE(),
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
 		formatString: 0
 		displayFolder: Comptes Techniques
 		lineageTag: 721c0db6-9da2-4405-bf14-696a7a768841
 
 	measure LicencesInactives =
-			VAR _affectees = COALESCE([LicencesAffectees], 0)
-			VAR _actives = COALESCE([LicencesActives], 0)
+			VAR UsersDesactives =
+				CALCULATETABLE(
+					VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE()
+				)
+			VAR UsersInactifsActifs =
+				CALCULATETABLE(
+					VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
+					T_Utilisateurs_Dim[TypeCompte] = "Utilisateur",
+					T_Utilisateurs_Dim[AccountEnabled] = TRUE(),
+					T_Utilisateurs_Dim[CodeEtatActivite] IN {"INACTIF", "JAMAIS_CONNECTE"}
+				)
+			VAR AllInactifsUPN = UNION(UsersDesactives, UsersInactifsActifs)
 			RETURN
-			MAX(0, _affectees - _actives)
+			COALESCE(
+				CALCULATE(
+					[LicencesAffectees],
+					TREATAS(AllInactifsUPN, T_Affectations_Fact[UserPrincipalName])
+				),
+				0
+			)
 		formatString: 0
 		displayFolder: Licences
 		lineageTag: bc241cca-a9cb-4b23-aa44-116c69afe4a2
 
 	measure LicencesActives =
-			VAR _actives =
-				CALCULATE(
-					[LicencesAffectees],
-					TREATAS(
-						CALCULATETABLE(
-							VALUES(T_Utilisateurs_Dim[UserPrincipalName]),
-							FILTER(
-								T_Utilisateurs_Dim,
-								T_Utilisateurs_Dim[CodeEtatActivite] = "ACTIF"
-							)
-						),
-						T_Affectations_Fact[UserPrincipalName]
-					)
-				)
+			VAR _affectees = [LicencesAffectees]
+			VAR _inactives = COALESCE([LicencesInactives], 0)
+			VAR _diff = _affectees - _inactives
 			RETURN
-			COALESCE(_actives, 0)
+			IF(
+				ISBLANK(_affectees),
+				BLANK(),
+				IF(_diff < 0, 0, _diff)
+			)
 		formatString: 0
 		displayFolder: Licences
 		lineageTag: ebbf9efb-9959-4a33-85ae-9250badf11e9
@@ -259,42 +299,10 @@ table _Mesures
 		displayFolder: Utilisateurs
 		lineageTag: 6eb920b2-fbc7-468e-8b0c-3c3bfec39bbc
 
-	measure CiblesNettoyage =
-			CALCULATE(
-				COUNTROWS(T_Utilisateurs_Dim),
-				T_Utilisateurs_Dim[IsCible] = TRUE()
-			)
+	measure CiblesNettoyage = [NbHumainsInactifs] + [NbHumainsJamaisConnectes] + [NbHumainsDesactives] + [NbBoitesInactives]
 		formatString: 0
 		displayFolder: Utilisateurs
 		lineageTag: 1dff5eaa-1029-474e-b468-877e79b6be82
-
-	measure NbComptesDesactivesAvecLicence =
-			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
-			VAR _base =
-				CALCULATE(
-					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
-					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
-					T_Utilisateurs_Dim[AccountEnabled] = FALSE(),
-					T_Utilisateurs_Dim[StatutLicence] = "ON"
-				)
-			VAR _scoped =
-				CALCULATE(
-					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
-					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
-					T_Utilisateurs_Dim[AccountEnabled] = FALSE(),
-					T_Utilisateurs_Dim[StatutLicence] = "ON",
-					KEEPFILTERS(
-						TREATAS(
-							VALUES(T_Affectations_Fact[UserPrincipalName]),
-							T_Utilisateurs_Dim[UserPrincipalName]
-						)
-					)
-				)
-			RETURN
-				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
-		formatString: 0
-		displayFolder: Utilisateurs
-		lineageTag: 47ef3f5b-7db6-455d-b8b3-bf4f7a1f35d2
 
 	measure TauxGaspillage =
 			
@@ -823,20 +831,20 @@ table _Mesures
 		displayFolder: Diagnostic
 		lineageTag: 81b1022e-6396-4ac2-bdab-c6da8fc6e0d9
 
-	measure TT_p1_comptes_ctx = "Tous comptes AD : humains + techniques (salles, services, partagees)"
+	measure TT_p1_comptes_ctx = "Comptes AD : humains + techniques"
 		displayFolder: Tooltips
 		lineageTag: tt-p1-comptes-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_comptes_lect = "Decomposez par type sur la page Analyse Utilisateur"
+	measure TT_p1_comptes_lect = "Inclut salles, BAL partagees, services. Isoler les humains sur P3."
 		displayFolder: Tooltips
 		lineageTag: tt-p1-comptes-lect
 
 		annotation SummarizationSetBy = Automatic
 
 	measure TT_p1_actifs_ctx =
-			"Au moins 1 activite M365 dans les "
+			"Humains actifs M365 sur les "
 			& FORMAT(MAX(T_Parametres_Dim[SeuilInactiviteJours]), "0")
 			& " derniers jours"
 		displayFolder: Tooltips
@@ -844,14 +852,14 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_actifs_lect = "Objectif > 80% du total. En dessous : investiguer sur P3"
+	measure TT_p1_actifs_lect = "Si bas, ouvrir P3 pour cibler inactifs et fantomes."
 		displayFolder: Tooltips
 		lineageTag: tt-p1-actifs-lect
 
 		annotation SummarizationSetBy = Automatic
 
 	measure TT_p1_inactifs_ctx =
-			"Aucune activite M365 detectee depuis plus de "
+			"Humains inactifs M365 depuis plus de "
 			& FORMAT(MAX(T_Parametres_Dim[SeuilInactiviteJours]), "0")
 			& " jours"
 		displayFolder: Tooltips
@@ -859,152 +867,152 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_inactifs_lect = "Si > 20% du total : planifier une campagne de revue"
+	measure TT_p1_inactifs_lect = "Priorite : revue d'usage et recuperation de licences."
 		displayFolder: Tooltips
 		lineageTag: tt-p1-inactifs-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_desactives_ctx = "Comptes bloques dans Azure AD (AccountEnabled = FALSE)"
+	measure TT_p1_desactives_ctx = "Comptes humains desactives dans Azure AD"
 		displayFolder: Tooltips
 		lineageTag: tt-p1-desactives-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_desactives_lect = "Verifier si des licences sont encore affectees"
+	measure TT_p1_desactives_lect = "Verifier les licences encore affectees avant nettoyage."
 		displayFolder: Tooltips
 		lineageTag: tt-p1-desactives-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_stock_ctx = "Total des licences achetees (prepaidUnits enabled)"
+	measure TT_p1_stock_ctx = "Stock total de licences achetees"
 		displayFolder: Tooltips
 		lineageTag: tt-p1-stock-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_stock_lect = "Comparer avec Affectees pour calculer le taux d'utilisation"
+	measure TT_p1_stock_lect = "A comparer avec Affectees et Dispo."
 		displayFolder: Tooltips
 		lineageTag: tt-p1-stock-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_lic_actives_ctx = "Licences sur des comptes avec activite M365 recente"
+	measure TT_p1_lic_actives_ctx = "Licences de comptes actifs M365"
 		displayFolder: Tooltips
 		lineageTag: tt-p1-lic-actives-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_lic_actives_lect = "Ratio Actives/Affectees = efficacite d'usage reelle"
+	measure TT_p1_lic_actives_lect = "Usage reel, pas simple affectation."
 		displayFolder: Tooltips
 		lineageTag: tt-p1-lic-actives-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_lic_inactives_ctx = "Licences affectees mais sans activite detectee"
+	measure TT_p1_lic_inactives_ctx = "Licences de comptes desactives ou sans usage recent"
 		displayFolder: Tooltips
 		lineageTag: tt-p1-lic-inactives-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_lic_inactives_lect = "Chaque licence inactive = cout sans usage. A recuperer"
+	measure TT_p1_lic_inactives_lect = "Inclut humains desactives AD + humains actifs AD inactifs/jamais connectes. Exclut fantomes et comptes techniques."
 		displayFolder: Tooltips
 		lineageTag: tt-p1-lic-inactives-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p1_lic_dispo_ctx = "Stock total moins licences affectees"
+	measure TT_p1_lic_dispo_ctx = "Stock restant apres affectation"
 		displayFolder: Tooltips
 		lineageTag: tt-p1-lic-dispo-ctx
 
 		annotation SummarizationSetBy = Automatic
 
 	measure TT_p1_lic_dispo_lect =
-			"Negatif = depassement. 0 = epuise. <= "
+			"Negatif=depassement | 0=epuise | <= "
 			& FORMAT(MAX(T_Parametres_Dim[SeuilStockCritiquePct]), "0")
-			& "% = critique"
+			& "% critique"
 		displayFolder: Tooltips
 		lineageTag: tt-p1-lic-dispo-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_stock_ctx = "Budget total de licences achetees"
+	measure TT_p2_stock_ctx = "Stock de licences achetees"
 		displayFolder: Tooltips
 		lineageTag: tt-p2-stock-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_stock_lect = "Base de calcul du taux d'utilisation global"
+	measure TT_p2_stock_lect = "Base du taux global d'utilisation."
 		displayFolder: Tooltips
 		lineageTag: tt-p2-stock-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_affectees_ctx = "Licences distribuees aux utilisateurs"
+	measure TT_p2_affectees_ctx = "Licences affectees aux utilisateurs"
 		displayFolder: Tooltips
 		lineageTag: tt-p2-affectees-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_affectees_lect = "Taux = Affectees / Stock. Si > 100% = depassement"
+	measure TT_p2_affectees_lect = "Si > 100%, il y a depassement."
 		displayFolder: Tooltips
 		lineageTag: tt-p2-affectees-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_actives_ctx = "Licences utilisees activement"
+	measure TT_p2_actives_ctx = "Licences activement utilisees"
 		displayFolder: Tooltips
 		lineageTag: tt-p2-actives-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_actives_lect = "Ratio Actives/Affectees = efficacite reelle d'usage"
+	measure TT_p2_actives_lect = "Compare usage reel vs affectation."
 		displayFolder: Tooltips
 		lineageTag: tt-p2-actives-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_dispo_ctx = "Licences restantes disponibles a l'affectation"
+	measure TT_p2_dispo_ctx = "Licences encore disponibles"
 		displayFolder: Tooltips
 		lineageTag: tt-p2-dispo-ctx
 
 		annotation SummarizationSetBy = Automatic
 
 	measure TT_p2_dispo_lect =
-			"Negatif = depassement contractuel. <= "
+			"Negatif=depassement | <= "
 			& FORMAT(MAX(T_Parametres_Dim[SeuilStockCritiquePct]), "0")
-			& "% = critique"
+			& "% critique"
 		displayFolder: Tooltips
 		lineageTag: tt-p2-dispo-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_inactives_ctx = "Licences affectees sans activite associee"
+	measure TT_p2_inactives_ctx = "Licences de comptes desactives ou sans usage recent"
 		displayFolder: Tooltips
 		lineageTag: tt-p2-inactives-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_inactives_lect = "Potentiel d'economie immediat. A desaffecter"
+	measure TT_p2_inactives_lect = "Inclut humains desactives AD + humains actifs AD inactifs/jamais connectes. Exclut fantomes et comptes techniques."
 		displayFolder: Tooltips
 		lineageTag: tt-p2-inactives-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_produits_ctx = "Nombre de produits M365 distincts dans le tenant"
+	measure TT_p2_produits_ctx = "Produits M365 distincts du tenant"
 		displayFolder: Tooltips
 		lineageTag: tt-p2-produits-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p2_produits_lect = "Plus de produits = plus de complexite a gerer"
+	measure TT_p2_produits_lect = "Plus il y en a, plus la gestion se complexifie."
 		displayFolder: Tooltips
 		lineageTag: tt-p2-produits-lect
 
 		annotation SummarizationSetBy = Automatic
 
 	measure TT_p3_actifs_ctx =
-			"Comptes humains avec activite M365 recente (<= "
+			"Humains actifs M365 (<= "
 			& FORMAT(MAX(T_Parametres_Dim[SeuilInactiviteJours]), "0")
 			& "j)"
 		displayFolder: Tooltips
@@ -1012,7 +1020,7 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_actifs_lect = "Objectif : maintenir > 80% du total utilisateurs"
+	measure TT_p3_actifs_lect = "A comparer aux inactifs et fantomes."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-actifs-lect
 
@@ -1041,13 +1049,16 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_inactifs_ctx = "Jamais connectés à Azure AD"
+	measure TT_p3_inactifs_ctx =
+			"Humains inactifs au-dela du seuil (>"
+			& FORMAT(MAX(T_Parametres_Dim[SeuilInactiviteJours]), "0")
+			& "j)"
 		displayFolder: Tooltips
 		lineageTag: tt-p3-inactifs-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_inactifs_lect = "Utilisateurs dont le champ LastSignIn est vide : ils ne se sont jamais authentifiés sur Azure AD. Un utilisateur fantôme peut s'être connecté à AD sans jamais utiliser une application M365."
+	measure TT_p3_inactifs_lect = "A distinguer des jamais connectes et des fantomes."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-inactifs-lect
 
@@ -1059,57 +1070,249 @@ table _Mesures
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_desactives_lect = "Verifier si des licences sont encore affectees"
+	measure TT_p3_desactives_lect = "Verifier les licences avant nettoyage."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-desactives-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_cibles_ctx = "Inactifs + fantomes + desactives a traiter"
+	measure TT_p3_cibles_ctx = "Inactifs + jamais connectes + desactives + boites inactives"
 		displayFolder: Tooltips
 		lineageTag: tt-p3-cibles-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_cibles_lect = "Objectif : reduire progressivement ce chiffre a zero"
+	measure TT_p3_cibles_lect = "N'inclut pas les fantomes. Population prioritaire a examiner avant nettoyage."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-cibles-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_boites_tot_ctx = "Salles, BAL partagees, services"
+	measure TT_p3_boites_tot_ctx = "Salles, BAL partagees et services"
 		displayFolder: Tooltips
 		lineageTag: tt-p3-boites-tot-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_boites_tot_lect = "Non comptabilises dans les KPI humains"
+	measure TT_p3_boites_tot_lect = "Hors KPI humains."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-boites-tot-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_boites_act_ctx = "Comptes techniques operationnels (AccountEnabled = TRUE)"
+	measure TT_p3_boites_act_ctx = "Comptes techniques actifs"
 		displayFolder: Tooltips
 		lineageTag: tt-p3-boites-act-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_boites_act_lect = "Verifier l'usage reel de chaque compte actif"
+	measure TT_p3_boites_act_lect = "Verifier usage reel et besoin."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-boites-act-lect
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_boites_inact_ctx = "Comptes techniques desactives dans Azure AD"
+	measure TT_p3_boites_inact_ctx = "Comptes techniques desactives"
 		displayFolder: Tooltips
 		lineageTag: tt-p3-boites-inact-ctx
 
 		annotation SummarizationSetBy = Automatic
 
-	measure TT_p3_boites_inact_lect = "Candidats a la suppression si plus utilises"
+	measure TT_p3_boites_inact_lect = "Candidats au nettoyage."
 		displayFolder: Tooltips
 		lineageTag: tt-p3-boites-inact-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure NbComptesDesactivesAvecLicence =
+			VAR _isProductScoped = ISCROSSFILTERED(T_Produits_Dim)
+			VAR _base =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE(),
+					T_Utilisateurs_Dim[StatutLicence] = "ON"
+				)
+			VAR _scoped =
+				CALCULATE(
+					DISTINCTCOUNT(T_Utilisateurs_Dim[UserPrincipalName]),
+					REMOVEFILTERS(T_Utilisateurs_Dim[EtatActivite]),
+					T_Utilisateurs_Dim[AccountEnabled] = FALSE(),
+					T_Utilisateurs_Dim[StatutLicence] = "ON",
+					KEEPFILTERS(
+						TREATAS(
+							VALUES(T_Affectations_Fact[UserPrincipalName]),
+							T_Utilisateurs_Dim[UserPrincipalName]
+						)
+					)
+				)
+			RETURN
+				COALESCE(IF(_isProductScoped, _scoped, _base), 0)
+		formatString: 0
+		displayFolder: Utilisateurs
+		lineageTag: 47ef3f5b-7db6-455d-b8b3-bf4f7a1f35d2
+
+	measure UX_ParametresActifs =
+			VAR _seuilInactivite = FORMAT(MAX(T_Parametres_Dim[SeuilInactiviteJours]), "0")
+			VAR _seuilCritique = FORMAT(MAX(T_Parametres_Dim[SeuilStockCritiquePct]), "0")
+			VAR _seuilAlerte = FORMAT(MAX(T_Parametres_Dim[SeuilStockAlertePct]), "0")
+			VAR _seuilSurveillance = FORMAT(MAX(T_Parametres_Dim[SeuilStockSurveillancePct]), "0")
+			VAR _periodeRaw = COALESCE(MAX(T_Parametres_Dim[PeriodeActivite]), "N/A")
+			VAR _periodeAffichee =
+				IF(
+					LEFT(_periodeRaw, 1) = "D" && LEN(_periodeRaw) > 1,
+					MID(_periodeRaw, 2, LEN(_periodeRaw) - 1) & "j",
+					_periodeRaw
+				)
+			RETURN
+			"Param | Inact>" & _seuilInactivite & "j"
+			& " | Stock " & _seuilCritique & "/" & _seuilAlerte & "/" & _seuilSurveillance & "%"
+			& " | Activite " & _periodeAffichee
+			& " | " & [UX_QualiteDonnees]
+		displayFolder: UX
+		lineageTag: ux-parametres-actifs-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure FlagLigneActiviteSousLicence =
+			VAR _upn =
+				COALESCE(
+					SELECTEDVALUE(T_Utilisateurs_Dim[UserPrincipalName]),
+					SELECTEDVALUE(T_Affectations_Fact[UserPrincipalName])
+				)
+			VAR _isDisabled =
+				COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[AccountEnabled]), TRUE()) = FALSE()
+			VAR _hasLicence = [LicencesAffectees] > 0
+			VAR _codeEtat = SELECTEDVALUE(T_Utilisateurs_Dim[CodeEtatActivite])
+			RETURN
+			SWITCH(
+				TRUE(),
+				ISBLANK(_upn) || NOT _hasLicence || _isDisabled, 0,
+				_codeEtat = "JAMAIS_CONNECTE", 2,
+				_codeEtat IN {"INACTIF", "INACTIF_M365"}, 1,
+				0
+			)
+		formatString: 0
+		displayFolder: Diagnostic
+		lineageTag: 9f4f4cb0-625e-4f90-a3cc-f7394a853208
+
+	measure LicencesConsommeesTableau =
+			VAR _affectees = [LicencesAffectees]
+			RETURN
+				IF(COALESCE(_affectees, 0) > 0, _affectees, BLANK())
+		formatString: 0
+		displayFolder: Licences
+		lineageTag: e421730b-f38f-4dfa-8a5f-5ce08e5dc7bf
+
+	measure TT_p3_total_ctx = "Total des comptes humains du perimetre courant"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-total-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_total_lect = "Base de reference pour comparer actifs, inactifs et comptes a traiter."
+		displayFolder: Tooltips
+		lineageTag: tt-p3-total-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_fantomes_ctx_clean = "AD actif sans activite M365"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-fantomes-ctx-clean
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_fantomes_lect_clean =
+			VAR _periodeRaw = MAX(T_Parametres_Dim[PeriodeActivite])
+			VAR _periodeLibelle =
+				IF(
+					LEFT(_periodeRaw, 1) = "D",
+					MID(_periodeRaw, 2, LEN(_periodeRaw) - 1) & " derniers jours",
+					_periodeRaw
+				)
+			RETURN
+			"Actifs dans AD mais absents des donnees M365 sur les "
+			& _periodeLibelle
+			& ". A distinguer des jamais connectes."
+		displayFolder: Tooltips
+		lineageTag: tt-p3-fantomes-lect-clean
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_desactives_lic_ctx = "Comptes desactives avec au moins une licence"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-desactives-lic-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_desactives_lic_lect = "1 compte = 1 utilisateur. Priorite : desaffecter."
+		displayFolder: Tooltips
+		lineageTag: tt-p3-desactives-lic-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_depassement_ctx = "Humains jamais connectes a Azure AD"
+		displayFolder: Tooltips
+		lineageTag: tt-p3-depassement-ctx
+
+		annotation SummarizationSetBy = Automatic
+
+	measure TT_p3_depassement_lect = "Comptes actifs AD avec LastSignIn vide. Inclus dans LicencesInactives, distincts des fantomes."
+		displayFolder: Tooltips
+		lineageTag: tt-p3-depassement-lect
+
+		annotation SummarizationSetBy = Automatic
+
+	measure DT_DiagnosticClassification =
+			VAR _typeCompte = COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[TypeCompte]), "-")
+			VAR _regle = COALESCE(SELECTEDVALUE(T_Utilisateurs_Dim[RegleTypeCompte]), "-")
+			RETURN
+			"Diagnostic | TypeCompte=" & _typeCompte
+			& " | Regle=" & _regle
+			& " | Activite M365: decalage structurel 48-72h"
+		displayFolder: Detail Utilisateur
+		lineageTag: dt-diagnostic-classification-001
+
+		annotation SummarizationSetBy = Automatic
+
+	measure UX_QualiteDonnees =
+			VAR _nonDefinis =
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Produits_Dim),
+					REMOVEFILTERS(T_Affectations_Fact),
+					REMOVEFILTERS(T_Activite_M365),
+					T_Utilisateurs_Dim[TypeCompte] = "Non defini"
+				)
+			VAR _nonSynchronises =
+				CALCULATE(
+					COUNTROWS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Produits_Dim),
+					REMOVEFILTERS(T_Affectations_Fact),
+					REMOVEFILTERS(T_Activite_M365),
+					ISBLANK(T_Utilisateurs_Dim[AccountEnabled])
+				)
+			VAR _nonClasses =
+				CALCULATE(
+					[NbLignesNonClassifiees],
+					REMOVEFILTERS(T_Utilisateurs_Dim),
+					REMOVEFILTERS(T_Produits_Dim),
+					REMOVEFILTERS(T_Affectations_Fact),
+					REMOVEFILTERS(T_Activite_M365)
+				)
+			VAR _alertes = COALESCE(_nonDefinis, 0) + COALESCE(_nonSynchronises, 0) + COALESCE(_nonClasses, 0)
+			RETURN
+			IF(
+				_alertes = 0,
+				"DQ OK",
+				"DQ ND:" & FORMAT(COALESCE(_nonDefinis, 0), "0")
+				& " NS:" & FORMAT(COALESCE(_nonSynchronises, 0), "0")
+				& " NC:" & FORMAT(COALESCE(_nonClasses, 0), "0")
+			)
+		displayFolder: UX
+		lineageTag: ux-qualite-donnees-001
 
 		annotation SummarizationSetBy = Automatic
 

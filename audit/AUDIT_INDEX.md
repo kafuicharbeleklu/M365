@@ -87,3 +87,36 @@ Types: BL (Business Logic) | UI (UI Layout) | DQ (Data Quality) | FIX (Fix Recor
 | FIX-085 | Fix | Parametrage des derniers libelles et comparaisons de seuils | 2026-03-24 | ? Appliqué |
 | FIX-086 | Fix | Mise a jour des notes AGENTS sur seuils et bookmarks apres audit source | 2026-03-24 | ? Appliqué |
 | FIX-087 | Fix | Suppression des mesures tooltip P2 orphelines et cloture de l'alerte doc | 2026-03-24 | ? Appliqué |
+| FIX-088 | Fix | Exposition des parametres actifs dans le header des pages principales | 2026-03-25 | ? Appliqué |
+| FIX-089 | Fix | Ajout d'un signal global de qualite des donnees dans le bandeau de parametres actifs | 2026-03-25 | ? Appliqué |
+| FIX-090 | Fix | Exposition de la regle diagnostique TypeCompte sur le drillthrough utilisateur | 2026-03-25 | ? Appliqué |
+| FIX-091 | Fix | Ajout d'un controle pre-commit gere par le repo pour les secrets de expressions.tmdl | 2026-03-25 | ? Appliqué |
+| FIX-092 | Fix | Refonte des tooltips P3 et liaison des cartes d'action a des report-page tooltips | 2026-03-25 | ? Appliqué |
+| FIX-093 | Fix | Deplacement du hover P3 sur les boutons transparents et compactage global des tooltips | 2026-03-25 | ? Appliqué |
+| FIX-094 | Fix | Reduction supplementaire des tooltips et reecriture du contenu P1 | 2026-03-25 | ? Appliqué |
+| FIX-095 | Fix | Uniformisation du mode tooltip des KPI P1 et compactage specifique des tooltips P1 | 2026-03-25 | ? Appliqué |
+| FIX-096 | Fix | Uniformisation du mode tooltip des KPI P2 et compactage des tooltips P2 | 2026-03-25 | ? Appliqué |
+| FIX-097 | Fix | Compactage des tooltips P3 et routage du hover des KPI hauts via boutons overlay | 2026-03-25 | ? Appliqué |
+| FIX-098 | Fix | Deplacement du clic bookmark P3 sur les cartes pour eviter le hover natif CTRL+click | 2026-03-25 | ? Appliqué |
+| FIX-099 | Fix | Ajout d'un tooltip dedie pour la carte Total de la page 3 | 2026-03-25 | ? Appliqué |
+| FIX-100 | Fix | Harmonisation des tailles de titres de sections dans les tooltips et suppression des bordures arrondies sur les pages principales | 2026-03-25 | ? Appliqué |
+| FIX-101 | Fix | Espacement accru des sections du nav lateral, suppression des arrondis du drillthrough et augmentation des polices KPI | 2026-03-25 | ? Appliqué |
+| FIX-102 | Fix | Renommage du KPI Cibles Nettoyage et refonte visuelle des tooltips ttv_* | 2026-03-25 | ? Appliqué |
+| FIX-103 | Fix | Augmentation des tailles de titres KPI et correction du titre Desactives sur la page 3 | 2026-03-25 | ? Appliqué |
+| FIX-104 | Fix | Ajout d'une recherche utilisateur sur la page 3 et alignement du libelle Utilisateurs Désactivés | 2026-03-25 | ? Appliqué |
+| FIX-105 | Fix | Preservation du contexte des slicers P3 lors de l'application des bookmarks KPI | 2026-03-25 | ? Applique |
+| FIX-106 | Fix | Remplacement des KPI cliquables P3 par un panneau de segments d'analyse a droite | 2026-03-25 | ? Applique |
+| FIX-107 | Fix | Realignement du tableau P3 sur le grain produit de T_Affectations_Fact pour eliminer les lignes a 0 sous filtre produit | 2026-03-25 | ? Appliqué |
+| FIX-108 | Fix | Restauration d'une logique utilisateur pour Licences Actives/Inactives et scope produit sur les KPI techniques P3 | 2026-03-25 | ? Appliqué |
+| FIX-109 | Fix | Clarification des tooltips Licences Inactives et Comptes a traiter | 2026-03-26 | Applique |
+| FIX-110 | Fix | Remplacement de l'alerte depassement P3 par Jamais connectes et resserrement du panneau d'alerte | 2026-03-26 | Applique |
+| FIX-111 | Fix | Compactage du panneau d alertes P3 et agrandissement des segments | 2026-03-26 | Applique |
+| FIX-112 | Fix | Recalage du hover des alertes P3 et correction du KPI desactives | 2026-03-26 | Applique |
+
+
+| FIX-113 | Fix | Suppression de l alerte dupliquee desactives avec licence et alignement des tooltips P3 | 2026-03-26 | Applique |
+| FIX-114 | Fix | Ancrage du tableau P3 sur les affectations et masquage des lignes de licence a 0 | 2026-03-26 | Applique |
+| FIX-115 | Fix | Affinage du tableau P3 de licences consommees apres reutilisation du visuel drillthrough | 2026-03-26 | Applique |
+| FIX-116 | Fix | Restauration du surlignage d alerte du tableau P3 pour comptes desactives et inactifs sous licence | 2026-03-26 | Applique |
+
+| FIX-117 | Fix | Clarification de lecture des KPI P3 comptes vs licences et renommage du total humain | 2026-04-07 | Applique |

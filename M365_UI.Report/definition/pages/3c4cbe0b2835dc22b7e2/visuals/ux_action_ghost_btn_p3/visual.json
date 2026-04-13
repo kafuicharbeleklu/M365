@@ -3,11 +3,11 @@
   "name": "ux_action_ghost_btn_p3",
   "position": {
     "x": 300,
-    "y": 348,
-    "z": 31000,
+    "y": 228,
+    "z": 28000,
     "height": 120,
     "width": 300,
-    "tabOrder": 30000
+    "tabOrder": 23000
   },
   "visual": {
     "visualType": "actionButton",
@@ -34,7 +34,7 @@
             "roundEdge": {
               "expr": {
                 "Literal": {
-                  "Value": "10L"
+                  "Value": "0L"
                 }
               }
             }
@@ -120,6 +120,33 @@
               "expr": {
                 "Literal": {
                   "Value": "'ca5213839361d51050a4'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Canvas'"
+                }
+              }
+            },
+            "section": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ttv_p3_fantomes'"
                 }
               }
             }
@@ -219,7 +246,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },

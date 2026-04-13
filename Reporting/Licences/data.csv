@@ -1,0 +1,30 @@
+﻿NomProduit,StockLicences,LicencesAffectees,LicencesActives,LicencesInactives,LicencesDisponibles,TauxUtilisation,NiveauAlerteDisponibilite
+Copilot pour Microsoft 365,21,21,21,0,0,100.00 %,3
+Copilot Studio (Essai),10000,5,5,0,9995,0.05 %,0
+Dynamics 365 Customer Insights (Essai),10000,1,1,0,9999,0.01 %,0
+Dynamics 365 Customer Service (Essai),10000,0,0,0,10000,0.00 %,0
+Dynamics 365 Marketing (Essai),10000,1,1,0,9999,0.01 %,0
+Dynamics 365 Sales Premium (Essai),10000,2,2,0,9998,0.02 %,0
+Enterprise Mobility + Security E3,20,0,0,0,20,0.00 %,0
+Exchange Online (Plan 1),159,159,132,27,0,100.00 %,3
+Exchange Online (Plan 2),2,2,2,0,0,100.00 %,3
+Microsoft 365 E3,200,73,70,3,127,36.50 %,0
+Microsoft Stream,1000000,37,34,3,999963,0.00 %,0
+Office 365 E1,194,194,175,19,0,100.00 %,3
+Office 365 E3,1947,2070,2037,33,-123,106.32 %,4
+Power Apps (Gratuit),10000,2,2,0,9998,0.02 %,0
+Power Apps pour Développeurs,10000,37,37,0,9963,0.37 %,0
+Power Automate (Gratuit),10000,1406,1363,43,8594,14.06 %,0
+Power BI (Gratuit),1000000,2247,2159,88,997753,0.22 %,0
+Power BI Premium Per User (Dept),0,0,0,0,0,0.00 %,3
+Power BI Pro,54,54,53,1,0,100.00 %,3
+Power Pages (Essai),10000,1,1,0,9999,0.01 %,0
+Project Plan 3,33,33,33,0,0,100.00 %,3
+Teams Exploratory (Départements),1,1,1,0,0,100.00 %,3
+Teams Premium,8,8,8,0,0,100.00 %,3
+Teams Premium (Départements),65,64,64,0,1,98.46 %,3
+Teams Rooms Basic (Sans Audio),25,11,11,0,14,44.00 %,0
+Teams Rooms Pro,5,5,5,0,0,100.00 %,3
+Visio Plan 2,24,24,24,0,0,100.00 %,3
+Win10_VDA_E3,20,0,0,0,20,0.00 %,0
+Windows Store for Business,50,0,0,0,50,0.00 %,0

@@ -35,3 +35,12 @@ La baseline validee de `RECOVERY_UI_SAFE_V17` a ete promue au root pour travaill
 
 - Les secrets ne doivent jamais etre commites dans Git.
 - Le drillthrough utilisateur est configure pour transmettre uniquement le contexte utilisateur.
+
+## Garde-fou pre-commit
+
+- Un hook repo-managed est disponible dans `.githooks/pre-commit`.
+- Pour l'activer localement dans ce workspace :
+  `powershell -ExecutionPolicy Bypass -File scripts/install-git-hooks.ps1`
+- Le hook controle la version stagee de `M365_UI.SemanticModel/definition/expressions.tmdl`
+  et bloque le commit si `Param_TenantId`, `Param_ClientId` ou `Param_Secret`
+  ne sont pas des placeholders du type `__...__`.

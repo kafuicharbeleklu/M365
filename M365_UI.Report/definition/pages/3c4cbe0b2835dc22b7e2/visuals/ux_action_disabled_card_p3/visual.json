@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "ux_action_disabled_card_p3",
   "position": {
-    "x": 300,
-    "y": 212,
-    "z": 24000,
-    "height": 120,
-    "width": 300,
-    "tabOrder": 31000
+    "x": 4000,
+    "y": 228,
+    "z": 19000,
+    "height": 1,
+    "width": 1,
+    "tabOrder": 30000
   },
   "visual": {
     "visualType": "card",
@@ -135,7 +135,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },
@@ -188,7 +188,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Comptes desactives avec licence'"
+                  "Value": "'Desactives avec licence a retirer'"
                 }
               }
             },
@@ -215,6 +215,46 @@
           },
           "selector": {
             "id": "default"
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ReportPage'"
+                }
+              }
+            },
+            "section": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ttv_p3_desactives_lic'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            }
           }
         }
       ]

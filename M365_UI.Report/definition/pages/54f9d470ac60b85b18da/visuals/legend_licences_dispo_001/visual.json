@@ -1,11 +1,11 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "legend_licences_dispo_001",
   "position": {
     "x": 300,
     "y": 228,
     "z": 6000,
-    "height": 28,
+    "height": 34,
     "width": 1604,
     "tabOrder": 6000
   },
@@ -22,72 +22,71 @@
                     "value": "Legende disponibilite: ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
-                      "color": "#4B5563"
+                      "fontSize": "12pt",
+                      "color": "#4b5563"
                     }
                   },
                   {
                     "value": "Critique (<0)",
                     "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
                       "fontWeight": "bold",
-                      "color": "#D64550"
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#d64550"
                     }
                   },
                   {
                     "value": " | ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
-                      "color": "#9CA3AF"
+                      "fontSize": "12pt",
+                      "color": "#9ca3af"
                     }
                   },
                   {
                     "value": "Elevee (seuil critique)",
                     "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
                       "fontWeight": "bold",
-                      "color": "#F39C12"
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#f39c12"
                     }
                   },
                   {
                     "value": " | ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
-                      "color": "#9CA3AF"
+                      "fontSize": "12pt",
+                      "color": "#9ca3af"
                     }
                   },
                   {
                     "value": "Moderee (seuil alerte)",
                     "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
                       "fontWeight": "bold",
-                      "color": "#D4AC0D"
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#d4ac0d"
                     }
                   },
                   {
                     "value": " | ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
-                      "color": "#9CA3AF"
+                      "fontSize": "12pt",
+                      "color": "#9ca3af"
                     }
                   },
                   {
                     "value": "Surveiller (seuil surveillance)",
                     "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
                       "fontWeight": "bold",
-                      "color": "#0F766E"
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt",
+                      "color": "#0f766e"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "Left"
+                ]
               }
             ]
           }

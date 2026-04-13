@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "9bdea977b2b328ae4ce4",
   "position": {
     "x": 766,
@@ -120,23 +120,6 @@
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "_Mesures"
-                  }
-                },
-                "Property": "LicencesActives"
-              }
-            },
-            "direction": "Descending"
-          }
-        ]
       }
     },
     "objects": {
@@ -519,7 +502,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },
@@ -560,5 +543,107 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a2f2ba4b9521ec3285e5",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "T_Produits_Dim"
+              }
+            },
+            "Property": "NomProduit"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "baf2b6acd0c437acec4b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Mesures"
+              }
+            },
+            "Property": "StockLicences"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d5a1a30a0bbbcb012d67",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Mesures"
+              }
+            },
+            "Property": "LicencesAffectees"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "58895cf0a38035151111",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Mesures"
+              }
+            },
+            "Property": "LicencesActives"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "6a95eedb676c031edead",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Mesures"
+              }
+            },
+            "Property": "LicencesInactives"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "cdc08b753971eb44509a",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Mesures"
+              }
+            },
+            "Property": "LicencesDisponibles"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "de2279e120e7635e9eca",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Mesures"
+              }
+            },
+            "Property": "TauxUtilisation"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "1a2f23d55a380141ed88",
   "position": {
-    "x": 1295,
-    "y": 92,
-    "z": 23000,
-    "height": 104,
-    "width": 187,
-    "tabOrder": 23000
+    "x": 1294.1897205149678,
+    "y": 92.442122893926268,
+    "z": 1000,
+    "height": 102.90726888191793,
+    "width": 188.37262778384977,
+    "tabOrder": 14000
   },
   "visual": {
     "visualType": "actionButton",
@@ -61,7 +61,7 @@
             "roundEdge": {
               "expr": {
                 "Literal": {
-                  "Value": "10L"
+                  "Value": "0L"
                 }
               }
             }
@@ -99,33 +99,6 @@
       ]
     },
     "visualContainerObjects": {
-      "visualLink": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "type": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Bookmark'"
-                }
-              }
-            },
-            "bookmark": {
-              "expr": {
-                "Literal": {
-                  "Value": "'f4a061ed23da49a09717'"
-                }
-              }
-            }
-          }
-        }
-      ],
       "title": [
         {
           "properties": {
@@ -140,6 +113,33 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Canvas'"
+                }
+              }
+            },
+            "section": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ttv_p3_boites_act'"
                 }
               }
             }
@@ -232,7 +232,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },

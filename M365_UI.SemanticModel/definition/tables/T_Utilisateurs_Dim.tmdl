@@ -117,8 +117,149 @@ table T_Utilisateurs_Dim
 
 		annotation SummarizationSetBy = Automatic
 
-	column RegleTypeCompte =
+	column EtatActivite =
+			
+			VAR CodeEtat = [CodeEtatActivite]
+			VAR SeuilInactiviteJours =
+			    MAXX(T_Parametres_Dim, T_Parametres_Dim[SeuilInactiviteJours])
+			VAR LabelInactif =
+			    "Inactif >" & FORMAT(SeuilInactiviteJours, "0") & "j"
+			
+			RETURN
+			SWITCH(
+			    CodeEtat,
+			    "ACTIF", "Actif",
+			    "INACTIF", LabelInactif,
+			    "JAMAIS_CONNECTE", "Jamais Connect" & UNICHAR(233),
+			    "INACTIF_M365", "Inactif M365",
+			    "EXCLU", "Exclu",
+			    "Exclu"
+			)
+		lineageTag: 0db36ffc-10e6-4330-ba46-31ff1fa49493
+		summarizeBy: none
 
+		annotation SummarizationSetBy = Automatic
+
+	column 'Statut AD' =
+			// Gestion explicite des 3 cas possibles : TRUE, FALSE, et NULL
+			SWITCH(
+			    TRUE(),
+			    'T_Utilisateurs_Dim'[AccountEnabled] = TRUE(), "Activé",
+			    'T_Utilisateurs_Dim'[AccountEnabled] = FALSE(), "Désactivé",
+			    "Non synchronisé"	// AccountEnabled est NULL dans Azure AD
+			)
+		lineageTag: b8478b27-741a-46e9-851c-080c3498dfef
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column StatutLicence =
+			
+			VAR NbLicencesAffectees = COALESCE([NbLicencesAffecteesDistinctes], 0)
+			RETURN
+			IF(COALESCE(NbLicencesAffectees, 0) > 0, "ON", "OFF")
+		lineageTag: 5d4e3984-4f92-4183-88c6-336d621e3362
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Domaine
+		dataType: string
+		lineageTag: 178a8f11-925d-45b6-bdc0-225f56cfb9d9
+		summarizeBy: none
+		sourceColumn: Domaine
+
+		annotation SummarizationSetBy = Automatic
+
+	column JoursDepuisConnexion
+		dataType: int64
+		formatString: 0
+		lineageTag: 896cac78-d546-4ce2-853c-82fa6100807c
+		summarizeBy: sum
+		sourceColumn: JoursDepuisConnexion
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCible =
+			
+			// Colonne calculée : identifie les comptes cibles pour le nettoyage
+			// Cible = Humain actif AD mais dormant (au-dela du seuil parametre ou jamais connecte) OU tout compte desactive AD
+			(
+			    T_Utilisateurs_Dim[TypeCompte] = "Utilisateur" &&
+			    T_Utilisateurs_Dim[Statut AD] = "Activé" &&
+			    T_Utilisateurs_Dim[CodeEtatActivite] IN {"INACTIF", "JAMAIS_CONNECTE"}
+			)
+			||
+			T_Utilisateurs_Dim[Statut AD] = "Désactivé"
+		lineageTag: iscible-calc-col-0001-neemba
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisplayNameAffiche =
+			
+			VAR _nom = TRIM(COALESCE('T_Utilisateurs_Dim'[DisplayName], ""))
+			VAR _upn = TRIM(COALESCE('T_Utilisateurs_Dim'[UserPrincipalName], ""))
+			RETURN
+			    IF(
+			        _nom <> "",
+			        _nom,
+			        IF(_upn <> "", _upn, "(Sans nom)")
+			    )
+		lineageTag: a2be7a12-77bf-4582-bdb2-32a6e6b68334
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column CodeEtatActivite =
+			
+			VAR EstTechnique = [TypeCompte] = "Technique"
+			VAR EstDesactive = [AccountEnabled] = FALSE()
+			VAR UserEmail    = [UserPrincipalName]
+			VAR CategorieM365 =
+			    LOOKUPVALUE(
+			        T_Activite_M365[CategorieActivite],
+			        T_Activite_M365[UserPrincipalName], UserEmail
+			    )
+			VAR AJamaisConnecteAD = ISBLANK([LastSignIn])
+			VAR SeuilInactiviteJours =
+			    MAXX(T_Parametres_Dim, T_Parametres_Dim[SeuilInactiviteJours])
+			VAR LabelInactifM365 =
+			    "Inactif (>" & FORMAT(SeuilInactiviteJours, "0") & "j)"
+			VAR EstInactif =
+			    NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - SeuilInactiviteJours
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    EstTechnique || EstDesactive, "EXCLU",
+			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais" && NOT(AJamaisConnecteAD), "INACTIF_M365",
+			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais", "JAMAIS_CONNECTE",
+			    CategorieM365 = LabelInactifM365, "INACTIF",
+			    AJamaisConnecteAD, "JAMAIS_CONNECTE",
+			    EstInactif, "INACTIF",
+			    "ACTIF"
+			)
+		isHidden
+		lineageTag: 2d2c17e8-62df-4a42-8186-cfd18c6919d2
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column EstDesactiveAvecLicence =
+			
+			VAR NbLicencesAffectees = COALESCE([NbLicencesAffecteesDistinctes], 0)
+			RETURN
+			[TypeCompte] = "Utilisateur"
+			    && [AccountEnabled] = FALSE()
+			    && COALESCE(NbLicencesAffectees, 0) > 0
+		isHidden
+		lineageTag: estdesactiveaveclicence-calc-001-neemba
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegleTypeCompte =
+			
 			VAR Nom = LOWER(COALESCE([DisplayName], ""))
 			VAR Email = LOWER(COALESCE([UserPrincipalName], ""))
 			VAR EstVide = ISBLANK([DisplayName]) && ISBLANK([UserPrincipalName])
@@ -317,44 +458,8 @@ table T_Utilisateurs_Dim
 
 		annotation SummarizationSetBy = Automatic
 
-	column EtatActivite =
-
-			VAR CodeEtat = [CodeEtatActivite]
-			VAR SeuilInactiviteJours =
-			    MAXX(T_Parametres_Dim, T_Parametres_Dim[SeuilInactiviteJours])
-			VAR LabelInactif =
-			    "Inactif >" & FORMAT(SeuilInactiviteJours, "0") & "j"
-
-			RETURN
-			SWITCH(
-			    CodeEtat,
-			    "ACTIF", "Actif",
-			    "INACTIF", LabelInactif,
-			    "JAMAIS_CONNECTE", "Jamais Connect" & UNICHAR(233),
-			    "INACTIF_M365", "Inactif M365",
-			    "EXCLU", "Exclu",
-			    "Exclu"
-			)
-		lineageTag: 0db36ffc-10e6-4330-ba46-31ff1fa49493
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Statut AD' =
-			// Gestion explicite des 3 cas possibles : TRUE, FALSE, et NULL
-			SWITCH(
-			    TRUE(),
-			    'T_Utilisateurs_Dim'[AccountEnabled] = TRUE(), "Activé",
-			    'T_Utilisateurs_Dim'[AccountEnabled] = FALSE(), "Désactivé",
-			    "Non synchronisé"	// AccountEnabled est NULL dans Azure AD
-			)
-		lineageTag: b8478b27-741a-46e9-851c-080c3498dfef
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column NbLicencesAffecteesDistinctes =
-
+			
 			VAR _upnNorm = LOWER(TRIM(COALESCE([UserPrincipalName], "")))
 			RETURN
 			IF(
@@ -370,111 +475,6 @@ table T_Utilisateurs_Dim
 			)
 		isHidden
 		lineageTag: nblicencesaffecteesdistinctes-calc-001-neemba
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column StatutLicence =
-
-			VAR NbLicencesAffectees = COALESCE([NbLicencesAffecteesDistinctes], 0)
-			RETURN
-			IF(COALESCE(NbLicencesAffectees, 0) > 0, "ON", "OFF")
-		lineageTag: 5d4e3984-4f92-4183-88c6-336d621e3362
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column Domaine
-		dataType: string
-		lineageTag: 178a8f11-925d-45b6-bdc0-225f56cfb9d9
-		summarizeBy: none
-		sourceColumn: Domaine
-
-		annotation SummarizationSetBy = Automatic
-
-	column JoursDepuisConnexion
-		dataType: int64
-		formatString: 0
-		lineageTag: 896cac78-d546-4ce2-853c-82fa6100807c
-		summarizeBy: sum
-		sourceColumn: JoursDepuisConnexion
-
-		annotation SummarizationSetBy = Automatic
-
-	column IsCible =
-			
-			// Colonne calculée : identifie les comptes cibles pour le nettoyage
-			// Cible = Humain actif AD mais dormant (au-dela du seuil parametre ou jamais connecte) OU tout compte desactive AD
-			(
-			    T_Utilisateurs_Dim[TypeCompte] = "Utilisateur" &&
-			    T_Utilisateurs_Dim[Statut AD] = "Activé" &&
-			    T_Utilisateurs_Dim[CodeEtatActivite] IN {"INACTIF", "JAMAIS_CONNECTE"}
-			)
-			||
-			T_Utilisateurs_Dim[Statut AD] = "Désactivé"
-		lineageTag: iscible-calc-col-0001-neemba
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column DisplayNameAffiche =
-			
-			VAR _nom = TRIM(COALESCE('T_Utilisateurs_Dim'[DisplayName], ""))
-			VAR _upn = TRIM(COALESCE('T_Utilisateurs_Dim'[UserPrincipalName], ""))
-			RETURN
-			    IF(
-			        _nom <> "",
-			        _nom,
-			        IF(_upn <> "", _upn, "(Sans nom)")
-			    )
-		lineageTag: a2be7a12-77bf-4582-bdb2-32a6e6b68334
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column CodeEtatActivite =
-
-			VAR EstTechnique = [TypeCompte] = "Technique"
-			VAR EstDesactive = [AccountEnabled] = FALSE()
-			VAR UserEmail    = [UserPrincipalName]
-			VAR CategorieM365 =
-			    LOOKUPVALUE(
-			        T_Activite_M365[CategorieActivite],
-			        T_Activite_M365[UserPrincipalName], UserEmail
-			    )
-			VAR AJamaisConnecteAD = ISBLANK([LastSignIn])
-			VAR SeuilInactiviteJours =
-			    MAXX(T_Parametres_Dim, T_Parametres_Dim[SeuilInactiviteJours])
-			VAR LabelInactifM365 =
-			    "Inactif (>" & FORMAT(SeuilInactiviteJours, "0") & "j)"
-			VAR EstInactif =
-			    NOT(ISBLANK([LastSignIn])) && [LastSignIn] < TODAY() - SeuilInactiviteJours
-			RETURN
-			SWITCH(
-			    TRUE(),
-			    EstTechnique || EstDesactive, "EXCLU",
-			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais" && NOT(AJamaisConnecteAD), "INACTIF_M365",
-			    LEFT(COALESCE(CategorieM365, ""), 6) = "Jamais", "JAMAIS_CONNECTE",
-			    CategorieM365 = LabelInactifM365, "INACTIF",
-			    AJamaisConnecteAD, "JAMAIS_CONNECTE",
-			    EstInactif, "INACTIF",
-			    "ACTIF"
-			)
-		isHidden
-		lineageTag: 2d2c17e8-62df-4a42-8186-cfd18c6919d2
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column EstDesactiveAvecLicence =
-
-			VAR NbLicencesAffectees = COALESCE([NbLicencesAffecteesDistinctes], 0)
-			RETURN
-			[TypeCompte] = "Utilisateur"
-			    && [AccountEnabled] = FALSE()
-			    && COALESCE(NbLicencesAffectees, 0) > 0
-		isHidden
-		lineageTag: estdesactiveaveclicence-calc-001-neemba
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic

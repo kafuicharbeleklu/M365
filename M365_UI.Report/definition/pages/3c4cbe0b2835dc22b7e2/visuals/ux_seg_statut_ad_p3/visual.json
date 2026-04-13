@@ -1,34 +1,54 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
-  "name": "7a8b216031e010e2d1b4",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "ux_seg_statut_ad_p3",
   "position": {
-    "x": 897,
-    "y": 92,
-    "z": 21000,
-    "height": 104,
-    "width": 187,
-    "tabOrder": 21000
+    "x": 300,
+    "y": 716,
+    "z": 23000,
+    "height": 80,
+    "width": 300,
+    "tabOrder": 27000
   },
   "visual": {
-    "visualType": "actionButton",
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "T_Utilisateurs_Dim"
+                    }
+                  },
+                  "Property": "Statut AD"
+                }
+              },
+              "queryRef": "T_Utilisateurs_Dim.Statut AD",
+              "nativeQueryRef": "Statut AD",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
     "objects": {
-      "icon": [
+      "data": [
         {
           "properties": {
-            "shapeType": {
+            "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'blank'"
+                  "Value": "'Dropdown'"
                 }
               }
             }
-          },
-          "selector": {
-            "id": "default"
           }
         }
       ],
-      "outline": [
+      "header": [
         {
           "properties": {
             "show": {
@@ -38,94 +58,43 @@
                 }
               }
             },
-            "weight": {
+            "text": {
               "expr": {
                 "Literal": {
-                  "Value": "2D"
+                  "Value": "'Statut AD'"
                 }
               }
             },
-            "transparency": {
+            "textSize": {
               "expr": {
                 "Literal": {
-                  "Value": "100D"
+                  "Value": "11D"
                 }
               }
             }
           }
         }
       ],
-      "shape": [
+      "items": [
         {
           "properties": {
-            "roundEdge": {
+            "textSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10L"
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "default"
-          }
-        }
-      ],
-      "shadow": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+                  "Value": "11D"
                 }
               }
             }
           }
         }
       ],
-      "glow": [
+      "general": [
         {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ]
     },
     "visualContainerObjects": {
-      "visualLink": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "type": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Bookmark'"
-                }
-              }
-            },
-            "bookmark": {
-              "expr": {
-                "Literal": {
-                  "Value": "'fc8c08bf78c2215aa501'"
-                }
-              }
-            }
-          }
-        }
-      ],
       "title": [
         {
           "properties": {
@@ -135,30 +104,7 @@
                   "Value": "false"
                 }
               }
-            },
-            "titleWrap": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
             }
-          }
-        }
-      ],
-      "spacing": [
-        {
-          "properties": {
-            "verticalSpacing": {
-              "expr": {
-                "Literal": {
-                  "Value": "2D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "default"
           }
         }
       ],
@@ -187,19 +133,6 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "100D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "padding": [
-        {
-          "properties": {
-            "bottom": {
-              "expr": {
-                "Literal": {
                   "Value": "0D"
                 }
               }
@@ -213,7 +146,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -223,7 +156,7 @@
                   "expr": {
                     "ThemeDataColor": {
                       "ColorId": 0,
-                      "Percent": 0
+                      "Percent": -0.1
                     }
                   }
                 }
@@ -232,7 +165,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },
@@ -252,7 +185,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -270,22 +203,8 @@
             }
           }
         }
-      ],
-      "visualHeader": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
-        }
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "howCreated": "InsertVisualButton"
+  }
 }

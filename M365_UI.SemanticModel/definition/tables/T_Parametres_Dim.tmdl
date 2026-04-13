@@ -83,8 +83,8 @@ table T_Parametres_Dim
 
 	partition T_Parametres_Dim = m
 		mode: import
-		source = ```
-					let
+		source =
+				let
 					    Source = #table(
 					        type table [
 					            SeuilInactiviteJours = Int64.Type,
@@ -109,7 +109,8 @@ table T_Parametres_Dim
 					    )
 					in
 					    Source
-				```
 
 	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
 

@@ -68,7 +68,14 @@ Before every commit, run:
 
 `git diff -- M365_UI.SemanticModel/definition/expressions.tmdl`
 
-Verify `Param_Secret` contains only a placeholder such as `"__REDACTED__"`, never a real secret. The CI gate does not exist yet, so this remains a manual step.
+Verify `Param_Secret` contains only a placeholder such as `"__REDACTED__"`, never a real secret.
+
+A repo-managed hook is available in `.githooks/pre-commit`.
+Install it locally with:
+
+`powershell -ExecutionPolicy Bypass -File scripts/install-git-hooks.ps1`
+
+The hook checks the staged version of `expressions.tmdl` and blocks the commit if `Param_TenantId`, `Param_ClientId`, or `Param_Secret` are not placeholder values of the form `__...__`.
 
 ## Classification TypeCompte — Rules and Constraints
 - Primary signals (top of chain, reliable):

@@ -4,10 +4,10 @@
   "position": {
     "x": 897,
     "y": 92,
-    "z": 11000,
+    "z": 15000,
     "height": 104,
     "width": 187,
-    "tabOrder": 13000
+    "tabOrder": 16000
   },
   "visual": {
     "visualType": "card",
@@ -97,7 +97,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Désactivés'"
+                  "Value": "'Utilisateurs desactives'"
                 }
               }
             },
@@ -118,7 +118,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13D"
+                  "Value": "14D"
                 }
               }
             }
@@ -181,7 +181,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },
@@ -249,7 +249,7 @@
             "type": {
               "expr": {
                 "Literal": {
-                  "Value": "'ReportPage'"
+                  "Value": "'Canvas'"
                 }
               }
             },
@@ -257,6 +257,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'ttv_p3_desactives'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
                 }
               }
             }

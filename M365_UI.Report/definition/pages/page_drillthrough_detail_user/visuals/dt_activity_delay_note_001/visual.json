@@ -2,37 +2,72 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "dt_activity_delay_note_001",
   "position": {
-    "x": 120,
-    "y": 360,
+    "x": 120.34917886190401,
+    "y": 364.53591858170927,
     "z": 9500,
-    "height": 28,
-    "width": 1780,
-    "tabOrder": 15500
+    "height": 27.90705596797774,
+    "width": 1779.074817958581,
+    "tabOrder": 14000
   },
   "visual": {
-    "visualType": "textbox",
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Mesures"
+                    }
+                  },
+                  "Property": "DT_DiagnosticClassification"
+                }
+              },
+              "queryRef": "_Mesures.DT_DiagnosticClassification",
+              "nativeQueryRef": "DT_DiagnosticClassification"
+            }
+          ]
+        }
+      }
+    },
     "objects": {
-      "general": [
+      "categoryLabels": [
         {
           "properties": {
-            "paragraphs": [
-              {
-                "textRuns": [
-                  {
-                    "value": "⚠️ Activité M365 : données issues du rapport Microsoft avec 48-72h de décalage structurel.",
-                    "textStyle": {
-                      "fontSize": "10pt",
-                      "color": {
-                        "solid": {
-                          "color": "#64748B"
-                        }
-                      }
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#64748B'"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "Left"
+                }
               }
-            ]
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
           }
         }
       ]
@@ -77,6 +112,19 @@
           }
         }
       ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "visualHeader": [
         {
           "properties": {
@@ -87,6 +135,22 @@
                 }
               }
             }
+          }
+        }
+      ],
+      "spacing": [
+        {
+          "properties": {
+            "verticalSpacing": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
           }
         }
       ]

@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "ux_refresh_banner_p3",
   "position": {
     "x": 1360,
     "y": 22,
-    "z": 30000,
+    "z": 32000,
     "height": 36,
     "width": 290,
-    "tabOrder": 26000
+    "tabOrder": 21000
   },
   "visual": {
     "visualType": "card",
@@ -64,7 +64,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "14D"
                 }
               }
             }
@@ -163,7 +163,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "0D"
                 }
               }
             },

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "57cd12a3c5c073767919",
   "position": {
     "x": 296,
@@ -22,32 +22,20 @@
                     "value": "Vue d'ensemble",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "20pt",
-                      "color": {
-                        "solid": {
-                          "color": "#1F4E79"
-                        }
-                      }
+                      "fontSize": "20pt"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "Left"
+                ]
               },
               {
                 "textRuns": [
                   {
                     "value": "Adoption globale, activite et couverture des licences",
                     "textStyle": {
-                      "fontSize": "11pt",
-                      "color": {
-                        "solid": {
-                          "color": "#6B7280"
-                        }
-                      }
+                      "fontSize": "11pt"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "Left"
+                ]
               }
             ]
           }
@@ -125,7 +113,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "0D"
                 }
               }
             },

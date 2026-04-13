@@ -1,12 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "dt_back_btn_001",
   "position": {
     "x": 88,
     "y": 22,
     "z": 10000,
     "height": 36,
-    "width": 156
+    "width": 156,
+    "tabOrder": 18000
   },
   "visual": {
     "visualType": "actionButton",

@@ -4,7 +4,7 @@
   "displayName": "TT Comptes Tech Inact",
   "displayOption": "ActualSize",
   "type": "Tooltip",
-  "height": 240,
-  "width": 320,
+  "height": 148,
+  "width": 232,
   "visibility": "HiddenInViewMode"
 }

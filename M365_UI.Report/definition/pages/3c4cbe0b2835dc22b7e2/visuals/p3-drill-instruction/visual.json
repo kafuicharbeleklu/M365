@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "p3-drill-instruction",
   "position": {
-    "x": 776,
-    "y": 212,
-    "z": 8000,
-    "height": 40,
-    "width": 880,
-    "tabOrder": 9000
+    "x": 615.699422293509,
+    "y": 212.79130175583029,
+    "z": 11000,
+    "height": 50.372201955969395,
+    "width": 1039.5378348071708,
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,11 +19,11 @@
               {
                 "textRuns": [
                   {
-                    "value": "Selectionnez une ligne puis cliquez sur Voir detail (ou clic droit > Extraire > Detail Utilisateur)",
+                    "value": "KPI du haut = comptes distincts du perimetre filtre. Sous filtre produit, Humains Totaux + Tech. Totaux = Licences affectees. Selectionnez une ligne puis cliquez sur Voir detail.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "11pt",
-                      "color": "#4B5563"
+                      "color": "#4b5563"
                     }
                   }
                 ]
@@ -89,7 +89,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "0D"
                 }
               }
             },
